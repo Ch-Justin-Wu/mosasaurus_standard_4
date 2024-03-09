@@ -8,7 +8,6 @@ void delay_init(void)
 {
     fac_us = SystemCoreClock / 1000000;
     fac_ms = SystemCoreClock / 1000;
-
 }
 
 void delay_us(uint16_t nus)
