@@ -251,9 +251,9 @@ void Trigger_Motor_Callback(trigger_t *motor,uint16_t angle, int16_t speed)
 		motor->begin_angle = angle;
 		motor->record_begin_angle_status++;
 	}
-	if(motor->actual_angle - motor->last_angle > 4896)
+	if(motor->actual_angle - motor->last_angle > 4096)
 		motor->rounds --;
-	else if (motor->actual_angle - motor->last_angle < -4896)
+	else if (motor->actual_angle - motor->last_angle < -4096)
 		motor->rounds ++;
 	motor->total_angle = motor->rounds * 8192 + motor->actual_angle;
 }
