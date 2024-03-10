@@ -12,7 +12,7 @@ GIMBAL_t gimbal_y,gimbal_p;
 GIMBAL_MODE_t gimbal_set_mode;
 //yaw轴PID控制
 //float YawGyroPid[7] 	= {0.2f,			0.0f,			0.0,	2.5f,			0.0f,	 0.0f};  //imu角度环  1.8 
-float YawGyroPid[7] 	= {0.13f,			0.0f,			0.05f,	10.0f,			0.0f,	 0.16f};  //imu角度环  1.8 
+float YawGyroPid[7] 	= {0.17f,			0.0f,			0.00f,	10.0f,			0.0f,	 0.6f};  //imu角度环  1.8 
 
 float YawEncondePid[7] 	= {0.3f,			0.0f,			0.010f,		50.0f,			0.0f,		0.0f};  //编码器角度环  rhn 1
 float YawEncondePidSpeed[7] 	= {500.0f,			50.0f,			0.0f,		10000.0f,			3000.0f,		0.0f};  //编码器速度环  rhn 3
@@ -26,7 +26,7 @@ float YawSpeedPid[7] 			= {10000.0f,			3100.0f,			0.0f,		17000.0f,			6500.0f,		0
 //pitch轴PID控制
 //float PitchGyroPid[6] = {50.0f,			0.0f,			0.0f,		500.0f,			0.0f		,1.5f};
 
-float PitchGyroPid[7] = {0.15f,			0.0f,			0.0f,		50.0f,			0.0f		,0.0f};
+float PitchGyroPid[7] = {0.3f,			0.0f,			0.0f,		50.0f,			0.0f		,0.0f};
 float PitchEncondePid[7] = {0.0f,			0.0f,			0.0f,		0.0f,			0.0f	,0.0f};
 float PitchEncondePidSpeed[7] = {0.0f,			0.0f,			0.0f,		0.0f,			0.0f	,0.0f};
 float PitchSpeedPid[7] 		= {65.0f,			0.5f,			0.0f,		500.0f,	15.0f,	0.0f};
