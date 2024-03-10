@@ -31,8 +31,8 @@ float avx, avy, awz;
 float last_vx, last_vy;
 
 // 72.2f 斜45° 300.00f
-float GIMBAL_HEAD_ANGLE = 114.35f;
-float GIMBAL_FOLLOW_ANGLE = 114.35f;
+float GIMBAL_HEAD_ANGLE = 120.0f;
+float GIMBAL_FOLLOW_ANGLE = 120.0f;
 
 // 新的功率限制用到的参数   Rhn
 static void Power_limit(void);
