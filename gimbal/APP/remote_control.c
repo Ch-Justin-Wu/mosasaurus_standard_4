@@ -3,6 +3,7 @@
 #include "dma.h"
 #include "usart.h"
 #include "bsp_math.h"
+#include "string.h"
 
 #define RC_huart huart3
 #define RC_UART USART3
@@ -163,6 +164,9 @@ void USART3_IRQHandler(void)
 				{
 					RC_restart(SBUS_RX_BUF_NUM);
 				}
+				// Ò£¿ØÆ÷ÀëÏß·À·¶´ëÊ©
+				memset(sbus_rx_buf[0], 0, SBUS_RX_BUF_NUM);
+
 			}
 		}
 		else
@@ -192,6 +196,8 @@ void USART3_IRQHandler(void)
 				{
 					RC_restart(SBUS_RX_BUF_NUM);
 				}
+				// Ò£¿ØÆ÷ÀëÏß·À·¶´ëÊ©
+				memset(sbus_rx_buf[1], 0, SBUS_RX_BUF_NUM);
 			}
 		}
 	}
