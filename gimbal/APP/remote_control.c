@@ -23,11 +23,57 @@ s
 RC_ctrl_t rc_ctrl;
 RC_GET_t rc_sent;
 
+volatile uint32_t rc_update_cnt = 0;
+volatile uint32_t rc_last_update_cnt = 0;
+volatile uint32_t rc_offline_cnt = 0;
+volatile uint8_t rc_offline_flag = 0;
+
 // 接收原始数据，为18个字节，给了36个字节长度，防止DMA传输越界
 static uint8_t sbus_rx_buf[2][SBUS_RX_BUF_NUM];
 static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl);
 static void RC_init(uint8_t *rx1_buf, uint8_t *rx2_buf, uint16_t dma_buf_num);
 static int16_t RC_abs(int16_t value);
+
+// 遥控器离线检测
+// 遥控器有数据发过来时会更新rc_update_cnt
+// 当rc_update_cnt和rc_last_update_cnt相等时，说明遥控器可能离线
+uint8_t rc_offline_check()
+{
+	rc_update_cnt++; 
+
+	if (rc_update_cnt == rc_last_update_cnt)
+	{
+		rc_offline_cnt++;
+	}
+	else
+	{
+		rc_offline_cnt = 0;
+	}
+	if (rc_offline_cnt >= 10)
+	{
+		rc_ctrl.rc.ch[0] = 0;
+		rc_ctrl.rc.ch[1] = 0;
+		rc_ctrl.rc.ch[2] = 0;
+		rc_ctrl.rc.ch[3] = 0;
+		rc_ctrl.rc.ch[4] = 0;
+		rc_ctrl.rc.s[0] = 2;
+		rc_ctrl.rc.s[1] = 2;
+		rc_ctrl.mouse.x = 0;
+		rc_ctrl.mouse.y = 0;
+		rc_ctrl.mouse.z = 0;
+		rc_ctrl.mouse.press_l = 0;
+		rc_ctrl.mouse.press_r = 0;
+		rc_ctrl.key.v = 0;
+
+		rc_update_cnt = 0;
+		rc_last_update_cnt = 0;
+		rc_offline_cnt = 0;
+		return 1;
+	}
+
+	rc_last_update_cnt = rc_update_cnt;
+	return 0;
+}
 
 // 主函数初始化调用
 void remote_control_init(void)
@@ -165,8 +211,6 @@ void USART3_IRQHandler(void)
 					RC_restart(SBUS_RX_BUF_NUM);
 				}
 				// 遥控器离线防范措施
-				memset(sbus_rx_buf[0], 0, SBUS_RX_BUF_NUM);
-
 			}
 		}
 		else
@@ -197,7 +241,6 @@ void USART3_IRQHandler(void)
 					RC_restart(SBUS_RX_BUF_NUM);
 				}
 				// 遥控器离线防范措施
-				memset(sbus_rx_buf[1], 0, SBUS_RX_BUF_NUM);
 			}
 		}
 	}
@@ -236,6 +279,13 @@ static int16_t RC_abs(int16_t value)
 static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl)
 {
 	if (sbus_buf == NULL || rc_ctrl == NULL)
+	{
+		return;
+	}
+
+	rc_offline_flag = rc_offline_check();
+
+	if (rc_offline_flag)
 	{
 		return;
 	}
