@@ -425,16 +425,16 @@ void judge_e(void)
 		{
 			if (time_count_e >= KEY_COUNT)
 			{
-				if (set_compare == 700)
+				if (set_compare == 2050)
 				{
 					bullet_state = OPEN;
-					set_compare = 1200;
+					set_compare = 680;
 				}
 
 				else
 				{
 					bullet_state = CLOSE;
-					set_compare = 700;
+					set_compare = 2050;
 				}
 			}
 		}
