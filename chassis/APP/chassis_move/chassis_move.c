@@ -197,7 +197,7 @@ static void Power_limit(void) // 新的功率限制
 	if (max_power == 0)
 		max_power = 45; // 最低保护
 
-	// max_power=50;//裁判系统读取不到数据时自己赋值,比赛使用时要注释掉
+	 max_power=80;//裁判系统读取不到数据时自己赋值,比赛使用时要注释掉
 	Power_out_1 = abs_f(((chassis_motor1.actual_speed / reduction_ratio) * 2.0f * 3.1415927f / 60.0f) * (K_M * chassis_motor1.target_current * 20.0f / 16384.0f));
 	Power_out_2 = abs_f(((chassis_motor2.actual_speed / reduction_ratio) * 2.0f * 3.1415927f / 60.0f) * (K_M * chassis_motor2.target_current * 20.0f / 16384.0f));
 	Power_out_3 = abs_f(((chassis_motor3.actual_speed / reduction_ratio) * 2.0f * 3.1415927f / 60.0f) * (K_M * chassis_motor3.target_current * 20.0f / 16384.0f));

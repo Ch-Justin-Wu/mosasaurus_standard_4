@@ -8,7 +8,7 @@
 #define RC_UART USART3
 #define RC_dma hdma_usart3_rx
 
-RC_ctrl_t rc_ctrl = {{0x0400, 0x0400, 0x0400, 0x0400, 2, 2, 0x0400}, {
+RC_ctrl_t rc_ctrl = {{0x0400, 0x0400, 0x0400, 0x0400, 1, 1, 0x0400}, {
 																		 0,
 																		 0,
 																		 0,

@@ -34,46 +34,7 @@ static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl);
 static void RC_init(uint8_t *rx1_buf, uint8_t *rx2_buf, uint16_t dma_buf_num);
 static int16_t RC_abs(int16_t value);
 
-// 遥控器离线检测
-// 遥控器有数据发过来时会更新rc_update_cnt
-// 当rc_update_cnt和rc_last_update_cnt相等时，说明遥控器可能离线
-uint8_t rc_offline_check()
-{
-	rc_update_cnt++; 
 
-	if (rc_update_cnt == rc_last_update_cnt)
-	{
-		rc_offline_cnt++;
-	}
-	else
-	{
-		rc_offline_cnt = 0;
-	}
-	if (rc_offline_cnt >= 10)
-	{
-		rc_ctrl.rc.ch[0] = 0;
-		rc_ctrl.rc.ch[1] = 0;
-		rc_ctrl.rc.ch[2] = 0;
-		rc_ctrl.rc.ch[3] = 0;
-		rc_ctrl.rc.ch[4] = 0;
-		rc_ctrl.rc.s[0] = 2;
-		rc_ctrl.rc.s[1] = 2;
-		rc_ctrl.mouse.x = 0;
-		rc_ctrl.mouse.y = 0;
-		rc_ctrl.mouse.z = 0;
-		rc_ctrl.mouse.press_l = 0;
-		rc_ctrl.mouse.press_r = 0;
-		rc_ctrl.key.v = 0;
-
-		rc_update_cnt = 0;
-		rc_last_update_cnt = 0;
-		rc_offline_cnt = 0;
-		return 1;
-	}
-
-	rc_last_update_cnt = rc_update_cnt;
-	return 0;
-}
 
 // 主函数初始化调用
 void remote_control_init(void)
@@ -162,8 +123,8 @@ error:
 	rc_ctrl.rc.ch[2] = 0;
 	rc_ctrl.rc.ch[3] = 0;
 	rc_ctrl.rc.ch[4] = 0;
-	rc_ctrl.rc.s[0] = 2;
-	rc_ctrl.rc.s[1] = 2;
+	rc_ctrl.rc.s[0] = 1;
+	rc_ctrl.rc.s[1] = 1;
 	rc_ctrl.mouse.x = 0;
 	rc_ctrl.mouse.y = 0;
 	rc_ctrl.mouse.z = 0;
@@ -283,12 +244,7 @@ static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl)
 		return;
 	}
 
-	rc_offline_flag = rc_offline_check();
-
-	if (rc_offline_flag)
-	{
-		return;
-	}
+	rc_update_cnt++;
 
 	rc_ctrl->rc.ch[0] = (sbus_buf[0] | (sbus_buf[1] << 8)) & 0x07ff;							  //!< Channel 0
 	rc_ctrl->rc.ch[1] = ((sbus_buf[1] >> 3) | (sbus_buf[2] << 5)) & 0x07ff;						  //!< Channel 1
