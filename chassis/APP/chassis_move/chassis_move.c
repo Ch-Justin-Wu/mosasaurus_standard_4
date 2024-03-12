@@ -100,7 +100,7 @@ void chassis_move(void)
 	chassis_motor3.target_current = chassis_motor3.pid.speed_loop.vpid.PID_OUT;
 	chassis_motor4.target_current = chassis_motor4.pid.speed_loop.vpid.PID_OUT;
 
-	Power_limit(); // 新的功率限制 Rhn
+	//Power_limit(); // 新的功率限制 Rhn
 
 	// 发送电流
 	can_send_chassis_current();
