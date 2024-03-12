@@ -428,7 +428,7 @@ void judge_e(void)
 				if (set_compare == 2050)
 				{
 					bullet_state = OPEN;
-					set_compare = 680;
+					set_compare = 600;
 				}
 
 				else
