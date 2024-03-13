@@ -85,7 +85,7 @@ float motor_speed[4];
 void chassis_power_control(void)
 {
 
-	uint16_t max_power_limit = 45;
+	uint16_t max_power_limit = 65;
 	fp32 chassis_max_power = 0;
 	float input_power = 0;		 // input power from battery (referee system)
 	float initial_give_power[4]; // initial power from PID calculation
