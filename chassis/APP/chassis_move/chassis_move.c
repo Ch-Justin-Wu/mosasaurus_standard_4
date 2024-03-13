@@ -2,6 +2,11 @@
 #include "fuzzy_pid.h"
 #include "supercap.h"
 #include <math.h>
+
+//#define CHASSIS_POWER_LIMIT_REFEREE
+
+#define CHASSIS_POWER_LIMIT
+
 static float chassis_follow(void);
 static void chassis_speed_control(float speed_x, float speed_y, float speed_r);
 static float chassis_power_loop(uint16_t target_power, float actual_power, float last_power);
@@ -80,7 +85,7 @@ float motor_speed[4];
 void chassis_power_control(void)
 {
 
-	uint16_t max_power_limit = 40;
+	uint16_t max_power_limit = 45;
 	fp32 chassis_max_power = 0;
 	float input_power = 0;		 // input power from battery (referee system)
 	float initial_give_power[4]; // initial power from PID calculation
@@ -88,7 +93,7 @@ void chassis_power_control(void)
 	fp32 scaled_give_power[4];
 
 	fp32 chassis_power = 0.0f;
-	uint16_t chassis_power_buffer = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ;
+	uint16_t chassis_power_buffer = 0;
 
 	fp32 toque_coefficient = 1.99688994e-6f; // (20/16384)*(0.3)*(187/3591)/9.55
 	fp32 a = 1.23e-07;						 // k1
@@ -108,16 +113,17 @@ void chassis_power_control(void)
 	motor_speed[2] = chassis_motor3.actual_speed;
 	motor_speed[3] = chassis_motor4.actual_speed;
 
+#if defined(CHASSIS_POWER_LIMIT_REFEREE)
 	get_chassis_power_and_buffer_and_max(&chassis_power, &chassis_power_buffer, &max_power_limit);
-
-	
 	chassis_buffer_loop(chassis_power_buffer);
 	input_power = max_power_limit - b_pid.PID_OUT; // Input power floating at maximum power
+#endif
 
-	//CAN_CMD_CAP(input_power); // set the input power of capacitor controller
+#if defined(CHASSIS_POWER_LIMIT)
 
-
-
+	input_power = max_power_limit;
+#endif
+	// CAN_CMD_CAP(input_power); // set the input power of capacitor controller
 
 	chassis_max_power = input_power;
 	for (uint8_t i = 0; i < 4; i++) // first get all the initial motor power and total motor power

@@ -495,11 +495,11 @@ void referee_usart_task()
 		{
 			UI_Draw_Arc(&UI_Graph7.Graphic[2], "108", UI_Graph_Change, 2, UI_Color_Green, 0, 360, 5, 200, 690, 15, 15); // spin_on
 		}
-		if (bullet_flag == 0)
+		if (bullet_flag == 1)
 		{
 			UI_Draw_Arc(&UI_Graph7.Graphic[3], "109", UI_Graph_Change, 2, UI_Color_White, 0, 360, 5, 150, 740, 15, 15); // cang_on
 		}
-		else if (bullet_flag == 1)
+		else if (bullet_flag == 0)
 			UI_Draw_Arc(&UI_Graph7.Graphic[3], "109", UI_Graph_Change, 2, UI_Color_Green, 0, 360, 5, 200, 740, 15, 15); // cang_on
 		if (target_exit == 0)
 		{
