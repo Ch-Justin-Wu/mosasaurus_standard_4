@@ -4,8 +4,8 @@
 #include "chassis_move.h"
 #include <stdlib.h>
 #define wheel_diameter  15.400000f			//бжвсж╠╬╤
-#define half_width  15.000000f		//╣вел╟К©М
-#define half_length  15.000000f		//╣вел╟КЁ╓
+#define half_width  20.000000f		//╣вел╟К©М
+#define half_length  20.000000f		//╣вел╟КЁ╓
 
 #define PI 			3.141593f
 #define PI2     2*PI
