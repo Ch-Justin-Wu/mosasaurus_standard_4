@@ -88,7 +88,7 @@ void chassis_power_control(void)
 	fp32 scaled_give_power[4];
 
 	fp32 chassis_power = 0.0f;
-	fp32 chassis_power_buffer = 0.0f;
+	uint16_t chassis_power_buffer = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ;
 
 	fp32 toque_coefficient = 1.99688994e-6f; // (20/16384)*(0.3)*(187/3591)/9.55
 	fp32 a = 1.23e-07;						 // k1
@@ -195,10 +195,10 @@ void chassis_move(void)
 	//	chassis_motor2.target_current=chassis_motor2.pid.speed_loop.vpid.PID_OUT;
 	//	chassis_motor3.target_current=chassis_motor3.pid.speed_loop.vpid.PID_OUT;
 	//	chassis_motor4.target_current=chassis_motor4.pid.speed_loop.vpid.PID_OUT;
-	// chassis_motor1.target_current = chassis_motor1.pid.speed_loop.vpid.PID_OUT;
-	// chassis_motor2.target_current = chassis_motor2.pid.speed_loop.vpid.PID_OUT;
-	// chassis_motor3.target_current = chassis_motor3.pid.speed_loop.vpid.PID_OUT;
-	// chassis_motor4.target_current = chassis_motor4.pid.speed_loop.vpid.PID_OUT;
+//	 chassis_motor1.target_current = chassis_motor1.pid.speed_loop.vpid.PID_OUT;
+//	 chassis_motor2.target_current = chassis_motor2.pid.speed_loop.vpid.PID_OUT;
+//	 chassis_motor3.target_current = chassis_motor3.pid.speed_loop.vpid.PID_OUT;
+//	 chassis_motor4.target_current = chassis_motor4.pid.speed_loop.vpid.PID_OUT;
 
 	chassis_power_control();
 
