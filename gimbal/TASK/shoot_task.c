@@ -5,6 +5,9 @@
 #include "can_receive.h"
 #include "bsp_math.h"
 #include <math.h>
+
+#define TEST_SHOOT
+
 uint8_t data[2] = {1, 0};
 shoot_task_t rc_shoot;
 FRIC_SPEED fricspeed = FRIC_MIN;
@@ -219,6 +222,9 @@ void trigger_angle_set(void)
 {
 	trigger_cnt_flag = 1;
 	remain_bullet = ((heat_limit - heat) / 10) - 2; // 计算热量限制下的剩余弹量
+#if defined(TEST_SHOOT)
+	remain_bullet = 5;
+	#endif
 	if (remain_bullet < 0)
 		remain_bullet = 0;
 	if (One_Shoot_flag == 1) // 单发
@@ -248,14 +254,16 @@ void Trigger_Motor_Callback(trigger_t *motor, uint16_t angle, int16_t speed)
 	motor->actual_speed = 0.5 * (speed + motor->last_speed);
 	motor->last_speed = speed;
 
-	if (motor->record_begin_angle_status == 0)
+	if (motor->record_begin_angle_status <50)
 	{
 		motor->begin_angle = angle;
+		motor->actual_angle = angle;
+		motor->last_angle=angle;
 		motor->record_begin_angle_status++;
 	}
 	if (motor->actual_angle - motor->last_angle > 4096)
 		motor->rounds--;
 	else if (motor->actual_angle - motor->last_angle < -4096)
 		motor->rounds++;
-	motor->total_angle = motor->rounds * 8192 + motor->actual_angle;
+	motor->total_angle = motor->rounds * 8192 + motor->actual_angle-motor->begin_angle;
 }
