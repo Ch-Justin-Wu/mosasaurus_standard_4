@@ -72,6 +72,106 @@ float chassis_radius = 7.7f;	  // 轮子半径    cm
 uint8_t fly_buffer_flag = 0;
 uint8_t supercap_bettery_flag = 1;
 extern float blood;
+
+
+
+float motor_pid_out[4];
+float motor_speed[4];
+void chassis_power_control(void)
+{
+
+	uint16_t max_power_limit = 40;
+	fp32 chassis_max_power = 0;
+	float input_power = 0;		 // input power from battery (referee system)
+	float initial_give_power[4]; // initial power from PID calculation
+	float initial_total_power = 0;
+	fp32 scaled_give_power[4];
+
+	fp32 chassis_power = 0.0f;
+	fp32 chassis_power_buffer = 0.0f;
+
+	fp32 toque_coefficient = 1.99688994e-6f; // (20/16384)*(0.3)*(187/3591)/9.55
+	fp32 a = 1.23e-07;						 // k1
+	fp32 k2 = 1.453e-07;					 // k2
+	fp32 constant = 4.081f;
+
+
+
+
+	motor_pid_out[0] = chassis_motor1.pid.speed_loop.vpid.PID_OUT;
+	motor_pid_out[1] = chassis_motor2.pid.speed_loop.vpid.PID_OUT;	
+	motor_pid_out[2] = chassis_motor3.pid.speed_loop.vpid.PID_OUT;
+	motor_pid_out[3] = chassis_motor4.pid.speed_loop.vpid.PID_OUT;
+
+	motor_speed[0] = chassis_motor1.actual_speed;
+	motor_speed[1] = chassis_motor2.actual_speed;
+	motor_speed[2] = chassis_motor3.actual_speed;
+	motor_speed[3] = chassis_motor4.actual_speed;
+
+	get_chassis_power_and_buffer_and_max(&chassis_power, &chassis_power_buffer, &max_power_limit);
+
+	
+	chassis_buffer_loop(chassis_power_buffer);
+	input_power = max_power_limit - b_pid.PID_OUT; // Input power floating at maximum power
+
+	//CAN_CMD_CAP(input_power); // set the input power of capacitor controller
+
+
+
+
+	chassis_max_power = input_power;
+	for (uint8_t i = 0; i < 4; i++) // first get all the initial motor power and total motor power
+	{
+
+
+		
+		initial_give_power[i] = motor_pid_out[i] * toque_coefficient * motor_speed[i] +
+								k2 * motor_speed[i] * motor_speed[i] +
+								a * motor_pid_out[i] * motor_pid_out[i] + constant;
+
+		if (initial_give_power[i] < 0) // negative power not included (transitory)
+			continue;
+		initial_total_power += initial_give_power[i];
+	}
+
+	if (initial_total_power > chassis_max_power) // determine if larger than max power
+	{
+		fp32 power_scale = chassis_max_power / initial_total_power;
+		for (uint8_t i = 0; i < 4; i++)
+		{
+			scaled_give_power[i] = initial_give_power[i] * power_scale; // get scaled power
+			if (scaled_give_power[i] < 0)
+			{
+				continue;
+			}
+
+			fp32 b = toque_coefficient * motor_speed[i];
+			fp32 c = k2 * motor_speed[i] * motor_speed[i] - scaled_give_power[i] + constant;
+
+			if (motor_pid_out[i] > 0) // Selection of the calculation formula according to the direction of the original moment
+			{
+				fp32 temp = (-b + sqrt(b * b - 4 * a * c)) / (2 * a);
+				if (temp > 16000)
+				{
+					motor_pid_out[i] = 16000;
+				}
+				else
+					motor_pid_out[i] = temp;
+			}
+			else
+			{
+				fp32 temp = (-b - sqrt(b * b - 4 * a * c)) / (2 * a);
+				if (temp < -16000)
+				{
+					motor_pid_out[i] = -16000;
+				}
+				else
+					motor_pid_out[i] = temp;
+			}
+		}
+	}
+}
+
 /**
  * @breif         底盘运动函数
  * @param[in]     none
@@ -95,16 +195,64 @@ void chassis_move(void)
 	//	chassis_motor2.target_current=chassis_motor2.pid.speed_loop.vpid.PID_OUT;
 	//	chassis_motor3.target_current=chassis_motor3.pid.speed_loop.vpid.PID_OUT;
 	//	chassis_motor4.target_current=chassis_motor4.pid.speed_loop.vpid.PID_OUT;
-	chassis_motor1.target_current = chassis_motor1.pid.speed_loop.vpid.PID_OUT;
-	chassis_motor2.target_current = chassis_motor2.pid.speed_loop.vpid.PID_OUT;
-	chassis_motor3.target_current = chassis_motor3.pid.speed_loop.vpid.PID_OUT;
-	chassis_motor4.target_current = chassis_motor4.pid.speed_loop.vpid.PID_OUT;
+	// chassis_motor1.target_current = chassis_motor1.pid.speed_loop.vpid.PID_OUT;
+	// chassis_motor2.target_current = chassis_motor2.pid.speed_loop.vpid.PID_OUT;
+	// chassis_motor3.target_current = chassis_motor3.pid.speed_loop.vpid.PID_OUT;
+	// chassis_motor4.target_current = chassis_motor4.pid.speed_loop.vpid.PID_OUT;
+
+	chassis_power_control();
+
+	chassis_motor1.target_current = motor_pid_out[0];
+	chassis_motor2.target_current = motor_pid_out[1];
+	chassis_motor3.target_current = motor_pid_out[2];
+	chassis_motor4.target_current = motor_pid_out[3];
 
 	//Power_limit(); // 新的功率限制 Rhn
 
 	// 发送电流
 	can_send_chassis_current();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * @breif         获取云台与底盘之间的夹角
  * @param[in]     none
@@ -290,7 +438,7 @@ static float chassis_power_loop(uint16_t target_power, float actual_power, float
 static float chassis_buffer_loop(uint16_t buffer)
 {
 	float temp;
-	b_pid.target_buffer = 50;
+	b_pid.target_buffer = 30;
 	b_pid.actual_buffer = buffer;
 	buffer_pid_realize(&b_pid);
 	temp = 1.07 - ((float)b_pid.PID_OUT / 1000.0f);

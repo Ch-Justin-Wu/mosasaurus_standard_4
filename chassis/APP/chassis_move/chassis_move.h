@@ -57,24 +57,24 @@
 			
 typedef struct{
 	
-	float start_angle;			//µç»ú³õÊ¼½Ç¶ÈÖµ
-	int start_angle_flag;	//¼ÇÂ¼µç»ú³õÊ¼½Ç¶ÈÖµµÄflag
-	int switch_mode_flag;  //¼ÇÂ¼Ä£Ê½×ª»»½Ç¶ÈÖµµÄflag
-	int stop_angle;				//·¢ËÍÍ£Ö¹ÃüÁîÊ±ºòµÄ½Ç¶ÈÖµ
+	float start_angle;			//ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½Ç¶ï¿½Öµ
+	int start_angle_flag;	//ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½Ç¶ï¿½Öµï¿½ï¿½flag
+	int switch_mode_flag;  //ï¿½ï¿½Â¼Ä£Ê½×ªï¿½ï¿½ï¿½Ç¶ï¿½Öµï¿½ï¿½flag
+	int stop_angle;				//ï¿½ï¿½ï¿½ï¿½Í£Ö¹ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ä½Ç¶ï¿½Öµ
 	float target_angle;
 	
-	float actual_angle;			//µ±Ç°ÕæÊµ½Ç¶ÈÖµ
-	float last_angle;				//ÉÏÒ»´Î·µ»ØµÄ½Ç¶ÈÖµ
-	float switch_mode_angle;  //¼ÇÂ¼Ä£Ê½×ª»»½Ç¶ÈÖµ
-	int round_cnt;				//Ïà¶Ô¿ª»úÊ±×ª¹ýµÄÈ¦Êý
-	int total_angle;			//×Ü¹²×ª¹ýµÄ¼ÆÊý
+	float actual_angle;			//ï¿½ï¿½Ç°ï¿½ï¿½Êµï¿½Ç¶ï¿½Öµ
+	float last_angle;				//ï¿½ï¿½Ò»ï¿½Î·ï¿½ï¿½ØµÄ½Ç¶ï¿½Öµ
+	float switch_mode_angle;  //ï¿½ï¿½Â¼Ä£Ê½×ªï¿½ï¿½ï¿½Ç¶ï¿½Öµ
+	int round_cnt;				//ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½Ê±×ªï¿½ï¿½ï¿½ï¿½È¦ï¿½ï¿½
+	int total_angle;			//ï¿½Ü¹ï¿½×ªï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
 	
-	float actual_speed;			//µç»úÕæÊµËÙ¶È,rpm
-	int target_speed;			//µç»úÄ¿±êËÙ¶È,rpm  ×ª/min
-	int last_speed;       //µç»úÉÏÒ»´Î»Ø´«µÄËÙ¶ÈÖµ
-	int actual_current;		//µç»úÕæÊµµçÁ÷
-	int target_current;		//µç»úÄ¿±êµçÁ÷
-	//int temp;							//µç»úÎÂ¶È£¨2006µç»ú²»Ö§³Ö£¬3508Ö§³Ö£©
+	float actual_speed;			//ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½Ù¶ï¿½,rpm
+	int target_speed;			//ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ù¶ï¿½,rpm  ×ª/min
+	int last_speed;       //ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î»Ø´ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Öµ
+	int actual_current;		//ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½
+	int target_current;		//ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½
+	//int temp;							//ï¿½ï¿½ï¿½ï¿½Â¶È£ï¿½2006ï¿½ï¿½ï¿½ï¿½ï¿½Ö§ï¿½Ö£ï¿½3508Ö§ï¿½Ö£ï¿½
 	float yaw_angle;
 	float yaw_speed;
 	float pitch_angle;
@@ -108,13 +108,31 @@ typedef enum
 	XY_STEP,
 }STEPSTAR;
 
+// typedef struct
+// {
+// 	float real_vx;
+// 	float real_vy;
+// } motor_t;
 
-extern MOTOR_t chassis_motor1,chassis_motor2,chassis_motor3,chassis_motor4,chassis_center;
+// typedef struct
+// {
+// 	float out;
+
+// } motor_speed_pid;
+
+// typedef struct
+// {
+
+// } chassis_move_t;
+// ;
+
+extern MOTOR_t chassis_motor1,
+	chassis_motor2, chassis_motor3, chassis_motor4, chassis_center;
 extern CHASSIS_CONTROL_ORDER_t chassis_control_order;
 extern POWER_PID_t p_pid;
 extern BUFFER_PID_t b_pid;
 extern uint8_t fly_flag;
 void chassis_move(void);
-void limit_death(void);//Ä£Äâ²ÃÅÐÏµÍ³µÄµ×ÅÌ¹¦ÂÊÏÞÖÆ¿ÛÑª»úÖÆ
+void limit_death(void);//Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½Äµï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¿ï¿½Ñªï¿½ï¿½ï¿½ï¿½
 #endif
 
