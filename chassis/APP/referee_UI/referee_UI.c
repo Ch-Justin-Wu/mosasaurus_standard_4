@@ -497,10 +497,10 @@ void referee_usart_task()
 		}
 		if (bullet_flag == 1)
 		{
-			UI_Draw_Arc(&UI_Graph7.Graphic[3], "109", UI_Graph_Change, 2, UI_Color_White, 0, 360, 5, 150, 740, 15, 15); // cang_on
+			UI_Draw_Arc(&UI_Graph7.Graphic[3], "109", UI_Graph_Change, 2, UI_Color_White, 0, 360, 5, 150, 740, 15, 15); // cang_close
 		}
 		else if (bullet_flag == 0)
-			UI_Draw_Arc(&UI_Graph7.Graphic[3], "109", UI_Graph_Change, 2, UI_Color_Green, 0, 360, 5, 200, 740, 15, 15); // cang_on
+			UI_Draw_Arc(&UI_Graph7.Graphic[3], "109", UI_Graph_Change, 2, UI_Color_Green, 0, 360, 5, 200, 740, 15, 15); // cang_open
 		if (target_exit == 0)
 		{
 			UI_Draw_Arc(&UI_Graph7.Graphic[4], "110", UI_Graph_Change, 2, UI_Color_White, 0, 360, 0, 10, 10, 15, 15);
