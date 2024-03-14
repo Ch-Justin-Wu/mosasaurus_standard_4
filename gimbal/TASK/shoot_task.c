@@ -6,7 +6,7 @@
 #include "bsp_math.h"
 #include <math.h>
 
-#define TEST_SHOOT
+// #define TEST_SHOOT
 
 uint8_t data[2] = {1, 0};
 shoot_task_t rc_shoot;
@@ -72,63 +72,63 @@ void fric_speed_control(void)
 	if (speed_limit == 30)
 	{
 		fricspeed = FRIC_MAX;
-		//		rc_shoot.left_fric.target_speed =  SHOOT_LEFT_FRIC_SPEED_MAX;
-		//		rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MAX;
+//		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MAX;
+//		rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MAX;
 	}
 	else
 	{
 		fricspeed = FRIC_MIN;
-		//		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MIN;
-		//    rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MIN;
+//		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MIN;
+//		rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MIN;
 	}
-	//
-	//  if(speed_change_flag)
-	//  {
-	//	  //平均射速
-	//	 speed_average=((shoot_speed+speed_average*((float)count))/((float)(count+1.0f)));
-	//	  count++;
-	//	  if(count>30)
-	//	  {
-	//		  if(fricspeed==FRIC_MIN) //15
-	//			{
-	//
-	//				   if((speed_limit-speed_average<0.3f) && (speed_limit>=10.0f))
-	//					{
-	//							SHOOT_LEFT_FRIC_SPEED_MIN+=45;
-	//							SHOOT_RIGHT_FRIC_SPEED_MIN-=45;
-	//					}
-	//				   else if(speed_limit-speed_average>1.0f && (speed_limit>=10.0f))
-	//					{
-	//							SHOOT_LEFT_FRIC_SPEED_MIN-=20;
-	//							SHOOT_RIGHT_FRIC_SPEED_MIN+=20;
-	//					}
-	//			}
-	//			else if(fricspeed==FRIC_MAX)  //30
-	//			{
-	//				   if((speed_limit-speed_average<0.75f) && (speed_limit>=10.0f))
-	//					{
-	//							SHOOT_LEFT_FRIC_SPEED_MAX+=40;
-	//							SHOOT_RIGHT_FRIC_SPEED_MAX-=40;
-	//					}
-	//				   else if((speed_limit-speed_average>1.3f) && (speed_limit>=10.0f))
-	//					{
-	//							SHOOT_LEFT_FRIC_SPEED_MAX-=25;
-	//							SHOOT_RIGHT_FRIC_SPEED_MAX+=25;
-	//					}
-	//			}
-	//		}
-	//	  speed_change_flag=0;
-	//  }
-	//	if(fricspeed==FRIC_MIN)
-	//	{
-	//		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MIN;
-	//	  rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MIN;
-	//	}
-	//	else
-	//	{
-	//		rc_shoot.left_fric.target_speed =  SHOOT_LEFT_FRIC_SPEED_MAX;
-	//	  rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MAX;
-	//	}
+
+//	if (speed_change_flag)
+//	{
+//		// 平均射速
+//		speed_average = ((shoot_speed + speed_average * ((float)count)) / ((float)(count + 1.0f)));
+//		count++;
+//		if (count > 30)
+//		{
+//			if (fricspeed == FRIC_MIN) // 15
+//			{
+
+//				if ((speed_limit - speed_average < 0.3f) && (speed_limit >= 10.0f))
+//				{
+//					SHOOT_LEFT_FRIC_SPEED_MIN += 45;
+//					SHOOT_RIGHT_FRIC_SPEED_MIN -= 45;
+//				}
+//				else if (speed_limit - speed_average > 1.0f && (speed_limit >= 10.0f))
+//				{
+//					SHOOT_LEFT_FRIC_SPEED_MIN -= 20;
+//					SHOOT_RIGHT_FRIC_SPEED_MIN += 20;
+//				}
+//			}
+//			else if (fricspeed == FRIC_MAX) // 30
+//			{
+//				if ((speed_limit - speed_average < 0.75f) && (speed_limit >= 10.0f))
+//				{
+//					SHOOT_LEFT_FRIC_SPEED_MAX += 40;
+//					SHOOT_RIGHT_FRIC_SPEED_MAX -= 40;
+//				}
+//				else if ((speed_limit - speed_average > 1.3f) && (speed_limit >= 10.0f))
+//				{
+//					SHOOT_LEFT_FRIC_SPEED_MAX -= 25;
+//					SHOOT_RIGHT_FRIC_SPEED_MAX += 25;
+//				}
+//			}
+//		}
+//		speed_change_flag = 0;
+//	}
+//	if (fricspeed == FRIC_MIN)
+//	{
+//		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MIN;
+//		rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MIN;
+//	}
+//	else
+//	{
+//		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MAX;
+//		rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MAX;
+//	}
 	// 读取到裁判系统射速限制  还有更多限制阶段超级对抗赛再说
 }
 
@@ -224,7 +224,7 @@ void trigger_angle_set(void)
 	remain_bullet = ((heat_limit - heat) / 10) - 2; // 计算热量限制下的剩余弹量
 #if defined(TEST_SHOOT)
 	remain_bullet = 5;
-	#endif
+#endif
 	if (remain_bullet < 0)
 		remain_bullet = 0;
 	if (One_Shoot_flag == 1) // 单发
@@ -254,16 +254,16 @@ void Trigger_Motor_Callback(trigger_t *motor, uint16_t angle, int16_t speed)
 	motor->actual_speed = 0.5 * (speed + motor->last_speed);
 	motor->last_speed = speed;
 
-	if (motor->record_begin_angle_status <50)
+	if (motor->record_begin_angle_status < 50)
 	{
 		motor->begin_angle = angle;
 		motor->actual_angle = angle;
-		motor->last_angle=angle;
+		motor->last_angle = angle;
 		motor->record_begin_angle_status++;
 	}
 	if (motor->actual_angle - motor->last_angle > 4096)
 		motor->rounds--;
 	else if (motor->actual_angle - motor->last_angle < -4096)
 		motor->rounds++;
-	motor->total_angle = motor->rounds * 8192 + motor->actual_angle-motor->begin_angle;
+	motor->total_angle = motor->rounds * 8192 + motor->actual_angle - motor->begin_angle;
 }
