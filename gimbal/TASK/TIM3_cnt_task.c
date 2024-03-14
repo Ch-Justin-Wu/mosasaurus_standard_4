@@ -10,6 +10,7 @@
 #include "sent_task.h"
 #include "upper_computer.h"
 #include "bsp_buzzer.h"
+#include "referee.h"
 
 uint8_t buzzer_flag;
 extern VISION_t vision_mode;
@@ -57,6 +58,8 @@ void TIM3_CNT_TASK()
 		{
 			remote_chassis();
 			control_mode_judge();
+			// ∂¡»°≤√≈–œµÕ≥
+			referee_unpack_fifo_data();
 			if (control_mode == KEY_OFF)
 				remote_control_data();
 			else

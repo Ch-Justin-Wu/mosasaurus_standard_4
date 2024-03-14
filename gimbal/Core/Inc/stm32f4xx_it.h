@@ -67,10 +67,10 @@ void TIM3_IRQHandler(void);
 void TIM4_IRQHandler(void);
 void USART2_IRQHandler(void);
 void TIM5_IRQHandler(void);
+void DMA2_Stream1_IRQHandler(void);
 void DMA2_Stream3_IRQHandler(void);
 void CAN2_RX0_IRQHandler(void);
-void DMA2_Stream5_IRQHandler(void);
-void DMA2_Stream7_IRQHandler(void);
+void DMA2_Stream6_IRQHandler(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */

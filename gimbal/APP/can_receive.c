@@ -11,7 +11,7 @@
 Motor_HandleTypeDef yaw_can_rx = {0}, pitch_can_rx = {0}, shoot_can_rx[2] = {0};
 int16_t heat, heat_limit;
 int16_t euler_angle[3];
-uint8_t game_status, speed_limit;
+uint8_t game_status, speed_limit=30;
 extern int8_t upper_computer_data[8];
 extern int8_t chassis_imu_data[8];
 float shoot_speed;
@@ -95,7 +95,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 				speed_change_flag = 1;
 				last_shoot_speed = shoot_speed;
 			}
-			speed_limit = rxData[7];
+			//speed_limit = rxData[7];
 			break;
 		}
 		case UPPER_COMPUTER_ID: // 从上位机收到的数据

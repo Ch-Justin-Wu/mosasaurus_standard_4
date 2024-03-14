@@ -41,6 +41,9 @@
 #include "calibrate_task.h"
 #include "bsp_uart.h"
 #include "blueteeth.h"
+#include "referee.h"
+#include "bsp_referee_uart.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -71,7 +74,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-fp32 gyro[3], accel[3], temp;
+//fp32 gyro[3], accel[3], temp;
 /* USER CODE END 0 */
 
 /**
@@ -107,7 +110,6 @@ int main(void)
   MX_CAN2_Init();
   MX_TIM3_Init();
   MX_USART2_UART_Init();
-  MX_USART1_UART_Init();
   MX_USART3_UART_Init();
   MX_TIM6_Init();
   MX_I2C3_Init();
@@ -116,14 +118,17 @@ int main(void)
   MX_TIM4_Init();
   MX_TIM1_Init();
   MX_TIM5_Init();
+  MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
    HAL_TIM_Base_Start_IT(&htim3);
    HAL_TIM_Base_Start_IT(&htim4);
    HAL_TIM_Base_Start_IT(&htim5);
+   referee_usart_fifo_init();
    led_init();
    Bsp_canInit();
    delay_init();
    remote_control_init();
+   init_referee_struct_data();
    shoot_init();
    Gimbal_Init();
    IMU_Init();

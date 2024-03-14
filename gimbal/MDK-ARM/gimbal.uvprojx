@@ -81,7 +81,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
+            <RunUserProg2>1</RunUserProg2>
             <UserProg1Name></UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -323,7 +323,7 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>2</wLevel>
+            <wLevel>1</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../APP;../BSP/BSP_CAN;../BSP/BSP_TIM;../Core/Src;../BSP/BSP_IMU;../components/algorithm;../components/devices;../BSP/BSP_SPI;../BSP/BSP_FLASH;../BSP/BSP_BUZZER;../BSP/BSP_UART;../BSP/BSP_MATH;../TASK</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../APP;../BSP/BSP_CAN;../BSP/BSP_TIM;../Core/Src;../BSP/BSP_IMU;../components/algorithm;../components/devices;../BSP/BSP_SPI;../BSP/BSP_FLASH;../BSP/BSP_BUZZER;../BSP/BSP_UART;../BSP/BSP_MATH;../TASK;../components/support</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -586,6 +586,11 @@
               <FileType>1</FileType>
               <FilePath>..\APP\blueteeth.c</FilePath>
             </File>
+            <File>
+              <FileName>referee.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APP\referee.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -635,6 +640,11 @@
               <FileName>bsp_math.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\BSP_MATH\bsp_math.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_referee_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\BSP_UART\bsp_referee_uart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -700,6 +710,21 @@
               <FileName>user_lib.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\components\algorithm\user_lib.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>components</GroupName>
+          <Files>
+            <File>
+              <FileName>CRC8_CRC16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\components\support\CRC8_CRC16.c</FilePath>
+            </File>
+            <File>
+              <FileName>fifo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\components\support\fifo.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2071,5 +2096,14 @@
     </components>
     <files/>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>gimbal</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>
