@@ -15,9 +15,9 @@ extern float Ren;
 int shoot_times = 0;
 int One_Shoot_flag = 0;
 int Ten_Shoot_flag = 0;
-int16_t SHOOT_LEFT_FRIC_SPEED_MAX = -7000;
+int16_t SHOOT_LEFT_FRIC_SPEED_MAX = -7500;
 int16_t SHOOT_LEFT_FRIC_SPEED_MIN = -7000;
-int16_t SHOOT_RIGHT_FRIC_SPEED_MAX = 7000;
+int16_t SHOOT_RIGHT_FRIC_SPEED_MAX = 7500;
 int16_t SHOOT_RIGHT_FRIC_SPEED_MIN = 7000;
 extern float shoot_speed;
 extern uint8_t speed_limit;
@@ -72,63 +72,63 @@ void fric_speed_control(void)
 	if (speed_limit == 30)
 	{
 		fricspeed = FRIC_MAX;
-//		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MAX;
-//		rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MAX;
+		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MAX;
+		rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MAX;
 	}
 	else
 	{
 		fricspeed = FRIC_MIN;
-//		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MIN;
-//		rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MIN;
+		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MIN;
+		rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MIN;
 	}
 
-//	if (speed_change_flag)
-//	{
-//		// 平均射速
-//		speed_average = ((shoot_speed + speed_average * ((float)count)) / ((float)(count + 1.0f)));
-//		count++;
-//		if (count > 30)
-//		{
-//			if (fricspeed == FRIC_MIN) // 15
-//			{
+	if (speed_change_flag)
+	{
+		// 平均射速
+		speed_average = ((shoot_speed + speed_average * ((float)count)) / ((float)(count + 1.0f)));
+		count++;
+		if (count >10)
+		{
+			if (fricspeed == FRIC_MIN) // 15
+			{
 
-//				if ((speed_limit - speed_average < 0.3f) && (speed_limit >= 10.0f))
-//				{
-//					SHOOT_LEFT_FRIC_SPEED_MIN += 45;
-//					SHOOT_RIGHT_FRIC_SPEED_MIN -= 45;
-//				}
-//				else if (speed_limit - speed_average > 1.0f && (speed_limit >= 10.0f))
-//				{
-//					SHOOT_LEFT_FRIC_SPEED_MIN -= 20;
-//					SHOOT_RIGHT_FRIC_SPEED_MIN += 20;
-//				}
-//			}
-//			else if (fricspeed == FRIC_MAX) // 30
-//			{
-//				if ((speed_limit - speed_average < 0.75f) && (speed_limit >= 10.0f))
-//				{
-//					SHOOT_LEFT_FRIC_SPEED_MAX += 40;
-//					SHOOT_RIGHT_FRIC_SPEED_MAX -= 40;
-//				}
-//				else if ((speed_limit - speed_average > 1.3f) && (speed_limit >= 10.0f))
-//				{
-//					SHOOT_LEFT_FRIC_SPEED_MAX -= 25;
-//					SHOOT_RIGHT_FRIC_SPEED_MAX += 25;
-//				}
-//			}
-//		}
-//		speed_change_flag = 0;
-//	}
-//	if (fricspeed == FRIC_MIN)
-//	{
-//		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MIN;
-//		rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MIN;
-//	}
-//	else
-//	{
-//		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MAX;
-//		rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MAX;
-//	}
+				if ((speed_limit - speed_average < 0.3f) && (speed_limit >= 10.0f))
+				{
+					SHOOT_LEFT_FRIC_SPEED_MIN += 45;
+					SHOOT_RIGHT_FRIC_SPEED_MIN -= 45;
+				}
+				else if (speed_limit - speed_average > 1.0f && (speed_limit >= 10.0f))
+				{
+					SHOOT_LEFT_FRIC_SPEED_MIN -= 20;
+					SHOOT_RIGHT_FRIC_SPEED_MIN += 20;
+				}
+			}
+			else if (fricspeed == FRIC_MAX) // 30
+			{
+				if ((speed_limit - speed_average < 0.75f) && (speed_limit >= 10.0f))
+				{
+					SHOOT_LEFT_FRIC_SPEED_MAX += 40;
+					SHOOT_RIGHT_FRIC_SPEED_MAX -= 40;
+				}
+				else if ((speed_limit - speed_average > 1.3f) && (speed_limit >= 10.0f))
+				{
+					SHOOT_LEFT_FRIC_SPEED_MAX -= 25;
+					SHOOT_RIGHT_FRIC_SPEED_MAX += 25;
+				}
+			}
+		}
+		speed_change_flag = 0;
+	}
+	if (fricspeed == FRIC_MIN)
+	{
+		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MIN;
+		rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MIN;
+	}
+	else
+	{
+		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MAX;
+		rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MAX;
+	}
 	// 读取到裁判系统射速限制  还有更多限制阶段超级对抗赛再说
 }
 
