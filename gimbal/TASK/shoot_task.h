@@ -56,6 +56,12 @@ typedef enum{
 	FRIC_MIN,
 }FRIC_SPEED;
 
+typedef enum shoot_status_e
+{
+	SHOOT_OFF = 0,
+	SHOOT_ON,
+} shoot_status_e;
+
 void shoot_init(void);
 void shoot_task(void);
 void fric_speed_control(void);

@@ -22,6 +22,9 @@ extern uint32_t rc_update_cnt;
 extern uint32_t rc_last_update_cnt;
 extern uint32_t rc_offline_cnt;
 extern uint8_t rc_offline_flag;
+
+extern shoot_status_e shoot_status;
+
 uint16_t rc_tim_cnt = 0;
 uint8_t rc_offline_check(void);
 
@@ -131,6 +134,8 @@ uint8_t rc_offline_check(void)
 		rc_ctrl.mouse.press_l = 0;
 		rc_ctrl.mouse.press_r = 0;
 		rc_ctrl.key.v = 0;
+
+		shoot_status = SHOOT_OFF;
 
 		rc_update_cnt = 0;
 		rc_last_update_cnt = 0;

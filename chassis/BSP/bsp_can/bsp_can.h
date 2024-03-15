@@ -11,8 +11,8 @@
 
 #define chassis_data_analyze() \
 do{ \
-		chassis_control_order.vx_set=gdata[0]; \
-    chassis_control_order.vy_set=gdata[1]; \
+		chassis_control_order.vx_set=gdata[1]; \
+    chassis_control_order.vy_set=gdata[0]; \
 		chassis_control_order.wz_set=gdata[2];	\
     chassis_center.target_current=gdata[3];\
 	}while(0)         

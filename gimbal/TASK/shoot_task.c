@@ -11,6 +11,8 @@
 uint8_t data[2] = {1, 0};
 shoot_task_t rc_shoot;
 FRIC_SPEED fricspeed = FRIC_MAX;
+shoot_status_e shoot_status = SHOOT_OFF;
+
 extern float Ren;
 int shoot_times = 0;
 int One_Shoot_flag = 0;
@@ -49,20 +51,29 @@ float speed_2;
 // 发射任务
 void shoot_task(void)
 {
-	//	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET); //关掉激光
-	if (trigger_cnt_flag == 1)
-		{trigger_cnt++;
+	if (shoot_status == SHOOT_ON)
+	{
+
+		//	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET); //关掉激光
+		if (trigger_cnt_flag == 1)
+		{
+			trigger_cnt++;
 			fric_speed_control();
 		}
 
-	fric_pid();
+		fric_pid();
 
-	if ((rc_shoot.left_fric.actual_speed < -4000) && (rc_shoot.right_fric.actual_speed > 4000)) // 等待摩擦轮转动之后才能拨弹
-		shoot_angle_clc();
+		if ((rc_shoot.left_fric.actual_speed < -4000) && (rc_shoot.right_fric.actual_speed > 4000)) // 等待摩擦轮转动之后才能拨弹
+			shoot_angle_clc();
 
-	trigger_pid();
+		trigger_pid();
 
-	canTX_fric(rc_shoot.left_fric.set_currunt, rc_shoot.right_fric.set_currunt, rc_shoot.trigger.set_currunt);
+		canTX_fric(rc_shoot.left_fric.set_currunt, rc_shoot.right_fric.set_currunt, rc_shoot.trigger.set_currunt);
+	}
+	else
+	{
+		canTX_fric(0, 0, 0);
+	}
 }
 
 float speed_average;
@@ -85,15 +96,15 @@ void fric_speed_control(void)
 
 	if (speed_change_flag)
 	{
-		if (fricspeed == FRIC_MAX&&shoot_speed>=29.5)
+		if (fricspeed == FRIC_MAX && shoot_speed >= 29.5)
 		{
 			SHOOT_LEFT_FRIC_SPEED_MAX += 40;
 			SHOOT_RIGHT_FRIC_SPEED_MAX -= 40;
 		}
-			// 平均射速
-			speed_average = ((shoot_speed + speed_average * ((float)count)) / ((float)(count + 1.0f)));
+		// 平均射速
+		speed_average = ((shoot_speed + speed_average * ((float)count)) / ((float)(count + 1.0f)));
 		count++;
-		if (count >10)
+		if (count > 10)
 		{
 			if (fricspeed == FRIC_MIN) // 15
 			{
@@ -111,12 +122,12 @@ void fric_speed_control(void)
 			}
 			else if (fricspeed == FRIC_MAX) // 30
 			{
-				if (((speed_limit - speed_average < 0.7f) && (speed_limit >= 10.0f))||(shoot_speed>=29.5))
+				if (((speed_limit - speed_average < 0.7f) && (speed_limit >= 10.0f)) || (shoot_speed >= 29.5))
 				{
 					SHOOT_LEFT_FRIC_SPEED_MAX += 40;
 					SHOOT_RIGHT_FRIC_SPEED_MAX -= 40;
 				}
-				else if (((speed_limit - speed_average > 1.3f) && (speed_limit >= 10.0f))||(shoot_speed<=26.0))
+				else if (((speed_limit - speed_average > 1.3f) && (speed_limit >= 10.0f)) || (shoot_speed <= 26.0))
 				{
 					SHOOT_LEFT_FRIC_SPEED_MAX -= 25;
 					SHOOT_RIGHT_FRIC_SPEED_MAX += 25;

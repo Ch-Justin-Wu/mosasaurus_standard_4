@@ -159,8 +159,8 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		if (CAN_RxHeaderStruct.StdId == GIMBAL_CONTROL_ID_1)
 		{
 			chassis_data_analyze();
-			chassis_control_order.vx_set *= -1;
-			chassis_control_order.vy_set *= -1;
+			chassis_control_order.vx_set;
+			chassis_control_order.vy_set;
 		}
 		if (CAN_RxHeaderStruct.StdId == GIMBAL_CONTROL_ID_2)
 		{

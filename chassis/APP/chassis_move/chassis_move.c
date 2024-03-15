@@ -16,7 +16,7 @@ static void power_limitation_jugement(void);
 static float chassis_buffer_loop(uint16_t buffer);
 static void chassis_fly(uint16_t buffer);
 static void speed_optimize(void);
-static float Get_chassis_theta(void);
+static float Get_chassis_theta(uint8_t mode);
 CHASSIS_CONTROL_ORDER_t chassis_control_order;
 MOTOR_t chassis_motor1, chassis_motor2, chassis_motor3, chassis_motor4, chassis_center;
 POWER_PID_t p_pid;
@@ -36,8 +36,9 @@ float avx, avy, awz;
 float last_vx, last_vy;
 
 // 72.2f 斜45° 300.00f
-float GIMBAL_HEAD_ANGLE = 120.0f;
-float GIMBAL_FOLLOW_ANGLE = 120.0f;
+float GIMBAL_SPIN_ANGLE = 142.0f;
+float GIMBAL_HEAD_ANGLE = 122.0f;
+float GIMBAL_FOLLOW_ANGLE = 122.0f;
 
 // 新的功率限制用到的参数   Rhn
 static void Power_limit(void);
@@ -208,54 +209,16 @@ void chassis_move(void)
 
 	chassis_power_control();
 
-	chassis_motor1.target_current = motor_pid_out[0];
-	chassis_motor2.target_current = motor_pid_out[1];
-	chassis_motor3.target_current = motor_pid_out[2];
-	chassis_motor4.target_current = motor_pid_out[3];
+    chassis_motor1.target_current = motor_pid_out[0];
+    chassis_motor2.target_current = motor_pid_out[1];
+    chassis_motor3.target_current = motor_pid_out[2];
+    chassis_motor4.target_current = motor_pid_out[3];
 
 	//Power_limit(); // 新的功率限制 Rhn
 
 	// 发送电流
 	can_send_chassis_current();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -266,29 +229,36 @@ void chassis_move(void)
  * @retval        none
  */
 
-static float Get_chassis_theta(void)
+static float Get_chassis_theta(uint8_t mode)
 {
 	float temp, temp2, angle;
-	if (chassis_center.actual_angle < GIMBAL_FOLLOW_ANGLE)
-		temp = chassis_center.actual_angle + 360.0f;
-	else
+	// if (chassis_center.actual_angle < GIMBAL_FOLLOW_ANGLE)
+	// 	temp = chassis_center.actual_angle + 360.0f;
+	// else
+	
 		temp = chassis_center.actual_angle;
-	temp2 = temp - GIMBAL_FOLLOW_ANGLE;
-	angle = temp2 / 360.0f * 2 * PI;
-	return angle;
+		if (mode == CHASSIS_FOLLOW)
+			{temp2 = temp - GIMBAL_FOLLOW_ANGLE;}
+			else if (mode == CHASSIS_SPIN)
+			{temp2 = temp - GIMBAL_SPIN_ANGLE;}
+		angle = temp2 / 360.0f * 2 * PI;
+		return angle;
 }
+
+
+
 float theta;
 float UI_theta;
-void chassis_spin(float *vx, float *vy)
+void chassis_spin(float *vx, float *vy,uint8_t mode)
 {
-	float a = *vx;
-	float b = *vy;
-	theta = Get_chassis_theta();
+	float pre_vx = *vx;
+	float pre_vy = *vy;
+	theta = Get_chassis_theta(mode);
 	UI_theta = theta + (PI / 2);
 	if (UI_theta > 2 * PI)
 		UI_theta -= 2 * PI;
-	*vx = (float)(b * sin(theta) + a * cos(theta));
-	*vy = (float)(b * cos(theta) - a * sin(theta));
+	*vx = (float)(pre_vx * cos(theta)-pre_vy * sin(theta));
+	*vy = (float)(pre_vx * sin(theta)+pre_vy * cos(theta));
 }
 
 /**
@@ -791,13 +761,13 @@ static void chassis_move_mode(void)
 	break;
 	case CHASSIS_FOLLOW: // 跟随模式   1
 	{
-		chassis_spin(&vx, &vy);
+		chassis_spin(&vx, &vy, CHASSIS_FOLLOW);
 		wz = -1.0f * chassis_follow();
 	}
 	break;
 	case CHASSIS_SPIN: // 小陀螺模式   2
 	{
-		chassis_spin(&vx, &vy);
+		chassis_spin(&vx, &vy, CHASSIS_SPIN);
 		wz = 7.0f;
 		//
 	}
@@ -813,7 +783,8 @@ static void chassis_move_mode(void)
 	last_vx = (float)chassis_control_order.vx_set;
 	//	last_vx=yu;
 	last_vy = (float)chassis_control_order.vy_set;
-	chassis_speed_control(vx, vy, wz);
+	chassis_speed_control(-vy, -
+    vx, wz);
 }
 
 /**
