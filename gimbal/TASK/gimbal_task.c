@@ -48,19 +48,19 @@ static void gimbal_motor_gyro_pid(GIMBAL_t *gimbal_);
 static void gimbal_motor_encode_pid(GIMBAL_t *gimbal_);
 static void gimbal_motor_encode_pid_y(GIMBAL_t *gimbal_);
 int gimbal_imu_cnt=0;
-uint16_t set_compare=600;
+uint16_t set_compare=600;//close
 
 enum
 {
-	CLOSE=0,
-	OPEN
-}bullet_state;
+	OPEN,
+	CLOSE = 1,
+} bullet_state = 1;
 
 int8_t us;
 void Gimbal_Task(void)
 {
 	//舵机
-	__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,set_compare);
+	__HAL_TIM_SET_COMPARE(&htim8,TIM_CHANNEL_3,set_compare);
 	//延时等待imu数据稳定
 	//IMU 数据接收
 	GIMBAL_CALBACK_GET();

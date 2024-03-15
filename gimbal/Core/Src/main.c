@@ -119,6 +119,7 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM5_Init();
   MX_USART6_UART_Init();
+  MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
    HAL_TIM_Base_Start_IT(&htim3);
    HAL_TIM_Base_Start_IT(&htim4);
@@ -133,8 +134,9 @@ int main(void)
    Gimbal_Init();
    IMU_Init();
    cali_param_init();
-	 HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
-	 HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
+	 //HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
+   HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_3);
+   HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
 // uart_init();  //以前给上位机通讯用的
   /* USER CODE END 2 */
 

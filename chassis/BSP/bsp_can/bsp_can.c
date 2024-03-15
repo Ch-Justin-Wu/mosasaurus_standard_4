@@ -112,7 +112,7 @@ int16_t spss;
  * @param[out]    can1接收四个电机返回的电流值，can2接收上板传来的数据
  * @retval        none
  */
-uint8_t bullet_flag;
+uint8_t bullet_flag=1;
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
 	CAN_RxHeaderTypeDef CAN_RxHeaderStruct;

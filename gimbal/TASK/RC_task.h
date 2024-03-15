@@ -62,6 +62,14 @@
 #define MOUSE_pre_right       rc_ctrl.mouse.press_r
 #define KEY_board             rc_ctrl.key.v
 
+//Í¼´«Á´Â·
+#define RFR_MOUSE_X referee_rc_data_t.mouse_x
+#define RFR_MOUSE_Y referee_rc_data_t.mouse_y
+#define RFR_MOUSE_Z referee_rc_data_t.mouse_z
+#define RFR_MOUSE_pre_left referee_rc_data_t.left_button_down
+#define RFR_MOUSE_pre_right referee_rc_data_t.right_button_down
+#define RFR_KEY_board referee_rc_data_t.keyboard_value
+
 #define W_key                0x000001
 #define S_key                0x000002
 #define ws_key               0x000003   

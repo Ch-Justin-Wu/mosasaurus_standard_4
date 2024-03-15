@@ -19,6 +19,8 @@ extern enum {
 	CLOSE = 0,
 	OPEN
 } bullet_state;
+
+
 // 给底盘发送数据(x,v,z速度以及yaw轴电流)
 uint8_t canTX_chassis_first(int16_t x, int16_t y, int16_t z, int16_t current_t)
 {

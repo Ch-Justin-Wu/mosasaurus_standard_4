@@ -8,8 +8,11 @@
 #include "gimbal_task_behaviour.h"
 #include "upper_computer.h"
 #include "tim.h"
+#include "referee.h"
 
-KEY_CONTROL control_mode = KEY_OFF;	 // 控制模式
+extern ext_referee_rc_data_t referee_rc_data_t;
+
+	KEY_CONTROL control_mode = KEY_OFF; // 控制模式
 FIGHT_CONTROL fight_mode = FIGHT_ON; // 战斗模式
 
 extern int16_t SHOOT_LEFT_FRIC_SPEED_MAX;
@@ -19,8 +22,8 @@ extern int16_t SHOOT_RIGHT_FRIC_SPEED_MIN;
 extern UPPER_COMPUTER_VISION_t shoot_vision_mode;
 
 extern enum {
-	CLOSE = 0,
-	OPEN
+	OPEN,
+	CLOSE = 1,
 } bullet_state;
 
 extern uint8_t reboot_flag;
@@ -57,7 +60,7 @@ void control_mode_judge(void)
 {
 	if (rc_ctrl.rc.ch[0] != 0 || rc_ctrl.rc.ch[1] != 0 || rc_ctrl.rc.ch[2] != 0 || rc_ctrl.rc.ch[3] != 0 || rc_ctrl.rc.ch[4] != 0)
 		control_mode = KEY_OFF;
-	if (KEY_board || MOUSE_x || MOUSE_y || MOUSE_z)
+	if (KEY_board || MOUSE_x || MOUSE_y || MOUSE_z||RFR_KEY_board||RFR_MOUSE_X||RFR_MOUSE_Y||RFR_MOUSE_Z)
 		control_mode = KEY_ON;
 }
 
@@ -190,7 +193,7 @@ void key_control_data(void)
 	Ten_Shoot_flag = 0;
 
 	// 战斗模式判断
-	if (KEY_board & SHIFT_key)
+	if ((KEY_board & SHIFT_key)||(RFR_KEY_board & SHIFT_key)) // 按下shift键
 		fight_mode = RUN_AWAY;
 	else
 		fight_mode = FIGHT_ON;
@@ -427,13 +430,13 @@ void judge_e(void)
 			{
 				if (set_compare == 2050)
 				{
-					bullet_state = OPEN;
+					bullet_state = CLOSE;
 					set_compare = 600;
 				}
 
 				else
 				{
-					bullet_state = CLOSE;
+					bullet_state = OPEN;
 					set_compare = 2050;
 				}
 			}

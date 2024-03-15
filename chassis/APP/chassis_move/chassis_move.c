@@ -3,9 +3,9 @@
 #include "supercap.h"
 #include <math.h>
 
-//#define CHASSIS_POWER_LIMIT_REFEREE
+#define CHASSIS_POWER_LIMIT_REFEREE
 
-#define CHASSIS_POWER_LIMIT
+//#define CHASSIS_POWER_LIMIT
 
 static float chassis_follow(void);
 static void chassis_speed_control(float speed_x, float speed_y, float speed_r);
