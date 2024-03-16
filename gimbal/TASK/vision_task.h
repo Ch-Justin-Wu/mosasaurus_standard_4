@@ -33,6 +33,7 @@ typedef struct{
 	GIMBAL_VI_t yaw;
 	GIMBAL_VI_t pitch;
 	CHASSIS_VI_t chassis;
+	char Control_privilege;
 }VISION_GET_t;
 
 extern VISION_t vision_mode;
