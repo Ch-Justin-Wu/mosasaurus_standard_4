@@ -4,6 +4,9 @@
 #include "bsp_math.h"
 #include "chassis_task.h"
 #include <math.h>
+
+#include "usbd_cdc_if.h"
+
 VISION_t vision_mode = VISION_OFF;
 VISION_GET_t vision_sent;
 UPPER_COMPUTER_VISION_t shoot_vision_mode = VISION_NOMAL; // 上位机自瞄模式
@@ -57,6 +60,8 @@ void Vision_Task(void)
 	}
 	else if (vision_mode == VISION_ON) // 自瞄模式开
 	{
+
+		
 		// if (traget_exit_flag == 1) // 视觉开启操控权在上位机
 		// {
 		// 	vision_check_flag = 1;

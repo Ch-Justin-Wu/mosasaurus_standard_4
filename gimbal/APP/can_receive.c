@@ -11,7 +11,7 @@
 Motor_HandleTypeDef yaw_can_rx = {0}, pitch_can_rx = {0}, shoot_can_rx[2] = {0};
 int16_t heat, heat_limit;
 int16_t euler_angle[3];
-uint8_t game_status, speed_limit=30;
+uint8_t game_status, speed_limit=29.6;
 extern int8_t upper_computer_data[8];
 extern int8_t chassis_imu_data[8];
 float shoot_speed;

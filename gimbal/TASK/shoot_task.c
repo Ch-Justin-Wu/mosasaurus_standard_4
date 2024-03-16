@@ -81,7 +81,7 @@ int yuyuyu_flag = 65;
 uint16_t count;
 void fric_speed_control(void)
 {
-	if (speed_limit == 30)
+	if (speed_limit > 29.4)
 	{
 		fricspeed = FRIC_MAX;
 		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MAX;

@@ -431,6 +431,9 @@ void DMA_Send(void)
 
 void cdc_vcp_data_rx(uint8_t *buf, uint32_t Len)
 {
+  if (vision_mode == VISION_NOMAL)
+  {
+  
   uint8_t res;
   for (uint16_t j = 0; j < Len; j++)
   {
@@ -454,6 +457,7 @@ void cdc_vcp_data_rx(uint8_t *buf, uint32_t Len)
       start_receive_flag = 0;
       break;
     }
+  }
   }
 }
 
