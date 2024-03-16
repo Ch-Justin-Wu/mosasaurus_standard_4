@@ -64,7 +64,7 @@ typedef struct{
 
 extern float imu_can_error_y;
 
-extern GIMBAL_t gimbal_y,gimbal_p;
+extern GIMBAL_t gimbal_y,gimbal_p,gimbal_r;
 extern GIMBAL_MODE_t gimbal_set_mode;
 void Gimbal_Task(void);
 void Gimbal_Init(void);

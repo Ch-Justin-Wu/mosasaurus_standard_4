@@ -11,6 +11,7 @@
 #include "upper_computer.h"
 #include "bsp_buzzer.h"
 #include "referee.h"
+#include "bsp_usb.h"
 
 uint8_t buzzer_flag;
 extern VISION_t vision_mode;
@@ -53,8 +54,9 @@ void TIM3_CNT_TASK()
 		{
 			Gimbal_Task();
 			shoot_task();
-			canTX_UPPER_COMPUTER(); // 向上位机发送数据
-			receive_upper_data();
+			DMA_Send();
+			//canTX_UPPER_COMPUTER(); // 向上位机发送数据
+			//receive_upper_data();
 			//	 DMA_Send();  旧的上位机通讯
 		}
 		if (time_count % 7 == 0)
@@ -73,7 +75,7 @@ void TIM3_CNT_TASK()
 		if (time_count >= 1000)
 		{
 			psc += 10;
-			canTX_UPPER_COMPUTER_2();
+			//canTX_UPPER_COMPUTER_2();
 			time_count = 0;
 		}
 	}

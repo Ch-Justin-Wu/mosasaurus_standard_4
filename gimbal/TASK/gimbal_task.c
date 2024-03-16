@@ -8,7 +8,7 @@
 #include <math.h>
 #include "tim.h"
 
-GIMBAL_t gimbal_y,gimbal_p;
+GIMBAL_t gimbal_y,gimbal_p,gimbal_r;
 GIMBAL_MODE_t gimbal_set_mode;
 //yaw轴PID控制
 //float YawGyroPid[7] 	= {0.2f,			0.0f,			0.0,	2.5f,			0.0f,	 0.0f};  //imu角度环  1.8 
@@ -102,6 +102,18 @@ void Gimbal_Init(void)
 	gimbal_p.given_current=0;
 	
 	gimbal_p.gimbal_motor_mode=GIMBAL_MOTOR_GYRO;//GIMBAL_MOTOR_RAW   GIMBAL_MOTOR_GYRO;//pitch轴电机控制
+
+
+	gimbal_r.IMU_actual_angle=0.0f;
+	gimbal_r.IMU_actual_speed=0.0f;
+	gimbal_r.CAN_actual_angle=0.0f;
+	gimbal_r.CAN_actual_speed=0.0f;
+	gimbal_r.target_angle=0.0f;
+	gimbal_r.target_speed=0.0f;
+	gimbal_r.add_angle=0.0f;
+	gimbal_r.given_current=0;
+
+	gimbal_r.gimbal_motor_mode=GIMBAL_MOTOR_GYRO;
 }
 
 static void YawPitch_PIDinit(void)
@@ -227,6 +239,10 @@ static void GIMBAL_CALBACK_GET(void)
 	//pitchIMU数据获取
     gimbal_p.IMU_actual_angle=-1.00f*INS_angle[1]/(2*3.141590f)*360.0f;
 	gimbal_p.IMU_actual_speed=-1.00f*INS_gyro[0];
+
+	//
+	gimbal_r.IMU_actual_angle=INS_angle[2]/(2*3.141590f)*360.0f;
+	gimbal_r.IMU_actual_speed=INS_gyro[1];
 	
 	
 	if(first_update_flag==0)  //读取上电时yaw编码器角度和imu角度的固定差值  并且只读取一次
