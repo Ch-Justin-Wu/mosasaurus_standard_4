@@ -69,10 +69,10 @@ void Vision_Task(void)
 			vision_check_flag = 1;
 			if (vision_sent.yaw.target_angle - last_yaw_target_angle > yaw_deadline_angle || vision_sent.yaw.target_angle - last_yaw_target_angle < -yaw_deadline_angle) // ËÀÇø
 			{
-							gimbal_y.add_angle=vision_sent.yaw.target_angle;
-							last_yaw_target_angle=vision_sent.yaw.target_angle;
-							gimbal_y.add_angle=(vision_sent.yaw.target_angle-imu_can_error_y);
-							last_yaw_target_angle=(vision_sent.yaw.target_angle-imu_can_error_y);
+							// gimbal_y.add_angle=vision_sent.yaw.target_angle;
+							// last_yaw_target_angle=vision_sent.yaw.target_angle;
+							// gimbal_y.add_angle=(vision_sent.yaw.target_angle-imu_can_error_y);
+							// last_yaw_target_angle=(vision_sent.yaw.target_angle-imu_can_error_y);
 				if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_ENCONDE)
 				{
 					gimbal_y.add_angle = (8192.0f / 360.0f) * (vision_sent.yaw.target_angle - imu_can_error_y);

@@ -65,6 +65,8 @@ void control_mode_judge(void)
 		control_mode = KEY_ON;
 }
 
+//
+uint8_t shoot_safety_cnt = 0;
 // 遥控器控制模式
 void remote_control_data(void)
 {
@@ -115,27 +117,31 @@ void remote_control_data(void)
 
 		if (deadline_judge_v(rc_ctrl.rc.ch[4]) == 0)
 		{
-			if (shoot_status == SHOOT_OFF)
+			shoot_safety_cnt++;
+			if (shoot_safety_cnt > 10)
 			{
-				shoot_status = SHOOT_ON;
-				if (fricspeed == FRIC_MIN)
+				shoot_safety_cnt = 0;
+				if (rc_ctrl.rc.ch[4] > 0)
 				{
-					rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MIN;
-					rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MIN;
+					shoot_status = SHOOT_ON;
+					if (fricspeed == FRIC_MIN)
+					{
+						rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MIN;
+						rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MIN;
+					}
+					else
+					{
+						rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MAX;
+						rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MAX;
+					}
 				}
 				else
 				{
-					rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MAX;
-					rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MAX;
+					shoot_status = SHOOT_OFF;
 				}
-			}
-			else
-			{
-				shoot_status = SHOOT_OFF;
 			}
 		}
 
-		
 		if (switch_is_down(rc_ctrl.rc.s[0])) // 左下右下单发
 		{
 			One_Shoot_flag = 1;
@@ -152,6 +158,7 @@ void remote_control_data(void)
 	}
 	else
 	{
+		shoot_status = SHOOT_OFF;
 	}
 	if (deadline_judge_v(rc_ctrl.rc.ch[0]) == 0)
 	{
