@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../APP;../BSP/BSP_CAN;../BSP/BSP_TIM;../Core/Src;../BSP/BSP_IMU;../components/algorithm;../components/devices;../BSP/BSP_SPI;../BSP/BSP_FLASH;../BSP/BSP_BUZZER;../BSP/BSP_UART;../BSP/BSP_MATH;../TASK;../components/support;../USB_DEVICE/App;../USB_DEVICE/Target;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc;../BSP/BSP_USB</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../APP;../BSP/BSP_CAN;../BSP/BSP_TIM;../Core/Src;../BSP/BSP_IMU;../components/algorithm;../components/devices;../BSP/BSP_SPI;../BSP/BSP_FLASH;../BSP/BSP_BUZZER;../BSP/BSP_UART;../BSP/BSP_MATH;../TASK;../components/support;../USB_DEVICE/App;../USB_DEVICE/Target;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc;../BSP/BSP_USB;../Comunication</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -590,6 +590,16 @@
               <FileName>referee.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\APP\referee.c</FilePath>
+            </File>
+            <File>
+              <FileName>Self_aim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Comunication\Self_aim.c</FilePath>
+            </File>
+            <File>
+              <FileName>USB_Commucation.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Comunication\USB_Commucation.c</FilePath>
             </File>
           </Files>
         </Group>

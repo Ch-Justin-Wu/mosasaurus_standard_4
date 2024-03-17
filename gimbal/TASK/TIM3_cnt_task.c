@@ -11,7 +11,7 @@
 #include "upper_computer.h"
 #include "bsp_buzzer.h"
 #include "referee.h"
-#include "bsp_usb.h"
+#include "USB_Commucation.h"
 
 uint8_t buzzer_flag;
 extern VISION_t vision_mode;
@@ -54,7 +54,7 @@ void TIM3_CNT_TASK()
 		{
 			Gimbal_Task();
 			shoot_task();
-			DMA_Send();
+			USB_TX();
 			//canTX_UPPER_COMPUTER(); // 向上位机发送数据
 			//receive_upper_data();
 			//	 DMA_Send();  旧的上位机通讯

@@ -39,5 +39,7 @@ void remote_chassis(void)
 	{
 		canTX_chassis_first(rc_sent.x_speed, rc_sent.y_speed, rc_sent.r_speed, gimbal_y.given_current);
 		canTX_chassis_second(3, vision_mode);
+		canTX_gimbal_p_2(0);
+		canTX_fric(0, 0, 0);
 	}
 }
