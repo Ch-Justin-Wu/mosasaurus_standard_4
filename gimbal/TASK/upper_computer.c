@@ -25,10 +25,10 @@ extern Pack_rx_t pack_rx;
 void receive_upper_data(void)
 {
 	// yaw
-	vision_sent.yaw.target_angle = (float)pack_rx.target_yaw;
+	vision_sent.yaw.target_angle = 0;
 
 	// pitch
-	vision_sent.pitch.target_angle = (float)pack_rx.target_pitch;
+	vision_sent.pitch.target_angle = 0;
 
 	// 控制权	后期需要修改:金旭峰
 	if (target_exit_rec_flag)

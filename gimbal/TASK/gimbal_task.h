@@ -54,7 +54,8 @@ typedef struct{
 	float CAN_actual_speed;
 	float CAN_actual_angle;
 	float CAN_total_angle;
-	
+
+	float auto_aim_angle;
 	float add_angle;
 	
 	int16_t given_current;

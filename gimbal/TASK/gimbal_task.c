@@ -147,7 +147,7 @@ static void GIMBAL_Set_Mode(void)
 	}
 	else if(gimbal_set_mode==GIMBAL_ZERO_FORCE)//无力状态
 	{
-	  gimbal_y.gimbal_motor_mode=GIMBAL_MOTOR_RAW;//陀螺仪速度控制
+	    gimbal_y.gimbal_motor_mode=GIMBAL_MOTOR_RAW;//陀螺仪速度控制
 		gimbal_p.gimbal_motor_mode=GIMBAL_MOTOR_RAW;
 	}
 	else if(gimbal_set_mode==GIMBAL_ABSOLUTE_ANGLE)//云台随动模式

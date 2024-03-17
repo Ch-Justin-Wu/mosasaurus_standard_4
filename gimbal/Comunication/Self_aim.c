@@ -75,9 +75,9 @@ float calc_pitch(float x, float y, float z) {
  * @param z 向量的z分量
  * @return 计算得到的目标角（以角度制表示）
  */
-void Self_aim(float x,float y,float z,float *yaw,float *pitch,float *distance)
+void Auto_aim(float x,float y,float z,float *yaw,float *pitch,float *distance)
 {
     *yaw = -calc_yaw(x, y, z);
-    *pitch = calc_pitch(x, y, z);//4号可能要添加负号
+    *pitch = -calc_pitch(x, y, z);//4号可能要添加负号
     *distance = calc_distance(x, y, z);
 }

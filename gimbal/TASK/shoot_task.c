@@ -70,12 +70,13 @@ void shoot_task(void)
 
 		canTX_fric(rc_shoot.left_fric.set_currunt, rc_shoot.right_fric.set_currunt, rc_shoot.trigger.set_currunt);
 	}
-	else
+	else if(shoot_status==SHOOT_OFF)
 	{
 		rc_shoot.left_fric.target_speed=0;
 		rc_shoot.right_fric.target_speed=0;
 		fric_pid();
-		canTX_fric(rc_shoot.left_fric.set_currunt, rc_shoot.right_fric.set_currunt, 0);
+		trigger_pid();
+		canTX_fric(rc_shoot.left_fric.set_currunt, rc_shoot.right_fric.set_currunt, rc_shoot.trigger.set_currunt);
 	}
 }
 

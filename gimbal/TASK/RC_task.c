@@ -140,6 +140,10 @@ void remote_control_data(void)
 					shoot_status = SHOOT_OFF;
 				}
 			}
+			
+		}
+		else{
+			shoot_safety_cnt = 0;
 		}
 
 		if (switch_is_down(rc_ctrl.rc.s[0])) // 左下右下单发

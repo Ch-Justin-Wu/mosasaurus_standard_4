@@ -64,10 +64,12 @@ void Vision_Task(void)
 	{
 
 		
-		if (traget_exit_flag == 1) // 视觉开启操控权在上位机
+		if (pack_rx.UP_flag == 1) // 视觉开启操控权在上位机
 		{
+            //pack_rx.UP_flag=0;
 			vision_check_flag = 1;
-			if (vision_sent.yaw.target_angle - last_yaw_target_angle > yaw_deadline_angle || vision_sent.yaw.target_angle - last_yaw_target_angle < -yaw_deadline_angle) // 死区
+			//yaw
+			//if (gimbal_y.auto_aim_angle - last_yaw_target_angle > yaw_deadline_angle || gimbal_y.auto_aim_angle - last_yaw_target_angle < -yaw_deadline_angle) // 死区
 			{
 							// gimbal_y.add_angle=vision_sent.yaw.target_angle;
 							// last_yaw_target_angle=vision_sent.yaw.target_angle;
@@ -75,19 +77,21 @@ void Vision_Task(void)
 							// last_yaw_target_angle=(vision_sent.yaw.target_angle-imu_can_error_y);
 				if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_ENCONDE)
 				{
-					gimbal_y.add_angle = (8192.0f / 360.0f) * (vision_sent.yaw.target_angle - imu_can_error_y);
-					last_yaw_target_angle = (8192.0f / 360.0f) * (vision_sent.yaw.target_angle - imu_can_error_y);
+					gimbal_y.target_angle = (8192.0f / 360.0f) * (gimbal_y.auto_aim_angle - imu_can_error_y);
+					last_yaw_target_angle = (8192.0f / 360.0f) * (gimbal_y.auto_aim_angle - imu_can_error_y);
 				}
 				if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_GYRO)
 				{
-					gimbal_y.add_angle = vision_sent.yaw.target_angle;
-					last_yaw_target_angle = vision_sent.yaw.target_angle;
+					gimbal_y.target_angle = gimbal_y.auto_aim_angle;
+					last_yaw_target_angle = gimbal_y.auto_aim_angle;
 				}
+                
 			}
-			if (vision_sent.pitch.target_angle - last_pitch_target_angle > pitch_deadline_angle || vision_sent.pitch.target_angle - last_pitch_target_angle < -pitch_deadline_angle)
+			//pitch
+			//if (gimbal_p.auto_aim_angle - last_pitch_target_angle > pitch_deadline_angle || gimbal_p.auto_aim_angle - last_pitch_target_angle < -pitch_deadline_angle)
 			{
-				gimbal_p.add_angle = vision_sent.pitch.target_angle;
-				last_pitch_target_angle = vision_sent.pitch.target_angle;
+				gimbal_p.target_angle = gimbal_p.auto_aim_angle;
+				last_pitch_target_angle = gimbal_p.auto_aim_angle;
 			}
 		}
 		else // 视觉开启但是操控权在下位机

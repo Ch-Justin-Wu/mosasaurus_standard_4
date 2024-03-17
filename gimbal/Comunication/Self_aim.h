@@ -12,7 +12,7 @@
 const float g = 12; // 重力加速度
 const float bullet_v = 40.0; // 子弹速度
 
-void Self_aim(float x, float y, float z, float *yaw, float *pitch, float *distance);
+void Auto_aim(float x, float y, float z, float *yaw, float *pitch, float *distance);
 
 #ifdef __cplusplus
 }
