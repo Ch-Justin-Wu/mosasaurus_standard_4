@@ -1,7 +1,7 @@
 #include "Self_aim.h"
 #include "arm_math.h"
 
-const float g = 12.0f;        // 重力加速度
+const float g = 12.0f;  // 重力加速度
 float bullet_v = 29.0f; // 子弹速度
 extern float shoot_speed;
 /**
@@ -14,14 +14,14 @@ extern float shoot_speed;
  */
 float calc_yaw(float x, float y, float z)
 {
-    float aim_yaw=0.0f;
+    float aim_yaw = 0.0f;
     // 使用 atan2f 函数计算反正切值，得到弧度制的偏航角
     // float yaw = atan2f(y, x);//
     // arm_math.h库中的atan2f函数
     arm_atan2_f32(y, x, &aim_yaw);
 
     // 将弧度制的偏航角转换为角度制
-    aim_yaw = -(aim_yaw * 180 / 3.1415926f); // 向左为正，向右为负
+    aim_yaw = -(aim_yaw * 180 / PI); // 向左为正，向右为负
 
     return aim_yaw;
 }
@@ -37,7 +37,9 @@ float calc_yaw(float x, float y, float z)
 static inline float calc_distance(float x, float y, float z)
 {
     // 计算各分量的平方和，并取其平方根得到欧几里德距离
-    float distance = sqrtf(x * x + y * y + z * z);
+    // float distance = sqrtf(x * x + y * y + z * z);
+    float distance = 0.0f;
+    arm_sqrt_f32(x * x + y * y + z * z, &distance);
 
     return distance;
 }
@@ -52,9 +54,11 @@ static inline float calc_distance(float x, float y, float z)
  */
 float calc_pitch(float x, float y, float z)
 {
-    float pitch =0.0f;
+    float pitch = 0.0f;
     // 根据 x、y 分量计算的平面投影的模长和 z 分量计算的反正切值，得到弧度制的俯仰角
-     arm_atan2_f32(z, sqrtf(x * x + y * y),&pitch);
+    float temp = 0.0f;
+    arm_sqrt_f32(x * x + y * y, &temp);
+    arm_atan2_f32(z, temp, &pitch);
 
     // 使用重力加速度模型迭代更新俯仰角
     for (size_t i = 0; i < 20; i++)
@@ -65,11 +69,15 @@ float calc_pitch(float x, float y, float z)
         float v_x = bullet_v * arm_cos_f32(pitch);
         float v_y = bullet_v * arm_sin_f32(pitch);
 
-        float t = sqrtf(x * x + y * y) / v_x;
+        float t = 0.0f;
+        // sqrtf(x * x + y * y) / v_x;
+        arm_sqrt_f32(x * x + y * y, &t);
+        t = t / v_x;
+
         float h = v_y * t - 0.5f * g * t * t;
         float dz = z - h;
         float abs_dz;
-        arm_abs_f32(&dz,&abs_dz,1);
+        arm_abs_f32(&dz, &abs_dz, 1);
         if (abs_dz < 0.01f)
         {
             break;
@@ -80,7 +88,7 @@ float calc_pitch(float x, float y, float z)
     }
 
     // 将弧度制的俯仰角转换为角度制
-    pitch = (pitch * 180 / 3.1415926f); // 向上为正，向下为负
+    pitch = (pitch * 180 / PI); // 向上为正，向下为负
 
     return pitch;
 }
@@ -95,6 +103,6 @@ float calc_pitch(float x, float y, float z)
 void Auto_aim(float x, float y, float z, float *yaw, float *pitch, float *distance)
 {
     *yaw = -calc_yaw(x, y, z);
-    *pitch = calc_pitch(x, y, z); 
+    *pitch = calc_pitch(x, y, z);
     *distance = calc_distance(x, y, z);
 }

@@ -2,6 +2,7 @@
 #include "fuzzy_pid.h"
 #include "supercap.h"
 #include <math.h>
+#include "arm_math.h"
 
 #define CHASSIS_POWER_LIMIT_REFEREE
 
@@ -257,8 +258,10 @@ void chassis_spin(float *vx, float *vy,uint8_t mode)
 	UI_theta = theta + (PI / 2);
 	if (UI_theta > 2 * PI)
 		UI_theta -= 2 * PI;
-	*vx = (float)(pre_vx * cosf(theta)-pre_vy * sinf(theta));
-	*vy = (float)(pre_vx * sinf(theta)+pre_vy * cosf(theta));
+	// *vx = (float)(pre_vx * cosf(theta)-pre_vy * sinf(theta));
+	// *vy = (float)(pre_vx * sinf(theta)+pre_vy * cosf(theta));
+	*vx = (float)(pre_vx * arm_cos_f32(theta) - pre_vy * arm_sin_f32(theta));
+	*vy = (float)(pre_vx * arm_sin_f32(theta) + pre_vy * arm_cos_f32(theta));
 }
 
 /**
