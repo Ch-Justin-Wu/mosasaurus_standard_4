@@ -2,7 +2,8 @@
 #include "arm_math.h"
 
 const float g = 12.0f;        // 重力加速度
-const float bullet_v = 40.0f; // 子弹速度
+float bullet_v = 29.0f; // 子弹速度
+extern float shoot_speed;
 /**
  * 计算给定向量的偏航角（yaw）。
  *
@@ -58,6 +59,7 @@ float calc_pitch(float x, float y, float z)
     // 使用重力加速度模型迭代更新俯仰角
     for (size_t i = 0; i < 20; i++)
     {
+        bullet_v = shoot_speed;
         // float v_x = bullet_v * cosf(pitch);
         // float v_y = bullet_v * sinf(pitch);
         float v_x = bullet_v * arm_cos_f32(pitch);
