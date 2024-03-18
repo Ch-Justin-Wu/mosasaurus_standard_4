@@ -98,15 +98,15 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			//speed_limit = rxData[7];
 			break;
 		}
-		case UPPER_COMPUTER_ID: // 从上位机收到的数据
-		{
-			target_exit_rec_flag = 1;
-			for (int i = 0; i < 8; i++)
-			{
-				upper_computer_data[i] = rxData[i];
-			}
-			break;
-		}
+		// case UPPER_COMPUTER_ID: // 从上位机收到的数据
+		// {
+		// 	target_exit_rec_flag = 1;
+		// 	for (int i = 0; i < 8; i++)
+		// 	{
+		// 		upper_computer_data[i] = rxData[i];
+		// 	}
+		// 	break;
+		// }
 		case CHASSIS_IMU_ID:
 		{
 

@@ -6,7 +6,7 @@ static void record_chassis_callback(MOTOR_t *motor, uint16_t angle, int16_t curr
 static void canTX_gimbal(int8_t robot_id, int16_t heat0, int16_t heat0_limit, int16_t bullet_speed, uint8_t bullet_speedlimit);
 int16_t gimbal_y_CAN_actual_speed = 0;
 int16_t gimbal_y_CAN_actual_angle = 0;
-uint8_t bullet_speedlimit = 0;
+uint8_t bullet_speedlimit = 30;
 uint8_t supercap_reboot_flag;
 uint8_t target_exit;
 int16_t vision_mode;
@@ -290,7 +290,7 @@ static void canTX_gimbal(int8_t game_status, int16_t heat0, int16_t heat0_limit,
 	data[4] = heat0_limit & 0xff;
 	data[5] = bullet_speed >> 8;
 	data[6] = bullet_speed & 0xff;
-	data[7] = bullet_speedlimit;
+	//data[7] = bullet_speedlimit;
 	Can_Tx_Message(&hcan2, data);
 }
 

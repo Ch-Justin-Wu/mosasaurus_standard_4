@@ -20,6 +20,7 @@ extern enum {
 	OPEN
 } bullet_state;
 
+extern shoot_status_e shoot_status;
 
 // 给底盘发送数据(x,v,z速度以及yaw轴电流)
 uint8_t canTX_chassis_first(int16_t x, int16_t y, int16_t z, int16_t current_t)
@@ -64,6 +65,7 @@ uint8_t canTX_chassis_second(uint8_t mode, uint8_t vision_mode)
 	data[2] = supercap_reboot_flag;
 	data[3] = traget_exit_flag;
 	data[4] = bullet_state;
+	data[5] = shoot_status;
 	HAL_CAN_AddTxMessage(&hcan2, &canFrame, data, &temp);
 	return temp;
 }

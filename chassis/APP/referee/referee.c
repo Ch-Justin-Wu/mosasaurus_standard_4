@@ -288,21 +288,21 @@ uint8_t get_robot_id(void)
 
 void get_shoot_heat0_limit_and_heat0(uint16_t *heat0_limit, uint16_t *heat0)
 {
-  *heat0_limit = robot_state.shooter_id1_17mm_cooling_limit;
-  *heat0 = power_heat_data_t.shooter_id1_17mm_cooling_heat;
+  *heat0_limit = robot_state.shooter_id1_17mm_heat_limit;
+  *heat0 = power_heat_data_t.shooter_id1_17mm_heat;
 }
 
 void get_shoot_heat1_limit_and_heat1(uint16_t *heat1_limit, uint16_t *heat1)
 {
-  *heat1_limit = robot_state.shooter_id2_17mm_cooling_limit;
-  *heat1 = power_heat_data_t.shooter_id2_17mm_cooling_heat;
+  //*heat1_limit = robot_state.shooter_id2_17mm_cooling_limit;
+  *heat1 = power_heat_data_t.shooter_id2_17mm_heat;
 }
 
 void get_shoot_data(uint8_t *bullet_freq, float *bullet_speed, uint8_t *bullet_speedlimit)
 {
   *bullet_freq = shoot_data_t.bullet_freq;
   *bullet_speed = shoot_data_t.bullet_speed;
-  *bullet_speedlimit = robot_state.shooter_id1_17mm_speed_limit;
+  //*bullet_speedlimit = robot_state.shooter_id1_17mm_speed_limit;
 }
 
 /*获取比赛类型和比赛状态*/

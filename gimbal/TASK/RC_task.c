@@ -140,9 +140,9 @@ void remote_control_data(void)
 					shoot_status = SHOOT_OFF;
 				}
 			}
-			
 		}
-		else{
+		else
+		{
 			shoot_safety_cnt = 0;
 		}
 
@@ -573,20 +573,25 @@ void judge_ctrl(void)
 	if (KEY_board & CTRL_key)
 	{ // Ä¦²ÁÂÖ¿ª¹Ø
 		time_count_ctrl++;
-		if (time_count_ctrl >= KEY_COUNT)
-		{
-			if (shoot_status == SHOOT_ON)
-			{
-				shoot_status = SHOOT_OFF;
-			}
-			else
-			{
-				shoot_status = SHOOT_ON;
-			}
-		}
 	}
 	else
 	{
+		if (last_key & CTRL_key)
+		{
+			if (time_count_ctrl >= KEY_COUNT)
+			{
+				time_count_ctrl = 0;
+				if (shoot_status == SHOOT_ON)
+				{
+					shoot_status = SHOOT_OFF;
+				}
+				else
+				{
+					shoot_status = SHOOT_ON;
+				}
+			}
+			
+		}
 		time_count_ctrl = 0;
 	}
 }

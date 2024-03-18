@@ -108,7 +108,7 @@ void fric_speed_control(void)
 		// Æ½¾ùÉäËÙ
 		speed_average = ((shoot_speed + speed_average * ((float)count)) / ((float)(count + 1.0f)));
 		count++;
-		if (count > 10)
+		if (count > 30)
 		{
 			if (fricspeed == FRIC_MIN) // 15
 			{
@@ -131,7 +131,7 @@ void fric_speed_control(void)
 					SHOOT_LEFT_FRIC_SPEED_MAX += 40;
 					SHOOT_RIGHT_FRIC_SPEED_MAX -= 40;
 				}
-				else if (((speed_limit - speed_average > 1.3f) && (speed_limit >= 10.0f)) || (shoot_speed <= 26.0))
+				else if (((speed_limit - speed_average > 1.3f) && (speed_limit >= 10.0f)) || (shoot_speed <= 20.0))
 				{
 					SHOOT_LEFT_FRIC_SPEED_MAX -= 25;
 					SHOOT_RIGHT_FRIC_SPEED_MAX += 25;

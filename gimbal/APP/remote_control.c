@@ -34,8 +34,6 @@ static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl);
 static void RC_init(uint8_t *rx1_buf, uint8_t *rx2_buf, uint16_t dma_buf_num);
 static int16_t RC_abs(int16_t value);
 
-
-
 // 主函数初始化调用
 void remote_control_init(void)
 {
@@ -171,7 +169,6 @@ void USART3_IRQHandler(void)
 				{
 					RC_restart(SBUS_RX_BUF_NUM);
 				}
-				// 遥控器离线防范措施
 			}
 		}
 		else
@@ -201,7 +198,6 @@ void USART3_IRQHandler(void)
 				{
 					RC_restart(SBUS_RX_BUF_NUM);
 				}
-				// 遥控器离线防范措施
 			}
 		}
 	}

@@ -1,8 +1,8 @@
 #include "Self_aim.h"
 #include "arm_math.h"
 
-
-
+const float g = 12.0f;        // 重力加速度
+const float bullet_v = 40.0f; // 子弹速度
 /**
  * 计算给定向量的偏航角（yaw）。
  *
@@ -78,7 +78,7 @@ float calc_pitch(float x, float y, float z)
     }
 
     // 将弧度制的俯仰角转换为角度制
-    pitch = -(pitch * 180 / 3.1415926f); // 向上为负，向下为正
+    pitch = (pitch * 180 / 3.1415926f); // 向上为正，向下为负
 
     return pitch;
 }
@@ -93,6 +93,6 @@ float calc_pitch(float x, float y, float z)
 void Auto_aim(float x, float y, float z, float *yaw, float *pitch, float *distance)
 {
     *yaw = -calc_yaw(x, y, z);
-    *pitch = -calc_pitch(x, y, z); // 4号可能要添加负号
+    *pitch = calc_pitch(x, y, z); 
     *distance = calc_distance(x, y, z);
 }

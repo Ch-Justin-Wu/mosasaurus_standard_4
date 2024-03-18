@@ -114,8 +114,10 @@ void USB_TX(void)
   pack.hander = 0x5A;
   pack.detect_color = 1;
   pack.target_id = 0x01;
-  pack.pitch = -gimbal_p.IMU_actual_angle;
-  pack.roll = gimbal_r.IMU_actual_angle;
+//  pack.pitch = -gimbal_p.IMU_actual_angle;
+//  pack.roll = gimbal_r.IMU_actual_angle;
+  pack.pitch = gimbal_r.IMU_actual_angle;
+  pack.roll = -gimbal_p.IMU_actual_angle;
   pack.yaw = gimbal_y.IMU_actual_angle;
   pack.crc16 = 0xffff;
   memcpy(Buffer, &pack, sizeof(pack));

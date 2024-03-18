@@ -26,7 +26,7 @@ extern uint8_t rc_offline_flag;
 
 extern shoot_status_e shoot_status;
 
-uint16_t rc_tim_cnt = 0;
+
 uint8_t rc_offline_check(void);
 
 // 0.1ms
@@ -55,7 +55,7 @@ void TIM3_CNT_TASK()
 			Gimbal_Task();
 			shoot_task();
 			USB_TX();
-			//canTX_UPPER_COMPUTER(); // 向上位机发送数据
+			// canTX_UPPER_COMPUTER(); // 向上位机发送数据
 			receive_upper_data();
 			//	 DMA_Send();  旧的上位机通讯
 		}
@@ -75,21 +75,20 @@ void TIM3_CNT_TASK()
 		if (time_count >= 1000)
 		{
 			psc += 10;
-			//canTX_UPPER_COMPUTER_2();
+			// canTX_UPPER_COMPUTER_2();
 			time_count = 0;
 		}
 	}
 	if (htim->Instance == TIM5)
 	{
-		// 遥控器离线检测  
+		static uint16_t rc_tim_cnt = 0;
+		// 遥控器离线检测
 		rc_tim_cnt++;
 		if (rc_tim_cnt >= 35)
 		{
 			rc_tim_cnt = 0;
-			rc_offline_flag=rc_offline_check();
+			rc_offline_flag = rc_offline_check();
 		}
-
-
 
 		count_2++;
 		if (IMU_cnt > 5)
@@ -123,6 +122,8 @@ uint8_t rc_offline_check(void)
 	}
 	if (rc_offline_cnt >= 10)
 	{
+		control_mode = KEY_OFF;
+		
 		rc_ctrl.rc.ch[0] = 0;
 		rc_ctrl.rc.ch[1] = 0;
 		rc_ctrl.rc.ch[2] = 0;
