@@ -1,5 +1,8 @@
 #include "Self_aim.h"
 #include "arm_math.h"
+
+
+
 /**
  * 计算给定向量的偏航角（yaw）。
  *
@@ -10,15 +13,16 @@
  */
 float calc_yaw(float x, float y, float z)
 {
+    float aim_yaw=0.0f;
     // 使用 atan2f 函数计算反正切值，得到弧度制的偏航角
     // float yaw = atan2f(y, x);//
     // arm_math.h库中的atan2f函数
-    float yaw = arm_asin_f32(y, x);
+    arm_atan2_f32(y, x, &aim_yaw);
 
     // 将弧度制的偏航角转换为角度制
-    yaw = -(yaw * 180 / 3.1415926f); // 向左为正，向右为负
+    aim_yaw = -(aim_yaw * 180 / 3.1415926f); // 向左为正，向右为负
 
-    return yaw;
+    return aim_yaw;
 }
 
 /**
@@ -29,7 +33,7 @@ float calc_yaw(float x, float y, float z)
  * @param z 向量的z分量
  * @return 计算得到的欧几里德距离
  */
-float calc_distance(float x, float y, float z)
+static inline float calc_distance(float x, float y, float z)
 {
     // 计算各分量的平方和，并取其平方根得到欧几里德距离
     float distance = sqrtf(x * x + y * y + z * z);
@@ -47,20 +51,24 @@ float calc_distance(float x, float y, float z)
  */
 float calc_pitch(float x, float y, float z)
 {
+    float pitch =0.0f;
     // 根据 x、y 分量计算的平面投影的模长和 z 分量计算的反正切值，得到弧度制的俯仰角
-    float pitch = atan2f(z, sqrtf(x * x + y * y));
+     arm_atan2_f32(z, sqrtf(x * x + y * y),&pitch);
 
     // 使用重力加速度模型迭代更新俯仰角
     for (size_t i = 0; i < 20; i++)
     {
-        float v_x = bullet_v * cosf(pitch);
-        float v_y = bullet_v * sinf(pitch);
+        // float v_x = bullet_v * cosf(pitch);
+        // float v_y = bullet_v * sinf(pitch);
+        float v_x = bullet_v * arm_cos_f32(pitch);
+        float v_y = bullet_v * arm_sin_f32(pitch);
 
         float t = sqrtf(x * x + y * y) / v_x;
         float h = v_y * t - 0.5f * g * t * t;
         float dz = z - h;
-
-        if (fabsf(dz) < 0.01f)
+        float abs_dz;
+        arm_abs_f32(&dz,&abs_dz,1);
+        if (abs_dz < 0.01f)
         {
             break;
         }
