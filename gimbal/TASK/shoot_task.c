@@ -5,6 +5,7 @@
 #include "can_receive.h"
 #include "bsp_math.h"
 #include <math.h>
+#include "arm_math.h"
 
 // #define TEST_SHOOT
 
@@ -85,7 +86,7 @@ int yuyuyu_flag = 65;
 uint16_t count;
 void fric_speed_control(void)
 {
-	if (speed_limit > 29.4)
+	if (speed_limit > 29.4f)
 	{
 		fricspeed = FRIC_MAX;
 		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MAX;
@@ -100,7 +101,7 @@ void fric_speed_control(void)
 
 	if (speed_change_flag)
 	{
-		if (fricspeed == FRIC_MAX && shoot_speed >= 29.5)
+		if (fricspeed == FRIC_MAX && shoot_speed >= 29.5f)
 		{
 			SHOOT_LEFT_FRIC_SPEED_MAX += 40;
 			SHOOT_RIGHT_FRIC_SPEED_MAX -= 40;
@@ -250,7 +251,8 @@ void trigger_angle_set(void)
 		remain_bullet = 0;
 	if (One_Shoot_flag == 1) // 单发
 	{
-		if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
+		
+		if (fabsf(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
 		{
 			if (remain_bullet >= 1)
 				rc_shoot.trigger.target_angle -= ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
@@ -258,7 +260,7 @@ void trigger_angle_set(void)
 	}
 	else // 五连发
 	{
-		if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
+		if (fabsf(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
 		{
 			if (remain_bullet >= 5)
 				rc_shoot.trigger.target_angle -= ((5.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f); // 改成五连发了

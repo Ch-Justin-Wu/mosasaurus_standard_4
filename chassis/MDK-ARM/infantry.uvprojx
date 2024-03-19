@@ -802,6 +802,11 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\CMSIS\DSP\Source\ControllerFunctions\arm_sin_cos_f32.c</FilePath>
             </File>
+            <File>
+              <FileName>BasicMathFunctions.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Source\BasicMathFunctions\BasicMathFunctions.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

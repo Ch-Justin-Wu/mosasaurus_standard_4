@@ -61,13 +61,15 @@ float calc_pitch(float x, float y, float z)
     arm_atan2_f32(z, temp, &pitch);
 
     // 使用重力加速度模型迭代更新俯仰角
-    for (size_t i = 0; i < 20; i++)
+    for (uint16_t i = 0; i < 100; i++)
     {
         bullet_v = shoot_speed;
         // float v_x = bullet_v * cosf(pitch);
         // float v_y = bullet_v * sinf(pitch);
-        float v_x = bullet_v * arm_cos_f32(pitch);
-        float v_y = bullet_v * arm_sin_f32(pitch);
+        float pitch_sin = 0.0f, pitch_cos = 0.0f;
+        arm_sin_cos_f32(pitch,&pitch_sin,&pitch_cos);
+        float v_x = bullet_v * pitch_cos;
+        float v_y = bullet_v * pitch_sin;
 
         float t = 0.0f;
         // sqrtf(x * x + y * y) / v_x;
