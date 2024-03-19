@@ -1,6 +1,8 @@
 #ifndef __vision_task_H
 #define __vision_task_H
 
+#include "stdint.h"
+
 typedef enum{
     VISION_ON= 0, //×ÔÃé¿ª
     VISION_OFF,    //
@@ -34,6 +36,9 @@ typedef struct{
 	GIMBAL_VI_t pitch;
 	CHASSIS_VI_t chassis;
 	char Control_priority;
+	uint32_t rx_cnt;
+	uint32_t rx_last_cnt;
+	uint8_t offline_cnt;
 }VISION_GET_t;
 
 extern VISION_t vision_mode;

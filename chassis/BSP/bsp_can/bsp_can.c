@@ -1,6 +1,13 @@
 #include "bsp_can.h"
 
-static int16_t *read_motor_data(uint8_t *rxdata);
+extern enum shoot_status_e {
+	SHOOT_OFF = 0,
+	SHOOT_ON,
+};
+
+
+static int16_t *
+read_motor_data(uint8_t *rxdata);
 static void get_motor_data(MOTOR_t *motor, uint16_t angle, int16_t speed, int16_t current);
 static void record_chassis_callback(MOTOR_t *motor, uint16_t angle, int16_t current);
 static void canTX_gimbal(int8_t robot_id, int16_t heat0, int16_t heat0_limit, int16_t bullet_speed, uint8_t bullet_speedlimit);
@@ -10,6 +17,7 @@ uint8_t bullet_speedlimit = 30;
 uint8_t supercap_reboot_flag;
 uint8_t target_exit;
 int16_t vision_mode;
+uint8_t shoot_status = SHOOT_OFF;//fire UI绘图
 /**
  * @breif         can通信初始化
  * @param[in]     none
@@ -170,6 +178,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			supercap_reboot_flag = rxdata[2];
 			target_exit = rxdata[3];
 			bullet_flag = rxdata[4];
+			shoot_status = rxdata[5];
 			//			if(gdata[3]==0)chassis_control_order.chassis_mode=CHASSIS_NO_FORCE;   //小陀螺关闭
 			//			else
 			//			{

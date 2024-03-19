@@ -64,7 +64,7 @@ void Vision_Task(void)
 	{
 
 		
-		if (pack_rx.UP_flag == 1) // 视觉开启操控权在上位机
+		if (vision_sent.Control_priority == 1) // 视觉开启操控权在上位机
 		{
             //pack_rx.UP_flag=0;
 			vision_check_flag = 1;

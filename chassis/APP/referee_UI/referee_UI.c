@@ -9,6 +9,13 @@
 #include "bsp_can.h"
 #include "supercap.h"
 
+typedef enum shoot_status_e
+{
+	SHOOT_OFF = 0,
+	SHOOT_ON,
+} shoot_status_e;
+
+extern uint8_t shoot_status;
 extern int time2;
 extern float UI_theta;
 #define Max(a, b) ((a) > (b) ? (a) : (b))
@@ -18,6 +25,7 @@ UI_Graph1_t UI_Graph1;
 UI_Graph2_t UI_Graph2;
 UI_Graph5_t UI_Graph5;
 UI_Graph7_t UI_Graph7;
+UI_Graph5_t UI_Graph5_Ar;
 UI_String_t UI_String;
 UI_String_t UI_String1;
 UI_String_t UI_String2;
@@ -439,6 +447,7 @@ void referee_usart_task()
 		UI_Draw_Arc(&UI_Graph7.Graphic[2], "108", UI_Graph_Add, 2, UI_Color_White, 0, 360, 5, 150, 690, 15, 15);
 		UI_Draw_Arc(&UI_Graph7.Graphic[3], "109", UI_Graph_Add, 2, UI_Color_White, 0, 360, 5, 150, 740, 15, 15);
 		UI_Draw_Arc(&UI_Graph7.Graphic[4], "110", UI_Graph_Add, 2, UI_Color_Green, 0, 360, 4, 960, 540, 15, 15);
+
 		UI_Draw_Line(&UI_Graph7.Graphic[5], "111", UI_Graph_Add, 2, UI_Color_Yellow, 2, 1400, 640, 1400, 685);			 // 绘制底盘姿态线  //初始直线
 		UI_Draw_Float(&UI_Graph7.Graphic[6], "112", UI_Graph_Add, 2, UI_Color_Yellow, 20, 2, 3, 140, 650, supercap_per); // 电容容量
 		UI_PushUp_Graphs(7, &UI_Graph7, Robot_ID_Current);
@@ -465,6 +474,15 @@ void referee_usart_task()
 		UI_Draw_String(&UI_String3.String, "307", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 750, "cang"); // 弹舱
 		UI_PushUp_String(&UI_String3, Robot_ID_Current);
 	}
+	if (UI_PushUp_Counter % 181 == 0) // 动态UI预绘制 字符串4
+	{
+		UI_Draw_String(&UI_String.String, "308", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 800, "fire"); // shoot
+		UI_PushUp_String(&UI_String, Robot_ID_Current);
+	}
+	if (UI_PushUp_Counter % 191 == 0)
+	{
+		UI_Draw_Arc(&UI_Graph5_Ar.Graphic[0], "113", UI_Graph_Add, 2, UI_Color_White, 0, 360, 5, 150, 790, 15, 15); // fire
+	}
 
 	//		if(UI_PushUp_Counter %181 == 0) //动态UI预绘制 电容电量  底盘姿态线
 	//		{
@@ -475,7 +493,14 @@ void referee_usart_task()
 
 	if (UI_PushUp_Counter % 21 == 0) // 动态UI更新 圆圈位置和颜色
 	{
-
+		if(shoot_status==SHOOT_OFF)
+		{
+			UI_Draw_Arc(&UI_Graph5_Ar.Graphic[0], "113", UI_Graph_Add, 2, UI_Color_White, 0, 360, 5, 150, 790, 15, 15); // fire off
+		}
+		else if(shoot_status==SHOOT_ON)
+		{
+			UI_Draw_Arc(&UI_Graph5_Ar.Graphic[0], "113", UI_Graph_Add, 2, UI_Color_Green, 0, 360, 5, 200, 790, 15, 15); // fire on
+		}
 		if (vision_mode == 1)
 		{
 			UI_Draw_Arc(&UI_Graph7.Graphic[0], "106", UI_Graph_Change, 2, UI_Color_White, 0, 360, 5, 150, 590, 15, 15); // vision_off

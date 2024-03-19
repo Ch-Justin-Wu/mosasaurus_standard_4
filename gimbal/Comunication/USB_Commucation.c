@@ -98,6 +98,7 @@ void cdc_vcp_data_rx(uint8_t *buf, uint32_t Len)
 
       // 自瞄标志位
       vision_sent.Control_priority = pack_rx.UP_flag;
+      vision_sent.rx_cnt++;
 
       vision_sent.yaw.target_angle = gimbal_y.auto_aim_angle;
       vision_sent.pitch.target_angle = gimbal_p.auto_aim_angle;

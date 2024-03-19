@@ -1,4 +1,5 @@
 #include "tim3_cnt_task.h"
+#include "vision_task.h"
 #include "chassis_task.h"
 #include "gimbal_task.h"
 #include "shoot_task.h"
@@ -14,6 +15,8 @@
 #include "USB_Commucation.h"
 
 uint8_t buzzer_flag;
+
+extern VISION_GET_t vision_sent;
 extern VISION_t vision_mode;
 extern float vision_yaw, vision_pitch; // 定点位置
 int time_count = 0, count_2 = 0, time_count_2 = 0;
@@ -26,8 +29,7 @@ extern uint8_t rc_offline_flag;
 
 extern shoot_status_e shoot_status;
 
-
-uint8_t rc_offline_check(void);
+static uint8_t offline_check(void);
 
 // 0.1ms
 int psc = 49;
@@ -54,9 +56,10 @@ void TIM3_CNT_TASK()
 		{
 			Gimbal_Task();
 			shoot_task();
-			USB_TX();
+			USB_TX();//向上位机发送数据
+			
 			// canTX_UPPER_COMPUTER(); // 向上位机发送数据
-			receive_upper_data();
+			//receive_upper_data();
 			//	 DMA_Send();  旧的上位机通讯
 		}
 		if (time_count % 7 == 0)
@@ -81,13 +84,13 @@ void TIM3_CNT_TASK()
 	}
 	if (htim->Instance == TIM5)
 	{
-		static uint16_t rc_tim_cnt = 0;
-		// 遥控器离线检测
+		static uint8_t rc_tim_cnt = 0;
+		// 离线检测
 		rc_tim_cnt++;
 		if (rc_tim_cnt >= 35)
 		{
 			rc_tim_cnt = 0;
-			rc_offline_flag = rc_offline_check();
+			rc_offline_flag = offline_check();
 		}
 
 		count_2++;
@@ -109,9 +112,26 @@ void TIM3_CNT_TASK()
 // 遥控器离线检测
 // 遥控器有数据发过来时会更新rc_update_cnt
 // 当rc_update_cnt和rc_last_update_cnt相等时，说明遥控器可能离线
-uint8_t rc_offline_check(void)
+static uint8_t offline_check(void)
 {
+	// 自瞄
+	if (vision_sent.rx_cnt == vision_sent.rx_last_cnt)
+	{
+		vision_sent.offline_cnt++;
+	}
+	else
+	{
+		vision_sent.offline_cnt = 0;
+	}
+	if (vision_sent.offline_cnt >= 10)
+	{
+		vision_sent.Control_priority = 0;
+		vision_sent.rx_cnt = 0;
+		vision_sent.rx_last_cnt = 0;
+		vision_sent.offline_cnt = 0;
+	}
 
+	// 遥控器
 	if (rc_update_cnt == rc_last_update_cnt)
 	{
 		rc_offline_cnt++;
@@ -123,7 +143,7 @@ uint8_t rc_offline_check(void)
 	if (rc_offline_cnt >= 10)
 	{
 		control_mode = KEY_OFF;
-		
+
 		rc_ctrl.rc.ch[0] = 0;
 		rc_ctrl.rc.ch[1] = 0;
 		rc_ctrl.rc.ch[2] = 0;
@@ -147,6 +167,7 @@ uint8_t rc_offline_check(void)
 	}
 
 	rc_last_update_cnt = rc_update_cnt;
+	vision_sent.rx_last_cnt = vision_sent.rx_cnt;
 	return 0;
 }
 
