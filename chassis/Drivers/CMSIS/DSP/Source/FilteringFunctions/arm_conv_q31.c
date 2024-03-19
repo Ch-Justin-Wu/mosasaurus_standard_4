@@ -44,7 +44,6 @@
   @param[in]     pSrcB      points to the second input sequence
   @param[in]     srcBLen    length of the second input sequence
   @param[out]    pDst       points to the location where the output result is written.  Length srcALen+srcBLen-1.
-  @return        none
 
   @par           Scaling and Overflow Behavior
                    The function is implemented using an internal 64-bit accumulator.
@@ -83,6 +82,7 @@ void arm_conv_q31(
     int32_t   block1, block2, block3;
     uint32_t  vddupStartIdx = 3;
     uint32x4_t decrIdxVec = vddupq_u32(vddupStartIdx, 1);
+
 
     if (srcALen < srcBLen)
     {
@@ -219,7 +219,6 @@ void arm_conv_q31(
         *pDst++ = (q31_t) acc;
         pA++;
     }
-
 }
 
 #else

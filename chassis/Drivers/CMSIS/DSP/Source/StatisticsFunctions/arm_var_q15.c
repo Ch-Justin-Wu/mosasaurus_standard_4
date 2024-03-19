@@ -42,7 +42,6 @@
   @param[in]     pSrc       points to the input vector
   @param[in]     blockSize  number of samples in input vector
   @param[out]    pResult    variance value returned here
-  @return        none
 
   @par           Scaling and Overflow Behavior
                    The function is implemented using a 64-bit internal accumulator.
@@ -111,10 +110,10 @@ void arm_var_q15(
 
     /* Compute Mean of squares of the input samples
      * and then store the result in a temporary variable, meanOfSquares. */
-    meanOfSquares = arm_div_q63_to_q31(sumOfSquares, (blockSize - 1U));
+    meanOfSquares = arm_div_int64_to_int32(sumOfSquares, (blockSize - 1U));
 
     /* Compute square of mean */
-    squareOfMean = arm_div_q63_to_q31((q63_t)sum * sum, (q31_t)(blockSize * (blockSize - 1U)));
+    squareOfMean = arm_div_int64_to_int32((q63_t)sum * sum, (q31_t)(blockSize * (blockSize - 1U)));
 
     /* mean of the squares minus the square of the mean. */
     *pResult = (meanOfSquares - squareOfMean) >> 15;

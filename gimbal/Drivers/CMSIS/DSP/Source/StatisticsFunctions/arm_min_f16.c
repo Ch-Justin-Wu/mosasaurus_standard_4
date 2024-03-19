@@ -51,7 +51,6 @@
   @param[in]     blockSize  number of samples in input vector
   @param[out]    pResult    minimum value returned here
   @param[out]    pIndex     index of minimum value returned here
-  @return        none
  */
 
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
@@ -165,7 +164,7 @@ void arm_min_f16(
     minVal = *pSrc++;
 
     /* compare for the minimum value */
-    if (out > minVal)
+    if ((_Float16)out > (_Float16)minVal)
     {
       /* Update the minimum value and it's index */
       out = minVal;
@@ -173,21 +172,21 @@ void arm_min_f16(
     }
 
     minVal = *pSrc++;
-    if (out > minVal)
+    if ((_Float16)out > (_Float16)minVal)
     {
       out = minVal;
       outIndex = index + 2U;
     }
 
     minVal = *pSrc++;
-    if (out > minVal)
+    if ((_Float16)out > (_Float16)minVal)
     {
       out = minVal;
       outIndex = index + 3U;
     }
 
     minVal = *pSrc++;
-    if (out > minVal)
+    if ((_Float16)out > (_Float16)minVal)
     {
       out = minVal;
       outIndex = index + 4U;
@@ -215,7 +214,7 @@ void arm_min_f16(
     minVal = *pSrc++;
 
     /* compare for the minimum value */
-    if (out > minVal)
+    if ((_Float16)out > (_Float16)minVal)
     {
       /* Update the minimum value and it's index */
       out = minVal;

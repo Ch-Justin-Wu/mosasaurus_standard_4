@@ -32,10 +32,7 @@
   @ingroup groupMatrix
  */
 
-/**
-  @defgroup MatrixInit Matrix Initialization
- 
- */
+
 
 /**
   @addtogroup MatrixInit
@@ -48,7 +45,6 @@
   @param[in]     nRows     number of rows in the matrix
   @param[in]     nColumns  number of columns in the matrix
   @param[in]     pData     points to the matrix data array
-  @return        none
  */
 
 void arm_mat_init_q31(

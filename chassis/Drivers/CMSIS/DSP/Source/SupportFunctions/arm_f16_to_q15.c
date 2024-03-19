@@ -45,7 +45,6 @@
   @param[in]     pSrc       points to the f16 input vector
   @param[out]    pDst       points to the Q15 output vector
   @param[in]     blockSize  number of samples in each vector
-  @return        none
 
   @par           Details
                    The equation used for the conversion process is:
@@ -124,8 +123,8 @@ void arm_f16_to_q15(
          * convert from float to Q31 and then store the results in the destination buffer
          */
         in = *pIn++;
-        in = (in * 32768.0);
-        in += in > 0.0 ? 0.5 : -0.5;
+        in = ((_Float16)in * (_Float16)32768.0f16);
+        in += (_Float16)in > 0.0f16 ? 0.5f16 : -0.5f16;
         *pDst++ = clip_q31_to_q15((q31_t) (in));
 
 #else

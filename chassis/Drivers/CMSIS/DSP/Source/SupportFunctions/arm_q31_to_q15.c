@@ -42,7 +42,6 @@
   @param[in]     pSrc       points to the Q31 input vector
   @param[out]    pDst       points to the Q15 output vector
   @param[in]     blockSize  number of samples in each vector
-  @return        none
 
   @par           Details
                    The equation used for the conversion process is:
@@ -58,7 +57,7 @@ void arm_q31_to_q15(
 {
     uint32_t  blkCnt;           /* loop counters */
     q31x4x2_t tmp;
-    q15x8_t vecDst;
+    q15x8_t vecDst = { 0 };
     q31_t const *pSrcVec;
 
 

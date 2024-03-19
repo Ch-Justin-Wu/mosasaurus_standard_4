@@ -42,8 +42,7 @@
   @param[in]     pSrcA       points to the first input vector
   @param[in]     pSrcB       points to the second input vector
   @param[in]     blockSize   number of samples in input vector
-  @param[out]    result      mean square error
-  @return        none
+  @param[out]    pResult      mean square error
  */
 
 #if !defined(ARM_MATH_AUTOVECTORIZE)
@@ -55,7 +54,7 @@ void arm_mse_f32(
     const float32_t * pSrcA,
     const float32_t * pSrcB,
     uint32_t    blockSize,
-    float32_t * result)
+    float32_t * pResult)
 
 {
     float32x4_t vecA, vecB;
@@ -98,7 +97,7 @@ void arm_mse_f32(
     sum = vecAddAcrossF32Mve(vecSum);
 
     /* Store result in destination buffer */
-    *result = sum / blockSize;
+    *pResult = sum / blockSize;
 
 }
 
@@ -109,7 +108,7 @@ void arm_mse_f32(
     const float32_t * pSrcA,
     const float32_t * pSrcB,
     uint32_t    blockSize,
-    float32_t * result)
+    float32_t * pResult)
 
 {
     float32x4_t vecA, vecB;
@@ -163,7 +162,7 @@ void arm_mse_f32(
     }
     
     /* Store result in destination buffer */
-    *result = sum / blockSize;
+    *pResult = sum / blockSize;
 
 }
 #endif
@@ -179,7 +178,7 @@ void arm_mse_f32(
     const float32_t * pSrcA,
     const float32_t * pSrcB,
     uint32_t    blockSize,
-    float32_t * result)
+    float32_t * pResult)
 
 {
   uint32_t blkCnt;                               /* Loop counter */
@@ -237,7 +236,7 @@ void arm_mse_f32(
   }
 
   /* Store result in destination buffer */
-  *result = sum / blockSize;
+  *pResult = sum / blockSize;
 }
 
 #endif /* end of test for vector instruction availability */

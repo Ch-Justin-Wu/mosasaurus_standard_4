@@ -45,7 +45,6 @@
   @param[out]    pOut      points to the block of output data
   @param[out]    pErr      points to the block of error data
   @param[in]     blockSize number of samples to process
-  @return        none
 
   @par           Scaling and Overflow Behavior
                    The function is implemented using a 64-bit internal accumulator.
@@ -116,6 +115,7 @@ void arm_lms_norm_q15(
     /* Update the energy calculation */
     energy -= (((q31_t) x0 * (x0)) >> 15);
     energy += (((q31_t) in * (in)) >> 15);
+    energy = (q15_t) __SSAT(energy, 16);
 
     /* Set the accumulator to zero */
     acc = 0;

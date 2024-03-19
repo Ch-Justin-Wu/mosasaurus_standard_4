@@ -41,7 +41,27 @@
  *
  * Multiplies two matrices.
  *
- * \image html MatrixMultiplication.gif "Multiplication of two 3 x 3 matrices"
+ * @par Multiplication of two 3x3 matrices:
+ * 
+ * \f[
+ * \begin{pmatrix}
+ *  a_{1,1} & a_{1,2} & a_{1,3} \\
+ *  a_{2,1} & a_{2,2} & a_{2,3} \\
+ *  a_{3,1} & a_{3,2} & a_{3,3} \\
+ * \end{pmatrix}
+ * 
+ * \begin{pmatrix}
+ *  b_{1,1} & b_{1,2} & b_{1,3} \\
+ *  b_{2,1} & b_{2,2} & b_{2,3} \\
+ *  b_{3,1} & b_{3,2} & b_{3,3} \\
+ * \end{pmatrix}
+ * =
+ * \begin{pmatrix}
+ *  a_{1,1} b_{1,1}+a_{1,2} b_{2,1}+a_{1,3} b_{3,1} & a_{1,1} b_{1,2}+a_{1,2} b_{2,2}+a_{1,3} b_{3,2} & a_{1,1} b_{1,3}+a_{1,2} b_{2,3}+a_{1,3} b_{3,3} \\
+ *  a_{2,1} b_{1,1}+a_{2,2} b_{2,1}+a_{2,3} b_{3,1} & a_{2,1} b_{1,2}+a_{2,2} b_{2,2}+a_{2,3} b_{3,2} & a_{2,1} b_{1,3}+a_{2,2} b_{2,3}+a_{2,3} b_{3,3} \\
+ *  a_{3,1} b_{1,1}+a_{3,2} b_{2,1}+a_{3,3} b_{3,1} & a_{3,1} b_{1,2}+a_{3,2} b_{2,2}+a_{3,3} b_{3,2} & a_{3,1} b_{1,3}+a_{3,2} b_{2,3}+a_{3,3} b_{3,3} \\
+ * \end{pmatrix}
+ * \f]
 
  * Matrix multiplication is only defined if the number of columns of the
  * first matrix equals the number of rows of the second matrix.
@@ -541,7 +561,7 @@ arm_status arm_mat_mult_f32(
   uint16_t numColsA = pSrcA->numCols;            /* number of columns of input matrix A */
 
 
-  uint16_t col, i = 0U, j, row = numRowsA, rowCnt, colCnt;      /* loop counters */
+  uint32_t col, i = 0U, j, row = numRowsA, rowCnt, colCnt;      /* loop counters */
   arm_status status;                             /* status of matrix multiplication */
 
   float32x4_t a0V, a1V, a2V, a3V, a4V, a5V, a6V, a7V;

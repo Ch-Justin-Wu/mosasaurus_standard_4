@@ -32,18 +32,6 @@
   @ingroup groupMath
  */
 
-/**
-  @defgroup BasicDotProd Vector Dot Product
-
-  Computes the dot product of two vectors.
-  The vectors are multiplied element-by-element and then summed.
-
-  <pre>
-      sum = pSrcA[0]*pSrcB[0] + pSrcA[1]*pSrcB[1] + ... + pSrcA[blockSize-1]*pSrcB[blockSize-1]
-  </pre>
-
-  There are separate functions for floating-point, Q7, Q15, and Q31 data types.
- */
 
 /**
   @addtogroup BasicDotProd
@@ -56,7 +44,6 @@
   @param[in]     pSrcB      points to the second input vector.
   @param[in]     blockSize  number of samples in each vector.
   @param[out]    result     output result returned here.
-  @return        none
  */
 
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)

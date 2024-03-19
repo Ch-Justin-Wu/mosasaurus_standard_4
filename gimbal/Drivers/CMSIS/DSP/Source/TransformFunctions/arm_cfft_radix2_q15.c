@@ -46,12 +46,9 @@ void arm_bitreversal_q15(
         uint16_t bitRevFactor,
   const uint16_t * pBitRevTab);
 
-/**
-  @ingroup groupTransforms
- */
 
 /**
-  @addtogroup ComplexFFT
+  @addtogroup ComplexFFTDeprecated
   @{
  */
 
@@ -60,7 +57,6 @@ void arm_bitreversal_q15(
   @deprecated    Do not use this function. It has been superseded by \ref arm_cfft_q15 and will be removed in the future.
   @param[in]     S    points to an instance of the fixed-point CFFT/CIFFT structure
   @param[in,out] pSrc points to the complex data buffer of size <code>2*fftLen</code>. Processing occurs in-place
-  @return        none
  */
 
 void arm_cfft_radix2_q15(
@@ -81,7 +77,7 @@ void arm_cfft_radix2_q15(
 }
 
 /**
-  @} end of ComplexFFT group
+  @} end of ComplexFFTDeprecated group
  */
 
 void arm_radix2_butterfly_q15(

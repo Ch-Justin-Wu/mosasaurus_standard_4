@@ -42,7 +42,6 @@
   @param[in]     pSrc       points to the input vector
   @param[in]     blockSize  number of samples in input vector
   @param[out]    pResult    mean value returned here
-  @return        none
 
   @par           Scaling and Overflow Behavior
                    The function is implemented using a 64-bit internal accumulator.
@@ -88,7 +87,7 @@ void arm_mean_q31(
       blkCnt --;
     }
 
-    *pResult = arm_div_q63_to_q31(sum, blockSize);
+    *pResult = arm_div_int64_to_int32(sum, blockSize);
 }
 #else
 void arm_mean_q31(

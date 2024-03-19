@@ -49,7 +49,6 @@
   @param[in]     pInputQuaternions            points to the input vector of quaternions
   @param[out]    pInverseQuaternions          points to the output vector of inverse quaternions
   @param[in]     nbQuaternions                number of quaternions in each vector
-  @return        none
  */
 
 
@@ -96,10 +95,10 @@ void arm_quaternion_inverse_f32(const float32_t *pInputQuaternions,
    for(i=0; i < nbQuaternions; i++)
    {
 
-      temp = SQ(pInputQuaternions[4 * i + 0]) +
-             SQ(pInputQuaternions[4 * i + 1]) +
-             SQ(pInputQuaternions[4 * i + 2]) +
-             SQ(pInputQuaternions[4 * i + 3]);
+      temp = ARM_SQ(pInputQuaternions[4 * i + 0]) +
+             ARM_SQ(pInputQuaternions[4 * i + 1]) +
+             ARM_SQ(pInputQuaternions[4 * i + 2]) +
+             ARM_SQ(pInputQuaternions[4 * i + 3]);
 
       pInverseQuaternions[4 * i + 0] = pInputQuaternions[4 * i + 0] / temp;
       pInverseQuaternions[4 * i + 1] = -pInputQuaternions[4 * i + 1] / temp;

@@ -175,12 +175,15 @@ void merge_rfft_f64(
 }
 
 /**
-  @ingroup groupTransforms
+  @ingroup RealFFT
 */
 
+/**
+  @defgroup RealFFTF64 Real FFT F64 Functions
+*/
 
 /**
-  @addtogroup RealFFT
+  @addtogroup RealFFTF64
   @{
 */
 
@@ -192,7 +195,6 @@ void merge_rfft_f64(
   @param[in]     ifftFlag
                    - value = 0: RFFT
                    - value = 1: RIFFT
-  @return        none
 */
 
 void arm_rfft_fast_f64(
@@ -224,5 +226,5 @@ void arm_rfft_fast_f64(
 }
 
 /**
-* @} end of RealFFT group
+* @} end of RealFFTF64 group
 */

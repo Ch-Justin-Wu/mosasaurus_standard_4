@@ -33,20 +33,11 @@
 #include <limits.h>
 #include <math.h>
 
-/**
- * @defgroup groupSVM SVM Functions
- *
- */
 
 /**
   @ingroup groupSVM
  */
 
-/**
-  @defgroup linearsvm Linear SVM
-
-  Linear SVM classifier
- */
 
 /**
  * @addtogroup linearsvm
@@ -67,7 +58,6 @@
  * @param[in]    dualCoefficients       Array of dual coefficients
  * @param[in]    supportVectors         Array of support vectors
  * @param[in]    classes                Array of 2 classes ID
- * @return none.
  *
  */
 

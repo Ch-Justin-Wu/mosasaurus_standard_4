@@ -45,7 +45,6 @@
  * @param[in]    S          Pointer to an instance of the linear SVM structure.
  * @param[in]    in         Pointer to input vector
  * @param[out]   pResult    Decision value
- * @return none.
  *
  */
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
@@ -298,9 +297,9 @@ void arm_svm_linear_predict_f16(
         dot=0;
         for(j=0; j < S->vectorDimension; j++)
         {
-            dot = dot + in[j]* *pSupport++;
+            dot = (_Float16)dot + (_Float16)in[j]* (_Float16)*pSupport++;
         }
-        sum += S->dualCoefficients[i] * dot;
+        sum += (_Float16)S->dualCoefficients[i] * (_Float16)dot;
     }
     *pResult=S->classes[STEP(sum)];
 }
