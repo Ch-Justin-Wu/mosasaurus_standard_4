@@ -9,9 +9,11 @@
 #include "upper_computer.h"
 #include "tim.h"
 #include "referee.h"
+#include "main.h"
 
 extern shoot_status_e shoot_status;
 extern ext_referee_rc_data_t referee_rc_data_t;
+extern uint16_t set_compare;
 
 KEY_CONTROL control_mode = KEY_OFF;	 // 控制模式
 FIGHT_CONTROL fight_mode = FIGHT_ON; // 战斗模式
@@ -63,6 +65,11 @@ void control_mode_judge(void)
 		control_mode = KEY_OFF;
 	if (KEY_board || MOUSE_x || MOUSE_y || MOUSE_z || RFR_KEY_board || RFR_MOUSE_X || RFR_MOUSE_Y || RFR_MOUSE_Z)
 		control_mode = KEY_ON;
+
+	if (control_mode == KEY_ON)
+	{
+		__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_3, set_compare);
+	}
 }
 
 //
@@ -448,7 +455,7 @@ void judge_f(void)
 	}
 }
 
-extern uint16_t set_compare;
+
 void judge_e(void)
 {
 	if (KEY_board & E_key)
@@ -590,7 +597,6 @@ void judge_ctrl(void)
 					shoot_status = SHOOT_ON;
 				}
 			}
-			
 		}
 		time_count_ctrl = 0;
 	}

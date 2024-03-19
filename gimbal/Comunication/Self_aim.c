@@ -1,8 +1,9 @@
 #include "Self_aim.h"
 #include "arm_math.h"
+extern float shoot_speed;
 
 const float g = 12.0f;        // 重力加速度
-const float bullet_v = 40.0f; // 子弹速度
+float bullet_v = 30.0f; // 子弹速度
 /**
  * 计算给定向量的偏航角（yaw）。
  *
@@ -54,10 +55,14 @@ float calc_pitch(float x, float y, float z)
     float pitch =0.0f;
     // 根据 x、y 分量计算的平面投影的模长和 z 分量计算的反正切值，得到弧度制的俯仰角
      arm_atan2_f32(z, sqrtf(x * x + y * y),&pitch);
-
+    if(shoot_speed>10.0f)
+    {
+        bullet_v=shoot_speed;
+    }
     // 使用重力加速度模型迭代更新俯仰角
     for (size_t i = 0; i < 20; i++)
     {
+        
         // float v_x = bullet_v * cosf(pitch);
         // float v_y = bullet_v * sinf(pitch);
         float v_x = bullet_v * arm_cos_f32(pitch);
