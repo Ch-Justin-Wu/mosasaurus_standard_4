@@ -3,6 +3,8 @@
 #include "bsp_math.h"
 #include "vision_task.h"
 #include "rc_task.h"
+#include "math.h"
+
 #define yaw_angle gimbal_y.add_angle
 #define pitch_angle gimbal_p.add_angle
 
@@ -20,10 +22,10 @@ int8_t chassis_imu_data[8];
 static void gimbal_control_behaviour_mode(void);
 static void gimbal_zero_force_control(float *yaw, float *pitch);
 static void gimbal_init_control(float *yaw, float *pitch);
-static void IMU_yaw_angle_limit(void);
-static void CAN_yaw_angle_limit(void);
-static void IMU_pitch_angle_limit(void);
-static void CAN_pitch_angle_limit(void);
+//static void IMU_yaw_angle_limit(void);
+//static void CAN_yaw_angle_limit(void);
+//static void IMU_pitch_angle_limit(void);
+//static void CAN_pitch_angle_limit(void);
 void fly_pitch_judge(void);
 void chassis_imu_data_get(void);
 // static int deadline_judge(float a,int flag);
@@ -32,14 +34,14 @@ int deadline_judge(float a, int flag)
 {
 	if (flag == 2)
 	{
-		if (abs(a) <= PITCH_DEADLINE)
+		if (fabsf(a) <= PITCH_DEADLINE)
 			return 0;
 		else
 			return 1;
 	}
 	else
 	{
-		if (abs(a) <= YAW_DEADLINE)
+		if (fabsf(a) <= YAW_DEADLINE)
 			return 0;
 		else
 			return 1;
@@ -199,46 +201,46 @@ static void gimbal_init_control(float *yaw, float *pitch)
 }
 
 // 一下都是没用到的函数
-static void IMU_yaw_angle_limit()
-{
-	float angle_basic = gimbal_y.target_angle - gimbal_y.IMU_actual_angle;
-	if (gimbal_y.IMU_actual_angle + angle_basic + yaw_angle > YAW_ANGLE_MAX)
-		if (yaw_angle > 0.0f)
-			yaw_angle = YAW_ANGLE_MAX - gimbal_y.IMU_actual_angle - angle_basic;
-	if (gimbal_y.IMU_actual_angle + angle_basic + yaw_angle < YAW_ANGLE_MIN)
-		if (yaw_angle < 0.0f)
-			yaw_angle = YAW_ANGLE_MIN - gimbal_y.IMU_actual_angle - angle_basic;
-}
+//static void IMU_yaw_angle_limit()
+//{
+//	float angle_basic = gimbal_y.target_angle - gimbal_y.IMU_actual_angle;
+//	if (gimbal_y.IMU_actual_angle + angle_basic + yaw_angle > YAW_ANGLE_MAX)
+//		if (yaw_angle > 0.0f)
+//			yaw_angle = YAW_ANGLE_MAX - gimbal_y.IMU_actual_angle - angle_basic;
+//	if (gimbal_y.IMU_actual_angle + angle_basic + yaw_angle < YAW_ANGLE_MIN)
+//		if (yaw_angle < 0.0f)
+//			yaw_angle = YAW_ANGLE_MIN - gimbal_y.IMU_actual_angle - angle_basic;
+//}
 
-static void CAN_yaw_angle_limit()
-{
-	float angle_basic = gimbal_y.target_angle - gimbal_y.CAN_actual_angle;
-	if (gimbal_y.IMU_actual_angle + angle_basic + yaw_angle > YAW_ANGLE_MAX)
-		if (yaw_angle > 0.0f)
-			yaw_angle = YAW_ANGLE_MAX - gimbal_y.CAN_actual_angle - angle_basic;
-	if (gimbal_y.CAN_actual_angle + angle_basic + yaw_angle < YAW_ANGLE_MIN)
-		if (yaw_angle < 0.0f)
-			yaw_angle = YAW_ANGLE_MIN - gimbal_y.CAN_actual_angle - angle_basic;
-}
+//static void CAN_yaw_angle_limit()
+//{
+//	float angle_basic = gimbal_y.target_angle - gimbal_y.CAN_actual_angle;
+//	if (gimbal_y.IMU_actual_angle + angle_basic + yaw_angle > YAW_ANGLE_MAX)
+//		if (yaw_angle > 0.0f)
+//			yaw_angle = YAW_ANGLE_MAX - gimbal_y.CAN_actual_angle - angle_basic;
+//	if (gimbal_y.CAN_actual_angle + angle_basic + yaw_angle < YAW_ANGLE_MIN)
+//		if (yaw_angle < 0.0f)
+//			yaw_angle = YAW_ANGLE_MIN - gimbal_y.CAN_actual_angle - angle_basic;
+//}
 
-static void IMU_pitch_angle_limit()
-{
-	float angle_basic = gimbal_p.target_angle - gimbal_p.IMU_actual_angle;
-	if (gimbal_p.IMU_actual_angle + angle_basic + pitch_angle > YAW_ANGLE_MAX)
-		if (pitch_angle > 0.0f)
-			pitch_angle = YAW_ANGLE_MAX - gimbal_p.IMU_actual_angle - angle_basic;
-	if (gimbal_p.IMU_actual_angle + angle_basic + pitch_angle < YAW_ANGLE_MIN)
-		if (pitch_angle < 0.0f)
-			pitch_angle = YAW_ANGLE_MIN - gimbal_p.IMU_actual_angle - angle_basic;
-}
+//static void IMU_pitch_angle_limit()
+//{
+//	float angle_basic = gimbal_p.target_angle - gimbal_p.IMU_actual_angle;
+//	if (gimbal_p.IMU_actual_angle + angle_basic + pitch_angle > YAW_ANGLE_MAX)
+//		if (pitch_angle > 0.0f)
+//			pitch_angle = YAW_ANGLE_MAX - gimbal_p.IMU_actual_angle - angle_basic;
+//	if (gimbal_p.IMU_actual_angle + angle_basic + pitch_angle < YAW_ANGLE_MIN)
+//		if (pitch_angle < 0.0f)
+//			pitch_angle = YAW_ANGLE_MIN - gimbal_p.IMU_actual_angle - angle_basic;
+//}
 
-static void CAN_pitch_angle_limit()
-{
-	float angle_basic = gimbal_p.target_angle - gimbal_p.CAN_actual_angle;
-	if (gimbal_p.CAN_actual_angle + angle_basic + pitch_angle > YAW_ANGLE_MAX)
-		if (pitch_angle > 0.0f)
-			pitch_angle = YAW_ANGLE_MAX - gimbal_p.CAN_actual_angle - angle_basic;
-	if (gimbal_p.CAN_actual_angle + angle_basic + pitch_angle < YAW_ANGLE_MIN)
-		if (pitch_angle < 0.0f)
-			pitch_angle = YAW_ANGLE_MIN - gimbal_p.CAN_actual_angle - angle_basic;
-}
+//static void CAN_pitch_angle_limit()
+//{
+//	float angle_basic = gimbal_p.target_angle - gimbal_p.CAN_actual_angle;
+//	if (gimbal_p.CAN_actual_angle + angle_basic + pitch_angle > YAW_ANGLE_MAX)
+//		if (pitch_angle > 0.0f)
+//			pitch_angle = YAW_ANGLE_MAX - gimbal_p.CAN_actual_angle - angle_basic;
+//	if (gimbal_p.CAN_actual_angle + angle_basic + pitch_angle < YAW_ANGLE_MIN)
+//		if (pitch_angle < 0.0f)
+//			pitch_angle = YAW_ANGLE_MIN - gimbal_p.CAN_actual_angle - angle_basic;
+//}

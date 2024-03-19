@@ -54,7 +54,7 @@ enum
 {
 	OPEN,
 	CLOSE = 1,
-} bullet_state = 1;
+} bullet_state = CLOSE;
 
 int8_t us;
 void Gimbal_Task(void)

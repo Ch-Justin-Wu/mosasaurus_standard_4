@@ -5,7 +5,7 @@
 #include "stdio.h"
 #include "delay.h"
 #include "usbd_desc.h"
-#include "stdbool.h"
+
 #include "vision_task.h"
 #include "gimbal_task.h"
 

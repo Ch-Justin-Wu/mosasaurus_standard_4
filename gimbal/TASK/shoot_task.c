@@ -32,7 +32,7 @@ float FricLeftSpeed[6] = {8.0f, 0.0f, 0.0f, 10000.0f, 0.0f, 0}; // ×óÄ¦²ÁÂÖËÙ¶È»
 
 float FricRightSpeed[6] = {8.0f, 0.0f, 0.0f, 10000.0f, 0.0f, 0}; // ÓÒÄ¦²ÁÂÖËÙ¶È»·
 
-static float abs_f(float a);
+//static float abs_f(float a);
 
 void trigger_angle_set(void);
 // ¸üĞÂ·¢×Óµ¯¸öÊı
@@ -127,12 +127,12 @@ void fric_speed_control(void)
 			}
 			else if (fricspeed == FRIC_MAX) // 30
 			{
-				if (((speed_limit - speed_average < 0.7f) && (speed_limit >= 10.0f)) || (shoot_speed >= 29.5))
+				if (((speed_limit - speed_average < 0.7f) && (speed_limit >= 10.0f)) || (shoot_speed >= 29.5f))
 				{
 					SHOOT_LEFT_FRIC_SPEED_MAX += 40;
 					SHOOT_RIGHT_FRIC_SPEED_MAX -= 40;
 				}
-				else if (((speed_limit - speed_average > 1.3f) && (speed_limit >= 10.0f)) || (shoot_speed <= 20.0))
+				else if (((speed_limit - speed_average > 1.3f) && (speed_limit >= 10.0f)) || (shoot_speed <= 20.0f))
 				{
 					SHOOT_LEFT_FRIC_SPEED_MAX -= 25;
 					SHOOT_RIGHT_FRIC_SPEED_MAX += 25;
@@ -179,12 +179,12 @@ void shoot_init(void)
 	rc_shoot.right_fric.target_speed = 0;
 }
 
-static float abs_f(float a)
-{
-	if (a < 0)
-		a = -1.0f * a;
-	return a;
-}
+//static float abs_f(float a)
+//{
+//	if (a < 0)
+//		a = -1.0f * a;
+//	return a;
+//}
 
 int trigger_round;
 

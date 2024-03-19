@@ -338,7 +338,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32F407xx,ARM_MATH_LOOPUNROLL</Define>
+              <Define>USE_HAL_DRIVER,STM32F407xx,ARM_MATH_LOOPUNROLL,ARM_MATH_CM4,ARM_MATH_ROUNDING,ARM_MATH_MATRIX_CHECK</Define>
               <Undefine></Undefine>
               <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/CMSIS/DSP/Include;..\Drivers\CMSIS\DSP\Include\dsp;../Drivers/CMSIS/DSP/Source/FastMathFunctions;..\BSP;../components/algorithm;../components/devices;../components/support;../APP/pid;../APP/chassis_move;../APP/chassis_task;../APP/remote_control;../APP/referee;../APP/struct_typedef;../APP/protocol;../APP/fuzzy_pid;../APP/supercap;../APP/lqr;../APP/imu;../APP/led;../APP/MY_anonymous;../APP/Kinematics;../APP/referee_UI;../TASK</IncludePath>
             </VariousControls>
