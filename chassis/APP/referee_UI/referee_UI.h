@@ -70,5 +70,5 @@
 
 
 extern int16_t vision_mode;
-void UI_Display(void);
+void referee_usart_task();
 #endif

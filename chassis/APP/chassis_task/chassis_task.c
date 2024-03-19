@@ -24,6 +24,11 @@ void CHASSIS_TASK()
 
 	INS_task();
 	Time_Service_Task();
+	if (time_count%3==0)
+	{
+		referee_usart_task();//UI
+	}
+	
 	if (time_count % 13 == 0 && start_flag == 1)
 	{
 		// 校准imu
@@ -60,7 +65,7 @@ void CHASSIS_TASK()
 			IMU_cnt++;
 	}
 	// 超级电容
-	supercap(S_Count, MS_Count);
+	//supercap(S_Count, MS_Count);
 }
 void Time_Service_Task(void)
 {
