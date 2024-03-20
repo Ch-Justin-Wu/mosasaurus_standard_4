@@ -14,9 +14,18 @@ typedef enum shoot_status_e
 	SHOOT_OFF = 0,
 	SHOOT_ON,
 } shoot_status_e;
+typedef enum shoot_type_e
+{
+	NO_SHOOT = 0,
+	ONE_SHOOT,
+	FIVE_SHOOT,
+	TEN_SHOOT,
+} shoot_type_e;
+
 extern uint8_t shoot_status;
 extern int time2;
 extern float UI_theta;
+extern uint8_t shoot_type;
 #define Max(a, b) ((a) > (b) ? (a) : (b))
 // #define Robot_ID_Current Robot_ID_Red_Infantry3
 /* 绘制UI专用结构体 */
@@ -30,6 +39,8 @@ UI_String_t UI_String1;
 UI_String_t UI_String2;
 UI_String_t UI_String3;
 UI_String_t UI_String4;
+UI_String_t UI_String_shoot_type;
+
 UI_Graph5_t UI_Graph5_Arc;
 UI_Delete_t UI_Delete;
 uint8_t seq = 0;
@@ -455,27 +466,31 @@ void referee_usart_task()
 		UI_PushUp_Graphs(7, &UI_Graph7, Robot_ID_Current);
 	}
 
-	if (UI_PushUp_Counter % 141 == 0) // 动态UI预绘制 字符串
+	if (UI_PushUp_Counter % 141 == 0) // 动态UI预绘制
 	{
 		UI_Draw_String(&UI_String.String, "304", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 600, "auto"); // 自瞄
 		UI_PushUp_String(&UI_String, Robot_ID_Current);
 	}
-	if (UI_PushUp_Counter % 151 == 0) // 动态UI预绘制 字符串1
+	if (UI_PushUp_Counter % 146 == 0) // 动态UI预绘制
 	{
-		UI_Draw_String(&UI_String4.String, "308", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 800, "fire"); // shoot
-		UI_PushUp_String(&UI_String4, Robot_ID_Current);
-
+		UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 450, "None");
+		UI_PushUp_String(&UI_String_shoot_type, Robot_ID_Current);
 	}
-	if (UI_PushUp_Counter % 161 == 0) // 动态UI预绘制 字符串2
+	if (UI_PushUp_Counter % 151 == 0) // 动态UI预绘制
 	{
 		UI_Draw_String(&UI_String2.String, "306", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 700, "spin"); // 小陀螺
 		UI_PushUp_String(&UI_String2, Robot_ID_Current);
 	}
-
-	if (UI_PushUp_Counter % 171 == 0) // 动态UI预绘制 字符串3
+	if (UI_PushUp_Counter % 161 == 0) // 动态UI预绘制
 	{
 		UI_Draw_String(&UI_String3.String, "307", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 750, "cang"); // 弹舱
 		UI_PushUp_String(&UI_String3, Robot_ID_Current);
+	}
+
+	if (UI_PushUp_Counter % 171 == 0) // 动态UI预绘制 字符串3
+	{
+		UI_Draw_String(&UI_String4.String, "308", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 800, "fire"); // shoot
+		UI_PushUp_String(&UI_String4, Robot_ID_Current);
 	}
 
 	if (UI_PushUp_Counter % 181 == 0) // 动态UI预绘制 电容电量  底盘姿态线
@@ -492,6 +507,27 @@ void referee_usart_task()
 	if (UI_PushUp_Counter % 21 == 0) // 动态UI更新 圆圈位置和颜色
 	{
 
+		switch (shoot_type)
+		{
+		case NO_SHOOT:
+			UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Change, 2, UI_Color_White, 18, 4, 3, 38, 450, "None");
+			UI_PushUp_String(&UI_String_shoot_type, Robot_ID_Current);
+			break;
+		case ONE_SHOOT:
+			UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Change, 2, UI_Color_Green, 18, 5, 3, 38, 450, "One 1");
+			UI_PushUp_String(&UI_String_shoot_type, Robot_ID_Current);
+			break;
+		case FIVE_SHOOT:
+			UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Change, 2, UI_Color_Orange, 18, 5, 3, 38, 450, "Fiv 5");
+			UI_PushUp_String(&UI_String_shoot_type, Robot_ID_Current);
+			break;
+		case TEN_SHOOT:
+			UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Change, 2, UI_Color_Pink, 18, 6, 3, 38, 450, "Ten 10");
+			UI_PushUp_String(&UI_String_shoot_type, Robot_ID_Current);
+			break;
+		default:
+			break;
+		}
 		if (shoot_status == 0)
 		{
 			UI_Draw_Arc(&UI_Graph1_Ar.Graphic[0], "113", UI_Graph_Change, 2, UI_Color_White, 0, 360, 5, 150, 790, 15, 15); // fire off
