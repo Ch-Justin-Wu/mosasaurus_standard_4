@@ -17,6 +17,8 @@ extern float Ren;
 int shoot_times = 0;
 int One_Shoot_flag = 0;
 int Ten_Shoot_flag = 0;
+uint8_t More_shoot_flag = 0;
+
 int16_t SHOOT_LEFT_FRIC_SPEED_MAX = -7700;
 int16_t SHOOT_LEFT_FRIC_SPEED_MIN = -7000;
 int16_t SHOOT_RIGHT_FRIC_SPEED_MAX = 7700;
@@ -204,7 +206,7 @@ static void shoot_angle_clc(void)
 
 	if (rc_shoot.trigger.last_shoot_flag == 0)
 	{
-		if (One_Shoot_flag == 1 || Ten_Shoot_flag == 1)
+		if (One_Shoot_flag == 1 || Ten_Shoot_flag == 1 || More_shoot_flag == 1)
 		{
 			rc_shoot.trigger.last_shoot_flag = 1;
 			trigger_angle_set();
@@ -214,7 +216,7 @@ static void shoot_angle_clc(void)
 		}
 	}
 
-	if (One_Shoot_flag != 1 && Ten_Shoot_flag != 1)
+	if (One_Shoot_flag != 1 && Ten_Shoot_flag != 1 && More_shoot_flag != 1)
 		rc_shoot.trigger.last_shoot_flag = 0;
 }
 static void fric_pid(void)
@@ -259,12 +261,22 @@ void trigger_angle_set(void)
 				rc_shoot.trigger.target_angle -= ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
 		}
 	}
-	else // 五连发
+	else if (Ten_Shoot_flag == 1) // 五连发
 	{
 		if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
 		{
 			if (remain_bullet >= 5)
 				rc_shoot.trigger.target_angle -= ((5.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f); // 改成五连发了
+			else
+				rc_shoot.trigger.target_angle -= ((remain_bullet * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
+		}
+	}
+	else if (More_shoot_flag == 1)// 连发
+	{
+		if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
+		{
+			if (remain_bullet >= 10)
+				rc_shoot.trigger.target_angle -= ((10.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
 			else
 				rc_shoot.trigger.target_angle -= ((remain_bullet * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
 		}

@@ -10,6 +10,9 @@
 #define RE_dma_rx hdma_usart6_rx
 #define RE_dma_tx hdma_usart6_tx
 
+extern volatile uint32_t rc_update_cnt;
+extern volatile uint32_t referee_uart_rx_cnt;
+
 // 接收原始数据，为18个字节，给了36个字节长度，防止DMA传输越界
 uint8_t usart6_buf[2][USART_RX_BUF_LENGHT];
 fifo_s_t referee_fifo;
@@ -88,6 +91,8 @@ void USART6_IRQHandler(void)
 
         if ((RE_huart.hdmarx->Instance->CR & DMA_SxCR_CT) == RESET)
         {
+            rc_update_cnt++;
+            referee_uart_rx_cnt++;
             __HAL_DMA_DISABLE(RE_huart.hdmarx);
             this_time_rx_len = USART_RX_BUF_LENGHT - __HAL_DMA_GET_COUNTER(RE_huart.hdmarx);
             __HAL_DMA_SET_COUNTER(RE_huart.hdmarx, USART_RX_BUF_LENGHT);
@@ -98,6 +103,8 @@ void USART6_IRQHandler(void)
         }
         else
         {
+            rc_update_cnt++;
+            referee_uart_rx_cnt++;
             __HAL_DMA_DISABLE(RE_huart.hdmarx);
             this_time_rx_len = USART_RX_BUF_LENGHT - __HAL_DMA_GET_COUNTER(RE_huart.hdmarx);
             __HAL_DMA_SET_COUNTER(RE_huart.hdmarx, USART_RX_BUF_LENGHT);

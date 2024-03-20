@@ -12,7 +12,7 @@
 
 extern shoot_status_e shoot_status;
 extern ext_referee_rc_data_t referee_rc_data_t;
-
+extern uint8_t referee_priority_flag;
 KEY_CONTROL control_mode = KEY_OFF;	 // 控制模式
 FIGHT_CONTROL fight_mode = FIGHT_ON; // 战斗模式
 
@@ -27,6 +27,8 @@ extern enum {
 	CLOSE = 1,
 } bullet_state;
 
+static uint16_t pre_right_cnt;
+extern uint8_t More_shoot_flag;
 extern uint8_t reboot_flag;
 extern uint8_t game_status, speed_limit;
 int calibrate_start_flag = 0;
@@ -61,7 +63,7 @@ void control_mode_judge(void)
 {
 	if (rc_ctrl.rc.ch[0] != 0 || rc_ctrl.rc.ch[1] != 0 || rc_ctrl.rc.ch[2] != 0 || rc_ctrl.rc.ch[3] != 0 || rc_ctrl.rc.ch[4] != 0)
 		control_mode = KEY_OFF;
-	if (KEY_board || MOUSE_x || MOUSE_y || MOUSE_z || RFR_KEY_board || RFR_MOUSE_X || RFR_MOUSE_Y || RFR_MOUSE_Z)
+	if (referee_priority_flag || KEY_board || MOUSE_x || MOUSE_y || MOUSE_z || RFR_KEY_board || RFR_MOUSE_X || RFR_MOUSE_Y || RFR_MOUSE_Z)
 		control_mode = KEY_ON;
 }
 
@@ -176,18 +178,18 @@ void remote_control_data(void)
 	}
 	else
 		rc_sent.x_speed = 0;
-	if (deadline_judge_v(rc_ctrl.rc.ch[4]) == 0)
-	{
-		if (rc_ctrl.rc.ch[4] > 0)
-			rc_sent.r_speed = (100.0 / 660.0) * (float)(rc_ctrl.rc.ch[4]); // rc_ctrl.rc.ch[4]数据很怪
-		else if (rc_ctrl.rc.ch[4] < 0)
-			rc_sent.r_speed = (100.0 / 32000.0) * (float)(rc_ctrl.rc.ch[4]);
+	// if (deadline_judge_v(rc_ctrl.rc.ch[4]) == 0)
+	// {
+	// 	if (rc_ctrl.rc.ch[4] > 0)
+	// 		rc_sent.r_speed = (100.0 / 660.0) * (float)(rc_ctrl.rc.ch[4]); // rc_ctrl.rc.ch[4]数据很怪
+	// 	else if (rc_ctrl.rc.ch[4] < 0)
+	// 		rc_sent.r_speed = (100.0 / 32000.0) * (float)(rc_ctrl.rc.ch[4]);
 
-		if (rc_sent.r_speed > 100 || rc_sent.r_speed < -100)
-			rc_sent.r_speed = 0;
-	}
-	else
-		rc_sent.r_speed = 0;
+	// 	if (rc_sent.r_speed > 100 || rc_sent.r_speed < -100)
+	// 		rc_sent.r_speed = 0;
+	// }
+	// else
+	// 	rc_sent.r_speed = 0;
 
 	rc_sent.yaw.target_speed = limits_change(RC_YAW_SPEED_MAXX, RC_YAW_SPEED_MINN, rc_ctrl.rc.ch[2], RC_MAXX, RC_MINN);
 	rc_sent.yaw.target_angle = limits_change(RC_YAW_ANGLE_MAXX, RC_YAW_ANGLE_MINN, rc_ctrl.rc.ch[2], RC_MAXX, RC_MINN);
@@ -225,9 +227,13 @@ void key_control_data(void)
 
 	// 战斗模式判断
 	if ((KEY_board & SHIFT_key) || (RFR_KEY_board & SHIFT_key)) // 按下shift键
+	{
 		fight_mode = RUN_AWAY;
+	}
 	else
+	{
 		fight_mode = FIGHT_ON;
+	}
 	/*控制更为精细*/
 	if (fight_mode == FIGHT_ON)
 	{
@@ -264,7 +270,25 @@ void key_control_data(void)
 		}
 
 		if (MOUSE_pre_right == 1)
-			Ten_Shoot_flag = 1;
+		{
+			pre_right_cnt++;
+			if (pre_right_cnt < 285) // 1s
+			{
+				Ten_Shoot_flag = 1;
+				pre_right_cnt = 0;
+			}
+			else
+			{
+				Ten_Shoot_flag = 0;
+				pre_right_cnt = 0;
+				More_shoot_flag = 1;
+			}
+		}
+		else
+		{
+			pre_right_cnt = 0;
+			More_shoot_flag = 0;
+		}
 
 		/*       控制底盘     */
 		if (KEY_board & ws_key)
@@ -348,8 +372,27 @@ void key_control_data(void)
 			}
 			One_Shoot_flag = 1;
 		}
+
 		if (MOUSE_pre_right == 1)
-			Ten_Shoot_flag = 1;
+		{
+			pre_right_cnt++;
+			if (pre_right_cnt < 285) // 1s
+			{
+				Ten_Shoot_flag = 1;
+				pre_right_cnt = 0;
+			}
+			else
+			{
+				Ten_Shoot_flag = 0;
+				pre_right_cnt = 0;
+				More_shoot_flag = 1;
+			}
+		}
+		else
+		{
+			pre_right_cnt = 0;
+			More_shoot_flag = 0;
+		}
 		//						rc_shoot.left_fric.target_speed = -SHOOT_FRIC_SPEED_MIN;
 		//		  	rc_shoot.right_fric.target_speed = SHOOT_FRIC_SPEED_MIN;
 		/*       控制底盘     */
@@ -590,7 +633,6 @@ void judge_ctrl(void)
 					shoot_status = SHOOT_ON;
 				}
 			}
-			
 		}
 		time_count_ctrl = 0;
 	}

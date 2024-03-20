@@ -18,6 +18,10 @@ extern VISION_t vision_mode;
 extern float vision_yaw, vision_pitch; // 定点位置
 int time_count = 0, count_2 = 0, time_count_2 = 0;
 int IMU_cnt = 0, start_flag = 0;
+//图传链路
+uint32_t referee_uart_rx_last_cnt;
+extern volatile uint32_t referee_uart_rx_cnt;
+uint8_t referee_priority_flag = 0;
 
 extern uint32_t rc_update_cnt;
 extern uint32_t rc_last_update_cnt;
@@ -25,7 +29,6 @@ extern uint32_t rc_offline_cnt;
 extern uint8_t rc_offline_flag;
 
 extern shoot_status_e shoot_status;
-
 
 uint8_t rc_offline_check(void);
 
@@ -59,16 +62,22 @@ void TIM3_CNT_TASK()
 			receive_upper_data();
 			//	 DMA_Send();  旧的上位机通讯
 		}
-		if (time_count % 7 == 0)
+		if (time_count % 7 == 0)//3.5ms
 		{
 			remote_chassis();
-			control_mode_judge();
 			// 读取裁判系统
 			referee_unpack_fifo_data();
+			control_mode_judge();
+			
 			if (control_mode == KEY_OFF)
+			{
 				remote_control_data();
-			else
+			}
+			else if (control_mode == KEY_ON)
+			{
 				key_control_data();
+			}
+
 			judge_key();
 			//    long_pre_shoot();
 		}
@@ -111,6 +120,16 @@ void TIM3_CNT_TASK()
 // 当rc_update_cnt和rc_last_update_cnt相等时，说明遥控器可能离线
 uint8_t rc_offline_check(void)
 {
+	//图传链路
+	if(referee_uart_rx_cnt!=referee_uart_rx_last_cnt)
+	{
+		referee_priority_flag = 1;
+		
+	}
+	else
+	{
+		referee_priority_flag = 0;
+	}
 
 	if (rc_update_cnt == rc_last_update_cnt)
 	{
@@ -123,7 +142,7 @@ uint8_t rc_offline_check(void)
 	if (rc_offline_cnt >= 10)
 	{
 		control_mode = KEY_OFF;
-		
+
 		rc_ctrl.rc.ch[0] = 0;
 		rc_ctrl.rc.ch[1] = 0;
 		rc_ctrl.rc.ch[2] = 0;
@@ -143,9 +162,11 @@ uint8_t rc_offline_check(void)
 		rc_update_cnt = 0;
 		rc_last_update_cnt = 0;
 		rc_offline_cnt = 0;
+		referee_uart_rx_last_cnt = 0;
+		referee_uart_rx_cnt = 0;
 		return 1;
 	}
-
+	referee_uart_rx_last_cnt = referee_uart_rx_cnt;
 	rc_last_update_cnt = rc_update_cnt;
 	return 0;
 }

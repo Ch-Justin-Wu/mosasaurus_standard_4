@@ -60,14 +60,21 @@ void gimbal_control_behaviour(void)
 			}
 			if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_GYRO)
 			{
-				gimbal_y.target_angle = gimbal_y.IMU_actual_angle - yaw_angle;
+				if (gimbal_set_mode == GIMBAL_TOP_ANGLE)
+				{
+					gimbal_y.target_angle = gimbal_y.IMU_actual_angle - 5.0f - yaw_angle*1.7f;
+				}
+				else
+				{
+					gimbal_y.target_angle = gimbal_y.IMU_actual_angle - yaw_angle;
+				}
 			}
 		}
 		if (deadline_judge(pitch_angle, 2) != 0)
 			gimbal_p.target_angle = gimbal_p.IMU_actual_angle + pitch_angle; // pitch_angle就是add_angle
 
-		//chassis_imu_data_get(); // 获取底盘imu数据
-		//fly_pitch_judge();		// 飞坡
+		// chassis_imu_data_get(); // 获取底盘imu数据
+		// fly_pitch_judge();		// 飞坡
 	}
 	else // 自瞄模式开
 	{
@@ -96,8 +103,8 @@ void gimbal_control_behaviour(void)
 			if (deadline_judge(pitch_angle, 2) != 0)
 				gimbal_p.target_angle = gimbal_p.IMU_actual_angle + pitch_angle;
 
-			//chassis_imu_data_get(); // 获取底盘imu数据
-			//fly_pitch_judge();		// 飞坡
+			// chassis_imu_data_get(); // 获取底盘imu数据
+			// fly_pitch_judge();		// 飞坡
 		}
 	}
 

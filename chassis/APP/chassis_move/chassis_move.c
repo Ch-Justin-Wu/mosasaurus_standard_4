@@ -37,7 +37,7 @@ float avx, avy, awz;
 float last_vx, last_vy;
 
 // 72.2f Ð±45¡ã 300.00f
-float GIMBAL_SPIN_ANGLE = 142.0f;
+float GIMBAL_SPIN_ANGLE = 137.0f;
 float GIMBAL_HEAD_ANGLE = 122.0f;
 float GIMBAL_FOLLOW_ANGLE = 122.0f;
 
