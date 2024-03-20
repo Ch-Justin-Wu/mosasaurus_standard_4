@@ -17,9 +17,9 @@ extern float Ren;
 int shoot_times = 0;
 int One_Shoot_flag = 0;
 int Ten_Shoot_flag = 0;
-int16_t SHOOT_LEFT_FRIC_SPEED_MAX = -7600;
+int16_t SHOOT_LEFT_FRIC_SPEED_MAX = -7700;
 int16_t SHOOT_LEFT_FRIC_SPEED_MIN = -7000;
-int16_t SHOOT_RIGHT_FRIC_SPEED_MAX = 7600;
+int16_t SHOOT_RIGHT_FRIC_SPEED_MAX = 7700;
 int16_t SHOOT_RIGHT_FRIC_SPEED_MIN = 7000;
 extern float shoot_speed;
 extern uint8_t speed_limit;
@@ -70,10 +70,10 @@ void shoot_task(void)
 
 		canTX_fric(rc_shoot.left_fric.set_currunt, rc_shoot.right_fric.set_currunt, rc_shoot.trigger.set_currunt);
 	}
-	else if(shoot_status==SHOOT_OFF)
+	else if (shoot_status == SHOOT_OFF)
 	{
-		rc_shoot.left_fric.target_speed=0;
-		rc_shoot.right_fric.target_speed=0;
+		rc_shoot.left_fric.target_speed = 0;
+		rc_shoot.right_fric.target_speed = 0;
 		fric_pid();
 		trigger_pid();
 		canTX_fric(rc_shoot.left_fric.set_currunt, rc_shoot.right_fric.set_currunt, rc_shoot.trigger.set_currunt);
@@ -85,7 +85,7 @@ int yuyuyu_flag = 65;
 uint16_t count;
 void fric_speed_control(void)
 {
-	if (speed_limit > 29.4)
+	if (speed_limit > 29.4f)
 	{
 		fricspeed = FRIC_MAX;
 		rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MAX;
@@ -100,15 +100,15 @@ void fric_speed_control(void)
 
 	if (speed_change_flag)
 	{
-		if (fricspeed == FRIC_MAX && shoot_speed >= 29.5)
+		if (fricspeed == FRIC_MAX && shoot_speed >= 29.5f)
 		{
-			SHOOT_LEFT_FRIC_SPEED_MAX += 40;
-			SHOOT_RIGHT_FRIC_SPEED_MAX -= 40;
+			SHOOT_LEFT_FRIC_SPEED_MAX += 80;
+			SHOOT_RIGHT_FRIC_SPEED_MAX -= 80;
 		}
 		// Æ½¾ùÉäËÙ
 		speed_average = ((shoot_speed + speed_average * ((float)count)) / ((float)(count + 1.0f)));
 		count++;
-		if (count > 30)
+		if (count > 5)
 		{
 			if (fricspeed == FRIC_MIN) // 15
 			{
@@ -126,12 +126,15 @@ void fric_speed_control(void)
 			}
 			else if (fricspeed == FRIC_MAX) // 30
 			{
-				if (((speed_limit - speed_average < 0.7f) && (speed_limit >= 10.0f)) || (shoot_speed >= 29.5))
+				// if (((speed_limit - speed_average < 0.7f) && (speed_limit >= 10.0f)) || (shoot_speed >= 29.5))
+				if (shoot_speed >= 28.5f)
 				{
-					SHOOT_LEFT_FRIC_SPEED_MAX += 40;
-					SHOOT_RIGHT_FRIC_SPEED_MAX -= 40;
+					SHOOT_LEFT_FRIC_SPEED_MAX += 50;
+					SHOOT_RIGHT_FRIC_SPEED_MAX -= 50;
 				}
-				else if (((speed_limit - speed_average > 1.3f) && (speed_limit >= 10.0f)) || (shoot_speed <= 20.0))
+
+				// else if (((speed_limit - speed_average > 1.3f) && (speed_limit >= 10.0f)) || (shoot_speed <= 20.0))
+				if (shoot_speed <= 28.0f)
 				{
 					SHOOT_LEFT_FRIC_SPEED_MAX -= 25;
 					SHOOT_RIGHT_FRIC_SPEED_MAX += 25;
