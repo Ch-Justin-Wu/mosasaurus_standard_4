@@ -75,12 +75,12 @@ void Vision_Task(void)
 							// last_yaw_target_angle=vision_sent.yaw.target_angle;
 							// gimbal_y.add_angle=(vision_sent.yaw.target_angle-imu_can_error_y);
 							// last_yaw_target_angle=(vision_sent.yaw.target_angle-imu_can_error_y);
-				if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_ENCONDE)
-				{
-					gimbal_y.target_angle = (8192.0f / 360.0f) * (gimbal_y.auto_aim_angle - imu_can_error_y);
-					last_yaw_target_angle = (8192.0f / 360.0f) * (gimbal_y.auto_aim_angle - imu_can_error_y);
-				}
-				if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_GYRO)
+				// if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_ENCONDE)
+				// {
+				// 	gimbal_y.target_angle = (8192.0f / 360.0f) * (gimbal_y.auto_aim_angle - imu_can_error_y);
+				// 	last_yaw_target_angle = (8192.0f / 360.0f) * (gimbal_y.auto_aim_angle - imu_can_error_y);
+				// }
+				//if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_GYRO)
 				{
 					gimbal_y.target_angle = gimbal_y.auto_aim_angle;
 					last_yaw_target_angle = gimbal_y.auto_aim_angle;
@@ -93,7 +93,7 @@ void Vision_Task(void)
 				gimbal_p.target_angle = gimbal_p.auto_aim_angle;
 				last_pitch_target_angle = gimbal_p.auto_aim_angle;
 			}
-			vision_sent.Control_priority = 0;
+			//vision_sent.Control_priority = 0;
 		}
 		else // 视觉开启但是操控权在下位机
 		{

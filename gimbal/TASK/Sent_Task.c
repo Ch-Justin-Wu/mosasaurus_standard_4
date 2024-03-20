@@ -63,7 +63,7 @@ uint8_t canTX_chassis_second(uint8_t mode, uint8_t vision_mode)
 	data[0] = mode;
 	data[1] = vision_mode;
 	data[2] = supercap_reboot_flag;
-	data[3] = traget_exit_flag;
+	data[3] = vision_sent.Control_priority;
 	data[4] = bullet_state;
 	data[5] = shoot_status;
 	HAL_CAN_AddTxMessage(&hcan2, &canFrame, data, &temp);

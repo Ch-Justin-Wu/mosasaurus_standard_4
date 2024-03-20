@@ -8,7 +8,7 @@
 #include "bsp_referee.h"
 #include "bsp_can.h"
 #include "supercap.h"
-
+#include "arm_math.h"
 typedef enum shoot_status_e
 {
 	SHOOT_OFF = 0,
@@ -536,9 +536,9 @@ void referee_usart_task()
 			UI_Draw_Arc(&UI_Graph7.Graphic[4], "110", UI_Graph_Change, 2, UI_Color_Green, 0, 360, 4, 960, 540, 15, 15); // exit
 		}
 		if (UI_theta < 90 / (2 * PI) && UI_theta > 89 / (2 * PI))
-			UI_Draw_Line(&UI_Graph7.Graphic[5], "111", UI_Graph_Change, 2, UI_Color_Green, 2, 1400, 640, 1400 + 45 * cos(UI_theta), 640 + 45 * sin(UI_theta)); // 绘制底盘姿态线
+			UI_Draw_Line(&UI_Graph7.Graphic[5], "111", UI_Graph_Change, 2, UI_Color_Green, 2, 1400, 640, 1400 + 45 * cos(UI_theta), 640 + 45 * arm_sin_f32(UI_theta)); // 绘制底盘姿态线
 		else
-			UI_Draw_Line(&UI_Graph7.Graphic[5], "111", UI_Graph_Change, 2, UI_Color_Yellow, 2, 1400, 640, 1400 + 45 * cos(UI_theta), 640 + 45 * sin(UI_theta));
+			UI_Draw_Line(&UI_Graph7.Graphic[5], "111", UI_Graph_Change, 2, UI_Color_Yellow, 2, 1400, 640, 1400 + 45 * cos(UI_theta), 640 + 45 * arm_sin_f32(UI_theta));
 		UI_Draw_Float(&UI_Graph7.Graphic[6], "112", UI_Graph_Change, 2, UI_Color_Yellow, 20, 2, 3, 140, 650, supercap_per); // 电容容量
 	}
 	// 最后发送出去

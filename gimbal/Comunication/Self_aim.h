@@ -1,5 +1,5 @@
-#ifndef __USB_COMMUCATION_H
-#define __USB_COMMUCATION_H
+#ifndef __SELF_AIM_H
+#define __SELF_AIM_H
 
 
 

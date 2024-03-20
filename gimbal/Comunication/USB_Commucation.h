@@ -1,9 +1,7 @@
-#ifndef __USB_COMMUCATION_H_
-#define __USB_COMMUCATION_H_
+#ifndef __USB_COMMUCATION_H
+#define __USB_COMMUCATION_H
 
-#ifdef __cplusplus
- extern "C" {
-#endif
+
 #include "usbd_cdc_if.h"
 #include "main.h"
 
@@ -67,7 +65,5 @@ typedef struct
 void cdc_vcp_data_rx(uint8_t *buf, uint32_t Len);
 void USB_TX(void);
 
-#ifdef __cplusplus
-}
-#endif
+
 #endif

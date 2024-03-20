@@ -22,14 +22,14 @@ void CHASSIS_TASK()
 
 	time_count++;
 
-	INS_task();
+	//INS_task();
 	Time_Service_Task();
 	if (time_count % 13 == 0 && start_flag == 1)
 	{
 		// 校准imu
-		if (calibrate_start_flag == 1)
-			calibrate_task();
-		IMU_read();
+		// if (calibrate_start_flag == 1)
+		// 	calibrate_task();
+		// IMU_read();
 	}
 	if (time_count % 7 == 0)
 	{
@@ -60,7 +60,7 @@ void CHASSIS_TASK()
 			IMU_cnt++;
 	}
 	// 超级电容
-	supercap(S_Count, MS_Count);
+	//supercap(S_Count, MS_Count);
 }
 void Time_Service_Task(void)
 {
