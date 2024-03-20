@@ -24,7 +24,7 @@ UI_Graph1_t UI_Graph1;
 UI_Graph2_t UI_Graph2;
 UI_Graph5_t UI_Graph5;
 UI_Graph7_t UI_Graph7;
-UI_Graph5_t UI_Graph5_Ar;
+UI_Graph1_t UI_Graph1_Ar;
 UI_String_t UI_String;
 UI_String_t UI_String1;
 UI_String_t UI_String2;
@@ -447,9 +447,9 @@ void referee_usart_task()
 		UI_Draw_Arc(&UI_Graph7.Graphic[2], "108", UI_Graph_Add, 2, UI_Color_White, 0, 360, 5, 150, 690, 15, 15);
 		UI_Draw_Arc(&UI_Graph7.Graphic[3], "109", UI_Graph_Add, 2, UI_Color_White, 0, 360, 5, 150, 740, 15, 15);
 		UI_Draw_Arc(&UI_Graph7.Graphic[4], "110", UI_Graph_Add, 2, UI_Color_Green, 0, 360, 4, 960, 540, 15, 15);
-		UI_Draw_Line(&UI_Graph7.Graphic[5], "111", UI_Graph_Add, 2, UI_Color_Yellow, 2, 1400, 640, 1400, 685);			 // 绘制底盘姿态线  //初始直线
-		UI_Draw_Arc(&UI_Graph5_Ar.Graphic[0], "113", UI_Graph_Add, 2, UI_Color_White, 0, 360, 5, 150, 790, 15, 15);		 // fire
-		UI_PushUp_Graphs(1, &UI_Graph5_Ar, Robot_ID_Current);
+		UI_Draw_Line(&UI_Graph7.Graphic[5], "111", UI_Graph_Add, 2, UI_Color_Yellow, 2, 1400, 640, 1400, 685);		// 绘制底盘姿态线  //初始直线
+		UI_Draw_Arc(&UI_Graph1_Ar.Graphic[0], "113", UI_Graph_Add, 2, UI_Color_White, 0, 360, 5, 150, 790, 15, 15); // fire
+		UI_PushUp_Graphs(1, &UI_Graph1_Ar, Robot_ID_Current);
 
 		UI_Draw_Float(&UI_Graph7.Graphic[6], "112", UI_Graph_Add, 2, UI_Color_Yellow, 20, 2, 3, 140, 650, supercap_per); // 电容容量
 		UI_PushUp_Graphs(7, &UI_Graph7, Robot_ID_Current);
@@ -459,13 +459,12 @@ void referee_usart_task()
 	{
 		UI_Draw_String(&UI_String.String, "304", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 600, "auto"); // 自瞄
 		UI_PushUp_String(&UI_String, Robot_ID_Current);
-		UI_Draw_String(&UI_String4.String, "308", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 800, "fire"); // shoot
-		UI_PushUp_String(&UI_String4, Robot_ID_Current);
 	}
 	if (UI_PushUp_Counter % 151 == 0) // 动态UI预绘制 字符串1
 	{
-		UI_Draw_String(&UI_String1.String, "305", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 650, "scap"); // 超级电容
-		UI_PushUp_String(&UI_String1, Robot_ID_Current);
+		UI_Draw_String(&UI_String4.String, "308", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 800, "fire"); // shoot
+		UI_PushUp_String(&UI_String4, Robot_ID_Current);
+
 	}
 	if (UI_PushUp_Counter % 161 == 0) // 动态UI预绘制 字符串2
 	{
@@ -479,22 +478,29 @@ void referee_usart_task()
 		UI_PushUp_String(&UI_String3, Robot_ID_Current);
 	}
 
-	//		if(UI_PushUp_Counter %181 == 0) //动态UI预绘制 电容电量  底盘姿态线
-	//		{
-	//			UI_Draw_Float(&UI_Graph2.Graphic[0], "201", UI_Graph_Add, 2, UI_Color_Yellow, 20, 2, 3, 140,650, supercap_per);      //电容容量
-	//			UI_Draw_Line(&UI_Graph2.Graphic[1], "202", UI_Graph_Add, 2, UI_Color_Yellow, 2, 1400, 640, 1400,685);     //绘制底盘姿态线
-	//			UI_PushUp_Graphs(2, &UI_Graph2, Robot_ID_Current);
-	//		}
-
+	if (UI_PushUp_Counter % 181 == 0) // 动态UI预绘制 电容电量  底盘姿态线
+	{
+		UI_Draw_Float(&UI_Graph2.Graphic[0], "201", UI_Graph_Add, 2, UI_Color_Yellow, 20, 2, 3, 140, 650, supercap_per); // 电容容量
+		UI_Draw_Line(&UI_Graph2.Graphic[1], "202", UI_Graph_Add, 2, UI_Color_Yellow, 2, 1400, 640, 1400, 685);			 // 绘制底盘姿态线
+		UI_PushUp_Graphs(2, &UI_Graph2, Robot_ID_Current);
+	}
+	if (UI_PushUp_Counter % 191 == 0)
+	{
+		UI_Draw_String(&UI_String1.String, "305", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 650, "scap"); // 超级电容
+		UI_PushUp_String(&UI_String1, Robot_ID_Current);
+	}
 	if (UI_PushUp_Counter % 21 == 0) // 动态UI更新 圆圈位置和颜色
 	{
+
 		if (shoot_status == 0)
 		{
-			UI_Draw_Arc(&UI_Graph5_Ar.Graphic[0], "113", UI_Graph_Change, 2, UI_Color_White, 0, 360, 5, 150, 790, 15, 15); // fire off
+			UI_Draw_Arc(&UI_Graph1_Ar.Graphic[0], "113", UI_Graph_Change, 2, UI_Color_White, 0, 360, 5, 150, 790, 15, 15); // fire off
+			UI_PushUp_Graphs(1, &UI_Graph1_Ar, Robot_ID_Current);
 		}
 		else if (shoot_status == 1)
 		{
-			UI_Draw_Arc(&UI_Graph5_Ar.Graphic[0], "113", UI_Graph_Change, 2, UI_Color_Green, 0, 360, 5, 200, 790, 15, 15); // fire on
+			UI_Draw_Arc(&UI_Graph1_Ar.Graphic[0], "113", UI_Graph_Change, 2, UI_Color_Green, 0, 360, 5, 200, 790, 15, 15); // fire on
+			UI_PushUp_Graphs(1, &UI_Graph1_Ar, Robot_ID_Current);
 		}
 		if (vision_mode == 1)
 		{
@@ -535,6 +541,7 @@ void referee_usart_task()
 			UI_Draw_Line(&UI_Graph7.Graphic[5], "111", UI_Graph_Change, 2, UI_Color_Yellow, 2, 1400, 640, 1400 + 45 * cos(UI_theta), 640 + 45 * sin(UI_theta));
 		UI_Draw_Float(&UI_Graph7.Graphic[6], "112", UI_Graph_Change, 2, UI_Color_Yellow, 20, 2, 3, 140, 650, supercap_per); // 电容容量
 	}
+	// 最后发送出去
 	UI_PushUp_Graphs(7, &UI_Graph7, Robot_ID_Current);
 
 	//		if(UI_PushUp_Counter % 11 == 0)  //动态绘制电容电量
