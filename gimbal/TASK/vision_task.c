@@ -93,7 +93,7 @@ void Vision_Task(void)
 				gimbal_p.target_angle = gimbal_p.auto_aim_angle;
 				last_pitch_target_angle = gimbal_p.auto_aim_angle;
 			}
-			//vision_sent.Control_priority = 0;
+			vision_sent.Control_priority = 0;
 		}
 		else // 视觉开启但是操控权在下位机
 		{

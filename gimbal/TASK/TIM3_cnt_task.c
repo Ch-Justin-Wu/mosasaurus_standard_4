@@ -56,7 +56,7 @@ void TIM3_CNT_TASK()
 			shoot_task();
 			USB_TX();
 			// canTX_UPPER_COMPUTER(); // 向上位机发送数据
-			//receive_upper_data();
+			receive_upper_data();
 			//	 DMA_Send();  旧的上位机通讯
 		}
 		if (time_count % 7 == 0)
