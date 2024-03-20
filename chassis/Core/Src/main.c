@@ -116,7 +116,7 @@ int main(void)
   while (1)
   {
 	  referee_usart_task();
-	  HAL_Delay(3);
+	  HAL_Delay(99);
 //		logistic_slip_detect(imu_a,imu_s__,speed__,torque__);
 	//  chassis_control_order.chassis_mode=0;
 //		if(chassis_control_order.chassis_mode==CHASSIS_FOLLOW)
