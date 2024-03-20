@@ -24,10 +24,7 @@ void CHASSIS_TASK()
 
 	INS_task();
 	Time_Service_Task();
-	if (time_count%3==0)
-	{
-		referee_usart_task();//UI
-	}
+	
 	
 	if (time_count % 13 == 0 && start_flag == 1)
 	{
@@ -55,8 +52,11 @@ void CHASSIS_TASK()
 		// 向云台发送数据
 		send_gimbal_data();
 	}
-
-	if (time_count >= 1000) // 清除计数标志    1s
+	if (time_count % 199 == 0)
+	{
+		referee_usart_task(); // UI 最大10hz
+	}
+	if (time_count >= 1000) // 清除计数标志    0.5s
 	{
 		time_count = 1;
 		// 超级电容

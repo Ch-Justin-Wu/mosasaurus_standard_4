@@ -82,7 +82,7 @@ static void referee_data_pack_handle(uint8_t sof, uint16_t cmd_id, uint8_t *p_da
 
 	/*****数据上传*****/
 	__HAL_UART_CLEAR_FLAG(&huart6, UART_FLAG_TC);
-	HAL_UART_Transmit(&huart6, tx_buff, frame_length, 100);
+	HAL_UART_Transmit_DMA(&huart6, tx_buff, frame_length);
 	while (__HAL_UART_GET_FLAG(&huart6, UART_FLAG_TC) == RESET)
 		; // 等待之前的字符发送完成
 }
@@ -339,13 +339,13 @@ void UI_PushUp_Graphs(uint8_t Counter /* 1,2,5,7 */, void *Graphs /* 与Counter相
 
 	/* 使用串口PushUp到裁判系统 */
 	if (Counter == 1)
-		HAL_UART_Transmit(&huart6, (uint8_t *)Graph, sizeof(UI_Graph1_t), 0xff);
+		HAL_UART_Transmit_DMA(&huart6, (uint8_t *)Graph, sizeof(UI_Graph1_t));
 	else if (Counter == 2)
-		HAL_UART_Transmit(&huart6, (uint8_t *)Graph, sizeof(UI_Graph2_t), 0xff);
+		HAL_UART_Transmit_DMA(&huart6, (uint8_t *)Graph, sizeof(UI_Graph2_t));
 	else if (Counter == 5)
-		HAL_UART_Transmit(&huart6, (uint8_t *)Graph, sizeof(UI_Graph5_t), 0xff);
+		HAL_UART_Transmit_DMA(&huart6, (uint8_t *)Graph, sizeof(UI_Graph5_t));
 	else if (Counter == 7)
-		HAL_UART_Transmit(&huart6, (uint8_t *)Graph, sizeof(UI_Graph7_t), 0xff);
+		HAL_UART_Transmit_DMA(&huart6, (uint8_t *)Graph, sizeof(UI_Graph7_t));
 }
 
 void UI_PushUp_String(UI_String_t *String, uint8_t RobotID)
@@ -368,7 +368,7 @@ void UI_PushUp_String(UI_String_t *String, uint8_t RobotID)
 	String->CRC16 = CRC16_Calculate((uint8_t *)String, sizeof(UI_String_t) - 2);
 
 	/* 使用串口PushUp到裁判系统 */
-	HAL_UART_Transmit(&huart6, (uint8_t *)String, sizeof(UI_String_t), 0xff);
+	HAL_UART_Transmit_DMA(&huart6, (uint8_t *)String, sizeof(UI_String_t));
 }
 
 void UI_PushUp_Delete(UI_Delete_t *Delete, uint8_t RobotID)
@@ -391,7 +391,7 @@ void UI_PushUp_Delete(UI_Delete_t *Delete, uint8_t RobotID)
 	Delete->CRC16 = CRC16_Calculate((uint8_t *)Delete, sizeof(UI_Delete_t) - 2);
 
 	/* 使用串口PushUp到裁判系统 */
-	HAL_UART_Transmit(&huart6, (uint8_t *)Delete, sizeof(UI_Delete_t), 0xff);
+	HAL_UART_Transmit_DMA(&huart6, (uint8_t *)Delete, sizeof(UI_Delete_t));
 }
 uint16_t UI_PushUp_Counter = 0;
 void referee_usart_task()

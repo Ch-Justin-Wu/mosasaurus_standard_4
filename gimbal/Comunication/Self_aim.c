@@ -12,7 +12,7 @@ float bullet_v = 25.0f; // 子弹速度
  * @param z 向量的z分量（未使用）
  * @return 计算得到的偏航角（以角度制表示）
  */
-static inline float calc_yaw(float x, float y, float z)
+static float calc_yaw(float x, float y, float z)
 {
     float aim_yaw = 0.0f;
     // 使用 atan2f 函数计算反正切值，得到弧度制的偏航角
@@ -34,7 +34,7 @@ static inline float calc_yaw(float x, float y, float z)
  * @param z 向量的z分量
  * @return 计算得到的欧几里德距离
  */
-static inline float calc_distance(float x, float y, float z)
+static float calc_distance(float x, float y, float z)
 {
     // 计算各分量的平方和，并取其平方根得到欧几里德距离
     //float distance = sqrtf(x * x + y * y + z * z);
