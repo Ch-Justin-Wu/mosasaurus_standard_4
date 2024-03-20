@@ -482,6 +482,7 @@ void referee_usart_task()
 	if (UI_PushUp_Counter % 191 == 0)
 	{
 		UI_Draw_Arc(&UI_Graph5_Ar.Graphic[0], "113", UI_Graph_Add, 2, UI_Color_White, 0, 360, 5, 150, 790, 15, 15); // fire
+		UI_PushUp_Graphs(5, &UI_Graph5_Ar, Robot_ID_Current);
 	}
 
 	//		if(UI_PushUp_Counter %181 == 0) //动态UI预绘制 电容电量  底盘姿态线
