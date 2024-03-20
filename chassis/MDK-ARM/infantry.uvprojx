@@ -327,7 +327,7 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
-            <uGnu>0</uGnu>
+            <uGnu>1</uGnu>
             <useXO>0</useXO>
             <v6Lang>1</v6Lang>
             <v6LangP>1</v6LangP>
@@ -338,9 +338,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32F407xx,ARM_MATH_CM4,__CC_ARM,ARM_MATH_MATRIX_CHECK,ARM_MATH_ROUNDING,__TARGET_FPU_VFP,__FPU_PRESENT=1</Define>
+              <Define>USE_HAL_DRIVER,STM32F407xx,ARM_MATH_CM4,__CC_ARM,ARM_MATH_MATRIX_CHECK,ARM_MATH_ROUNDING</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\APP\pid;..\BSP\bsp_can;..\APP\chassis_move;..\Core\Inc;..\APP\chassis_task;..\APP\remote_control;..\BSP\bsp_referee;..\APP\referee;..\components\support;..\APP\struct_typedef;..\APP\protocol;..\APP\fuzzy_pid;..\APP\supercap;..\APP\lqr;..\APP\imu;..\BSP\BSP_BUZZER;..\BSP\BSP_FLASH;..\BSP\BSP_IMU;..\BSP\BSP_MATH;..\BSP\BSP_SPI;..\BSP\BSP_TIM;..\TASK;..\components\algorithm;..\components\devices;..\APP\led;..\APP\MY_anonymous;..\APP\Kinematics;..\APP\referee_UI;..\BSP\BSP_UART;..\Drivers\CMSIS\DSP\Include;..\Drivers\CMSIS\DSP\Source\FastMathFunctions</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\APP\pid;..\BSP\bsp_can;..\APP\chassis_move;..\Core\Inc;..\APP\chassis_task;..\APP\remote_control;..\BSP\bsp_referee;..\APP\referee;..\components\support;..\APP\struct_typedef;..\APP\protocol;..\APP\fuzzy_pid;..\APP\supercap;..\APP\lqr;..\APP\imu;..\BSP\BSP_BUZZER;..\BSP\BSP_FLASH;..\BSP\BSP_IMU;..\BSP\BSP_MATH;..\BSP\BSP_SPI;..\BSP\BSP_TIM;..\TASK;..\components\algorithm;..\components\devices;..\APP\led;..\APP\MY_anonymous;..\APP\Kinematics;..\APP\referee_UI;..\BSP\BSP_UART;..\Drivers\CMSIS\DSP\Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -776,6 +776,11 @@
               <FileName>user_lib.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\components\algorithm\user_lib.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_cortexM4lf_math.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\Drivers\CMSIS\Lib\ARM\arm_cortexM4lf_math.lib</FilePath>
             </File>
           </Files>
         </Group>
@@ -2118,14 +2123,33 @@
             </File>
           </Files>
         </Group>
+        <Group>
+          <GroupName>::CMSIS</GroupName>
+        </Group>
       </Groups>
     </Target>
   </Targets>
 
   <RTE>
     <apis/>
-    <components/>
+    <components>
+      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.6.0" condition="ARMv6_7_8-M Device">
+        <package name="CMSIS" schemaVersion="1.7.7" url="http://www.keil.com/pack/" vendor="ARM" version="5.9.0"/>
+        <targetInfos>
+          <targetInfo name="infantry"/>
+        </targetInfos>
+      </component>
+    </components>
     <files/>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>infantry</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>

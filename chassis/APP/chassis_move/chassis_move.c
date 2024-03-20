@@ -2,6 +2,7 @@
 #include "fuzzy_pid.h"
 #include "supercap.h"
 #include <math.h>
+#include "arm_math.h"
 
 #define CHASSIS_POWER_LIMIT_REFEREE
 
