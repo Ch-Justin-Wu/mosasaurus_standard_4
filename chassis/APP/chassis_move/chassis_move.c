@@ -258,11 +258,8 @@ void chassis_spin(float *vx, float *vy,uint8_t mode)
 	UI_theta = theta + (PI / 2);
 	if (UI_theta > 2 * PI)
 		UI_theta -= 2 * PI;
-	float theta_sin_val = 0.0f, theta_cos_val = 0.0f;
-	arm_sin_cos_f32(theta, &theta_sin_val, &theta_cos_val);
-
-	*vx = (float)(pre_vx * theta_cos_val - pre_vy * theta_sin_val);
-	*vy = (float)(pre_vx * theta_sin_val + pre_vy * theta_cos_val);
+	*vx = (float)(pre_vx * arm_cos_f32(theta)-pre_vy * arm_sin_f32(theta));
+	*vy = (float)(pre_vx * arm_sin_f32(theta) + pre_vy * arm_cos_f32(theta));
 }
 
 /**

@@ -100,7 +100,7 @@ void fric_speed_control(void)
 
 	if (speed_change_flag)
 	{
-		if (fricspeed == FRIC_MAX && shoot_speed >= 29.5f)
+		if (fricspeed == FRIC_MAX && shoot_speed >= 29.0f)
 		{
 			SHOOT_LEFT_FRIC_SPEED_MAX += 80;
 			SHOOT_RIGHT_FRIC_SPEED_MAX -= 80;
