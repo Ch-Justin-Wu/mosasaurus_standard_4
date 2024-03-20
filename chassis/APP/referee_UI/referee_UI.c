@@ -30,6 +30,7 @@ UI_String_t UI_String;
 UI_String_t UI_String1;
 UI_String_t UI_String2;
 UI_String_t UI_String3;
+UI_String_t UI_String4;
 UI_Graph5_t UI_Graph5_Arc;
 UI_Delete_t UI_Delete;
 uint8_t seq = 0;
@@ -476,8 +477,8 @@ void referee_usart_task()
 	}
 	if (UI_PushUp_Counter % 181 == 0) // ¶¯Ì¬UIÔ¤»æÖÆ ×Ö·û´®4
 	{
-		UI_Draw_String(&UI_String.String, "308", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 800, "fire"); // shoot
-		UI_PushUp_String(&UI_String, Robot_ID_Current);
+		UI_Draw_String(&UI_String4.String, "308", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 800, "fire"); // shoot
+		UI_PushUp_String(&UI_String4, Robot_ID_Current);
 	}
 	if (UI_PushUp_Counter % 191 == 0)
 	{
