@@ -247,59 +247,66 @@ int trigger_cnt = 0, trigger_cnt_flag = 0, remain_bullet = 0;
 void trigger_angle_set(void)
 {
 	trigger_cnt_flag = 1;
-	remain_bullet = ((heat_limit - heat) / 10) - 2; // 计算热量限制下的剩余弹量
+	if (Ten_Shoot_flag || More_shoot_flag)
+	{
+		remain_bullet = ((heat_limit - heat) / 10.0f) - 5; // 计算热量限制下的剩余弹量
+	}
+	else if(One_Shoot_flag)
+	{
+		remain_bullet = ((heat_limit - heat) / 10.0f) - 2; // 计算热量限制下的剩余弹量
+	}
 #if defined(TEST_SHOOT)
-	remain_bullet = 5;
+		remain_bullet = 5;
 #endif
-	if (remain_bullet < 0)
-		remain_bullet = 0;
-	if (One_Shoot_flag == 1) // 单发
-	{
-		if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
+		if (remain_bullet < 0)
+			remain_bullet = 0;
+		if (One_Shoot_flag == 1) // 单发
 		{
-			if (remain_bullet >= 1)
-				rc_shoot.trigger.target_angle -= ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
+			if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
+			{
+				if (remain_bullet >= 1)
+					rc_shoot.trigger.target_angle -= ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
+			}
+		}
+		else if (Ten_Shoot_flag == 1) // 五连发
+		{
+			if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
+			{
+				if (remain_bullet >= 5)
+					rc_shoot.trigger.target_angle -= ((5.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f); // 改成五连发了
+				else
+					rc_shoot.trigger.target_angle -= ((remain_bullet * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
+			}
+		}
+		else if (More_shoot_flag == 1) // 连发
+		{
+			if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
+			{
+				if (remain_bullet >= 10)
+					rc_shoot.trigger.target_angle -= ((10.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
+				else
+					rc_shoot.trigger.target_angle -= ((remain_bullet * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
+			}
 		}
 	}
-	else if (Ten_Shoot_flag == 1) // 五连发
+	// 拨弹轮数据返回
+	void Trigger_Motor_Callback(trigger_t * motor, uint16_t angle, int16_t speed)
 	{
-		if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
-		{
-			if (remain_bullet >= 5)
-				rc_shoot.trigger.target_angle -= ((5.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f); // 改成五连发了
-			else
-				rc_shoot.trigger.target_angle -= ((remain_bullet * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
-		}
-	}
-	else if (More_shoot_flag == 1)// 连发
-	{
-		if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
-		{
-			if (remain_bullet >= 10)
-				rc_shoot.trigger.target_angle -= ((10.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
-			else
-				rc_shoot.trigger.target_angle -= ((remain_bullet * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
-		}
-	}
-}
-// 拨弹轮数据返回
-void Trigger_Motor_Callback(trigger_t *motor, uint16_t angle, int16_t speed)
-{
-	motor->last_angle = motor->actual_angle;
-	motor->actual_angle = angle;
-	motor->actual_speed = 0.5 * (speed + motor->last_speed);
-	motor->last_speed = speed;
-
-	if (motor->record_begin_angle_status < 50)
-	{
-		motor->begin_angle = angle;
+		motor->last_angle = motor->actual_angle;
 		motor->actual_angle = angle;
-		motor->last_angle = angle;
-		motor->record_begin_angle_status++;
+		motor->actual_speed = 0.5 * (speed + motor->last_speed);
+		motor->last_speed = speed;
+
+		if (motor->record_begin_angle_status < 50)
+		{
+			motor->begin_angle = angle;
+			motor->actual_angle = angle;
+			motor->last_angle = angle;
+			motor->record_begin_angle_status++;
+		}
+		if (motor->actual_angle - motor->last_angle > 4096)
+			motor->rounds--;
+		else if (motor->actual_angle - motor->last_angle < -4096)
+			motor->rounds++;
+		motor->total_angle = motor->rounds * 8192 + motor->actual_angle - motor->begin_angle;
 	}
-	if (motor->actual_angle - motor->last_angle > 4096)
-		motor->rounds--;
-	else if (motor->actual_angle - motor->last_angle < -4096)
-		motor->rounds++;
-	motor->total_angle = motor->rounds * 8192 + motor->actual_angle - motor->begin_angle;
-}

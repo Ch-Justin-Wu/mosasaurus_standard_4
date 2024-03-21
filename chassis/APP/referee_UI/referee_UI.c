@@ -506,7 +506,7 @@ void referee_usart_task()
 					   "  1");
 		UI_PushUp_String(&UI_String_shoot_type, Robot_ID_Current);
 	}
-	if (UI_PushUp_Counter % 21 == 0) // 动态UI预绘制
+	if (UI_PushUp_Counter % 26 == 0) // 动态UI预绘制
 	{
 		switch (shoot_type)
 		{
