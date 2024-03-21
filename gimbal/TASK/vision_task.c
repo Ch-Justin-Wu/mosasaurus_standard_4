@@ -40,7 +40,7 @@ float yaw_deadline_angle = 0.01f, pitch_deadline_angle = 0.01; // 死区
 
 void Vision_Task(void)
 {
-	if (vision_mode == VISION_OFF||assist_vision_mode==ASSIST_VISION_OFF) // 自瞄模式关
+	if (vision_mode == VISION_OFF&&assist_vision_mode==ASSIST_VISION_OFF) // 自瞄模式关
 	{
 
 		if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_RAW)
@@ -64,7 +64,7 @@ void Vision_Task(void)
 	}
 	
 	
-	else if (vision_mode == VISION_ON) // 自瞄模式开
+	else if (vision_mode == VISION_ON||assist_vision_mode==ASSIST_VISION_ON) // 自瞄模式开
 	{
 
 		
