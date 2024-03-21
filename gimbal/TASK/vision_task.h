@@ -39,6 +39,7 @@ typedef struct{
 }VISION_GET_t;
 
 extern VISION_t vision_mode;
+extern VISION_t assist_vision_mode;
 extern VISION_GET_t vision_sent;
 extern float vision_yaw,vision_pitch; 
 

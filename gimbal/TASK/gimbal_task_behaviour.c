@@ -50,7 +50,7 @@ void gimbal_control_behaviour(void)
 {
 	gimbal_control_behaviour_mode();
 	/*         增量        */
-	if (vision_mode == VISION_OFF)
+	if (vision_mode == VISION_OFF || assist_vision_mode == ASSIST_VISION_OFF)
 	{
 		if (deadline_judge(yaw_angle, 1) != 0)
 		{
@@ -62,7 +62,7 @@ void gimbal_control_behaviour(void)
 			{
 				if (gimbal_set_mode == GIMBAL_TOP_ANGLE)
 				{
-					gimbal_y.target_angle = gimbal_y.IMU_actual_angle - 5.0f - yaw_angle*1.25f;
+					gimbal_y.target_angle = gimbal_y.IMU_actual_angle - 5.0f - yaw_angle * 1.25f;
 				}
 				else
 				{
@@ -79,25 +79,48 @@ void gimbal_control_behaviour(void)
 	else // 自瞄模式开
 	{
 
-		if (traget_exit_flag) // 上位机获得操控权
-		{
-			gimbal_y.target_angle = yaw_angle;
+		// if (traget_exit_flag) // 上位机获得操控权
+		// {
+		// 	gimbal_y.target_angle = yaw_angle;
 
-			gimbal_p.target_angle = pitch_angle;
-		}
-		else
+		// 	gimbal_p.target_angle = pitch_angle;
+		// }
+
 		{
 			if (vision_check_flag == 1)
 				return; // 不处理切换控制权的这一帧
 			if (deadline_judge(yaw_angle, 1) != 0)
 			{
-				if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_ENCONDE)
+				if (assist_vision_mode == ASSIST_VISION_ON)
 				{
-					gimbal_y.target_angle = gimbal_y.CAN_actual_angle - yaw_angle;
+					if (gimbal_set_mode == GIMBAL_TOP_ANGLE)
+					{
+						gimbal_y.target_angle = gimbal_y.auto_aim_angle - 5.0f - yaw_angle * 1.25f;
+					}
+					else
+					{
+						gimbal_y.target_angle = gimbal_y.auto_aim_angle - yaw_angle;
+					}
+					gimbal_p.target_angle = gimbal_p.auto_aim_angle + pitch_angle;
+					
 				}
-				if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_GYRO)
+				else
 				{
-					gimbal_y.target_angle = gimbal_y.IMU_actual_angle - yaw_angle;
+					if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_ENCONDE)
+					{
+						gimbal_y.target_angle = gimbal_y.CAN_actual_angle - yaw_angle;
+					}
+					if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_GYRO)
+					{
+						if (gimbal_set_mode == GIMBAL_TOP_ANGLE)
+						{
+							gimbal_y.target_angle = gimbal_y.IMU_actual_angle - 5.0f - yaw_angle * 1.25f;
+						}
+						else
+						{
+							gimbal_y.target_angle = gimbal_y.IMU_actual_angle - yaw_angle;
+						}
+					}
 				}
 			}
 			if (deadline_judge(pitch_angle, 2) != 0)

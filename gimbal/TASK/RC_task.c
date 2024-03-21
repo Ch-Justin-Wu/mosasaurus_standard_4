@@ -287,11 +287,11 @@ void key_control_data(void)
 
 		if (MOUSE_pre_right == 1)
 		{
-			vision_mode = ASSIST_VISION_ON;
+			assist_vision_mode = ASSIST_VISION_ON;
 		}
 		else
 		{
-			vision_mode = VISION_OFF;
+			assist_vision_mode = ASSIST_VISION_OFF;
 		}
 
 		/*       ¿ØÖÆµ×ÅÌ     */
@@ -392,11 +392,11 @@ void key_control_data(void)
 		}
 		if (MOUSE_pre_right == 1)
 		{
-			vision_mode = ASSIST_VISION_ON;
+			assist_vision_mode = ASSIST_VISION_ON;
 		}
 		else
 		{
-			vision_mode = VISION_OFF;
+			assist_vision_mode = ASSIST_VISION_OFF;
 		}
 			//						rc_shoot.left_fric.target_speed = -SHOOT_FRIC_SPEED_MIN;
 			//		  	rc_shoot.right_fric.target_speed = SHOOT_FRIC_SPEED_MIN;

@@ -3,10 +3,13 @@
 
 #include "tim.h"
 
-typedef enum{
-    VISION_ON= 0,  //自瞄开
+typedef enum
+{
+    VISION_ON = 0, // 自瞄开
     VISION_OFF,    //
-}VISION_t;
+    ASSIST_VISION_ON,
+    ASSIST_VISION_OFF,
+} VISION_t;
 
 #define TIM3_CNT_TASK()    HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 

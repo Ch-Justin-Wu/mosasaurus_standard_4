@@ -51,8 +51,24 @@ uint8_t canTX_chassis_first(int16_t x, int16_t y, int16_t z, int16_t current_t)
 
 extern uint8_t chassis_power_flag;
 extern uint8_t supercap_reboot_flag;
+
 uint8_t canTX_chassis_second(uint8_t mode, uint8_t vision_mode)
 {
+	uint8_t vision_mode_sent;
+
+	if(vision_mode==VISION_OFF&&assist_vision_mode== ASSIST_VISION_OFF)
+	{
+		vision_mode_sent = VISION_OFF;
+	}
+	else if (vision_mode == VISION_ON && assist_vision_mode == ASSIST_VISION_OFF)
+	{
+		vision_mode_sent = VISION_ON;
+	}
+	else if(assist_vision_mode== ASSIST_VISION_ON&&vision_mode == VISION_OFF)
+	{
+		vision_mode_sent = ASSIST_VISION_ON;
+	}
+
 
 	CAN_TxHeaderTypeDef canFrame;
 	uint8_t data[8] = {0};
@@ -64,7 +80,7 @@ uint8_t canTX_chassis_second(uint8_t mode, uint8_t vision_mode)
 	canFrame.DLC = 8;
 	canFrame.TransmitGlobalTime = DISABLE;
 	data[0] = mode;
-	data[1] = vision_mode;
+	data[1] = vision_mode_sent;
 	data[2] = supercap_reboot_flag;
 	data[3] = vision_sent.Control_priority;
 	data[4] = bullet_state;

@@ -8,6 +8,8 @@
 #include "usbd_cdc_if.h"
 
 VISION_t vision_mode = VISION_OFF;
+VISION_t assist_vision_mode = ASSIST_VISION_OFF;
+
 VISION_GET_t vision_sent;
 UPPER_COMPUTER_VISION_t shoot_vision_mode = VISION_NOMAL; // 上位机自瞄模式
 
@@ -38,7 +40,7 @@ float yaw_deadline_angle = 0.01f, pitch_deadline_angle = 0.01; // 死区
 
 void Vision_Task(void)
 {
-	if (vision_mode == VISION_OFF) // 自瞄模式关
+	if (vision_mode == VISION_OFF||assist_vision_mode==ASSIST_VISION_OFF) // 自瞄模式关
 	{
 
 		if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_RAW)
@@ -60,22 +62,7 @@ void Vision_Task(void)
 		//		gimbal_y.target_speed=((rc_sent.yaw.target_angle)/4.5);
 		//		gimbal_y.target_angle=Ren;
 	}
-	else if (vision_mode==ASSIST_VISION_ON)
-	{
-		if (vision_sent.Control_priority == 1)
-		{
-			vision_check_flag = 1;
-
-			gimbal_y.target_angle = gimbal_y.auto_aim_angle-gimbal_y.add_angle;
-			last_yaw_target_angle = gimbal_y.auto_aim_angle;
-
-			gimbal_p.target_angle = gimbal_p.auto_aim_angle-gimbal_p.add_angle;
-			last_pitch_target_angle = gimbal_p.auto_aim_angle;
-
-			vision_sent.Control_priority = 0;
-		}
-		
-	}
+	
 	
 	else if (vision_mode == VISION_ON) // 自瞄模式开
 	{
