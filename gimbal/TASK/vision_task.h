@@ -4,6 +4,8 @@
 typedef enum{
     VISION_ON= 0, //×ÔÃé¿ª
     VISION_OFF,    //
+	ASSIST_VISION_ON,
+	ASSIST_VISION_OFF,
 }VISION_t;
 
 typedef enum

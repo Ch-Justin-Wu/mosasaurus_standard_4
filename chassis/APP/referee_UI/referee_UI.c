@@ -543,11 +543,11 @@ void referee_usart_task()
 			UI_Draw_Arc(&UI_Graph1_Ar.Graphic[0], "113", UI_Graph_Change, 2, UI_Color_Green, 0, 360, 5, 200, 790, 15, 15); // fire on
 			UI_PushUp_Graphs(1, &UI_Graph1_Ar, Robot_ID_Current);
 		}
-		if (vision_mode == 1)
+		if (vision_mode == 1||vision_mode==3)
 		{
 			UI_Draw_Arc(&UI_Graph7.Graphic[0], "106", UI_Graph_Change, 2, UI_Color_White, 0, 360, 5, 150, 590, 15, 15); // vision_off
 		}
-		else if (vision_mode == 0)
+		else if (vision_mode == 0||vision_mode==2)
 		{
 			UI_Draw_Arc(&UI_Graph7.Graphic[0], "106", UI_Graph_Change, 2, UI_Color_Green, 0, 360, 5, 200, 590, 15, 15); // vision_on
 		}

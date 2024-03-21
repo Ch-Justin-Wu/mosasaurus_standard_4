@@ -48,7 +48,9 @@ static void gimbal_motor_gyro_pid(GIMBAL_t *gimbal_);
 static void gimbal_motor_encode_pid(GIMBAL_t *gimbal_);
 static void gimbal_motor_encode_pid_y(GIMBAL_t *gimbal_);
 int gimbal_imu_cnt=0;
-uint16_t set_compare=600;//close
+const uint16_t SERVO_CLOSE = 400;
+const uint16_t SERVO_OPEN = 1600;
+uint16_t set_compare = SERVO_CLOSE; // close
 
 enum
 {

@@ -60,6 +60,23 @@ void Vision_Task(void)
 		//		gimbal_y.target_speed=((rc_sent.yaw.target_angle)/4.5);
 		//		gimbal_y.target_angle=Ren;
 	}
+	else if (vision_mode==ASSIST_VISION_ON)
+	{
+		if (vision_sent.Control_priority == 1)
+		{
+			vision_check_flag = 1;
+
+			gimbal_y.target_angle = gimbal_y.auto_aim_angle-gimbal_y.add_angle;
+			last_yaw_target_angle = gimbal_y.auto_aim_angle;
+
+			gimbal_p.target_angle = gimbal_p.auto_aim_angle-gimbal_p.add_angle;
+			last_pitch_target_angle = gimbal_p.auto_aim_angle;
+
+			vision_sent.Control_priority = 0;
+		}
+		
+	}
+	
 	else if (vision_mode == VISION_ON) // 自瞄模式开
 	{
 

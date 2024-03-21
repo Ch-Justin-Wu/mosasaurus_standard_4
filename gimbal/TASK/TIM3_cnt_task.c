@@ -73,7 +73,7 @@ void TIM3_CNT_TASK()
 			{
 				remote_control_data();
 			}
-			else if (control_mode == KEY_ON)
+			else
 			{
 				key_control_data();
 			}

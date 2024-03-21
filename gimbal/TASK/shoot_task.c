@@ -247,9 +247,13 @@ int trigger_cnt = 0, trigger_cnt_flag = 0, remain_bullet = 0;
 void trigger_angle_set(void)
 {
 	trigger_cnt_flag = 1;
-	if (Ten_Shoot_flag || More_shoot_flag)
+	if(More_shoot_flag)
 	{
 		remain_bullet = ((heat_limit - heat) / 10.0f) - 5; // 计算热量限制下的剩余弹量
+	}
+	else if (Ten_Shoot_flag )
+	{
+		remain_bullet = ((heat_limit - heat) / 10.0f) - 4; // 计算热量限制下的剩余弹量
 	}
 	else if(One_Shoot_flag)
 	{

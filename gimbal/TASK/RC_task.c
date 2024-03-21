@@ -61,9 +61,9 @@ static int deadline_judge_v(int16_t a)
 // 控制模式选择
 void control_mode_judge(void)
 {
-	if ((referee_priority_flag == 0) && (rc_ctrl.rc.ch[0] != 0 || rc_ctrl.rc.ch[1] != 0 || rc_ctrl.rc.ch[2] != 0 || rc_ctrl.rc.ch[3] != 0 || rc_ctrl.rc.ch[4] != 0))
+	if ( (rc_ctrl.rc.ch[0] != 0 || rc_ctrl.rc.ch[1] != 0 || rc_ctrl.rc.ch[2] != 0 || rc_ctrl.rc.ch[3] != 0 || rc_ctrl.rc.ch[4] != 0))
 		control_mode = KEY_OFF;
-	if (referee_priority_flag || KEY_board || MOUSE_x || MOUSE_y || MOUSE_z || RFR_KEY_board || RFR_MOUSE_X || RFR_MOUSE_Y || RFR_MOUSE_Z)
+	if ( KEY_board || MOUSE_x || MOUSE_y || MOUSE_z || RFR_KEY_board || RFR_MOUSE_X || RFR_MOUSE_Y || RFR_MOUSE_Z)
 		control_mode = KEY_ON;
 }
 
@@ -178,18 +178,18 @@ void remote_control_data(void)
 	}
 	else
 		rc_sent.x_speed = 0;
-	// if (deadline_judge_v(rc_ctrl.rc.ch[4]) == 0)
-	// {
-	// 	if (rc_ctrl.rc.ch[4] > 0)
-	// 		rc_sent.r_speed = (100.0 / 660.0) * (float)(rc_ctrl.rc.ch[4]); // rc_ctrl.rc.ch[4]数据很怪
-	// 	else if (rc_ctrl.rc.ch[4] < 0)
-	// 		rc_sent.r_speed = (100.0 / 32000.0) * (float)(rc_ctrl.rc.ch[4]);
+	if (deadline_judge_v(rc_ctrl.rc.ch[4]) == 0)
+	{
+		if (rc_ctrl.rc.ch[4] > 0)
+			rc_sent.r_speed = (100.0 / 660.0) * (float)(rc_ctrl.rc.ch[4]); // rc_ctrl.rc.ch[4]数据很怪
+		else if (rc_ctrl.rc.ch[4] < 0)
+			rc_sent.r_speed = (100.0 / 32000.0) * (float)(rc_ctrl.rc.ch[4]);
 
-	// 	if (rc_sent.r_speed > 100 || rc_sent.r_speed < -100)
-	// 		rc_sent.r_speed = 0;
-	// }
-	// else
-	// 	rc_sent.r_speed = 0;
+		if (rc_sent.r_speed > 100 || rc_sent.r_speed < -100)
+			rc_sent.r_speed = 0;
+	}
+	else
+		rc_sent.r_speed = 0;
 
 	rc_sent.yaw.target_speed = limits_change(RC_YAW_SPEED_MAXX, RC_YAW_SPEED_MINN, rc_ctrl.rc.ch[2], RC_MAXX, RC_MINN);
 	rc_sent.yaw.target_angle = limits_change(RC_YAW_ANGLE_MAXX, RC_YAW_ANGLE_MINN, rc_ctrl.rc.ch[2], RC_MAXX, RC_MINN);
@@ -287,21 +287,11 @@ void key_control_data(void)
 
 		if (MOUSE_pre_right == 1)
 		{
-			// pre_right_cnt++;
-			// if (pre_right_cnt < 285) // 1s
-			// {
-			// 	Ten_Shoot_flag = 1;
-			// 	pre_right_cnt = 0;
-			// }
-			// else
-			// {
-			// 	Ten_Shoot_flag = 0;
-			// 	pre_right_cnt = 0;
-			// 	More_shoot_flag = 1;
-			// }
+			vision_mode = ASSIST_VISION_ON;
 		}
 		else
 		{
+			vision_mode = VISION_OFF;
 		}
 
 		/*       控制底盘     */
@@ -400,24 +390,14 @@ void key_control_data(void)
 				break;
 			}
 		}
-			if (MOUSE_pre_right == 1)
-			{
-				// pre_right_cnt++;
-				// if (pre_right_cnt < 285) // 1s
-				// {
-				// 	Ten_Shoot_flag = 1;
-				// 	pre_right_cnt = 0;
-				// }
-				// else
-				// {
-				// 	Ten_Shoot_flag = 0;
-				// 	pre_right_cnt = 0;
-				// 	More_shoot_flag = 1;
-				// }
-			}
-			else
-			{
-			}
+		if (MOUSE_pre_right == 1)
+		{
+			vision_mode = ASSIST_VISION_ON;
+		}
+		else
+		{
+			vision_mode = VISION_OFF;
+		}
 			//						rc_shoot.left_fric.target_speed = -SHOOT_FRIC_SPEED_MIN;
 			//		  	rc_shoot.right_fric.target_speed = SHOOT_FRIC_SPEED_MIN;
 			/*       控制底盘     */
@@ -515,7 +495,8 @@ void key_control_data(void)
 			time_count_f = 0;
 		}
 	}
-
+	extern const uint16_t SERVO_CLOSE;
+	extern const uint16_t SERVO_OPEN;
 	extern uint16_t set_compare;
 	void judge_e(void)
 	{
@@ -527,16 +508,16 @@ void key_control_data(void)
 			{
 				if (time_count_e >= KEY_COUNT)
 				{
-					if (set_compare == 2050)
+					if (set_compare == SERVO_OPEN)
 					{
 						bullet_state = CLOSE;
-						set_compare = 600;
+						set_compare = SERVO_CLOSE;
 					}
 
 					else
 					{
 						bullet_state = OPEN;
-						set_compare = 2050;
+						set_compare = SERVO_OPEN;
 					}
 				}
 			}
