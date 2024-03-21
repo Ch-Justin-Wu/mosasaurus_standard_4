@@ -6,7 +6,7 @@
 
 #define CHASSIS_POWER_LIMIT_REFEREE
 
-//#define CHASSIS_POWER_LIMIT
+// #define CHASSIS_POWER_LIMIT
 
 static float chassis_follow(void);
 static void chassis_speed_control(float speed_x, float speed_y, float speed_r);
@@ -37,7 +37,7 @@ float avx, avy, awz;
 float last_vx, last_vy;
 
 // 72.2f 斜45° 300.00f
-float GIMBAL_SPIN_ANGLE = 132.0f;
+float GIMBAL_SPIN_ANGLE = 137.0f;
 float GIMBAL_HEAD_ANGLE = 122.0f;
 float GIMBAL_FOLLOW_ANGLE = 122.0f;
 
@@ -80,8 +80,6 @@ uint8_t fly_buffer_flag = 0;
 uint8_t supercap_bettery_flag = 1;
 extern float blood;
 
-
-
 float motor_pid_out[4];
 float motor_speed[4];
 void chassis_power_control(void)
@@ -102,11 +100,8 @@ void chassis_power_control(void)
 	fp32 k2 = 1.453e-07;					 // k2
 	fp32 constant = 4.081f;
 
-
-
-
 	motor_pid_out[0] = chassis_motor1.pid.speed_loop.vpid.PID_OUT;
-	motor_pid_out[1] = chassis_motor2.pid.speed_loop.vpid.PID_OUT;	
+	motor_pid_out[1] = chassis_motor2.pid.speed_loop.vpid.PID_OUT;
 	motor_pid_out[2] = chassis_motor3.pid.speed_loop.vpid.PID_OUT;
 	motor_pid_out[3] = chassis_motor4.pid.speed_loop.vpid.PID_OUT;
 
@@ -131,8 +126,6 @@ void chassis_power_control(void)
 	for (uint8_t i = 0; i < 4; i++) // first get all the initial motor power and total motor power
 	{
 
-
-		
 		initial_give_power[i] = motor_pid_out[i] * toque_coefficient * motor_speed[i] +
 								k2 * motor_speed[i] * motor_speed[i] +
 								a * motor_pid_out[i] * motor_pid_out[i] + constant;
@@ -158,7 +151,9 @@ void chassis_power_control(void)
 
 			if (motor_pid_out[i] > 0) // Selection of the calculation formula according to the direction of the original moment
 			{
-				fp32 temp = (-b + sqrtf(b * b - 4 * a * c)) / (2 * a);
+				float temp_sqrt_1 = 0.0f;
+				arm_sqrt_f32(b * b - 4 * a * c, &temp_sqrt_1);
+				fp32 temp = (-b + temp_sqrt_1) / (2 * a);
 				if (temp > 16000)
 				{
 					motor_pid_out[i] = 16000;
@@ -168,7 +163,9 @@ void chassis_power_control(void)
 			}
 			else
 			{
-				fp32 temp = (-b - sqrtf(b * b - 4 * a * c)) / (2 * a);
+				float temp_sqrt_2 = 0.0f;
+				arm_sqrt_f32(b * b - 4 * a * c, &temp_sqrt_2);
+				fp32 temp = (-b - temp_sqrt_2) / (2 * a);
 				if (temp < -16000)
 				{
 					motor_pid_out[i] = -16000;
@@ -203,25 +200,23 @@ void chassis_move(void)
 	//	chassis_motor2.target_current=chassis_motor2.pid.speed_loop.vpid.PID_OUT;
 	//	chassis_motor3.target_current=chassis_motor3.pid.speed_loop.vpid.PID_OUT;
 	//	chassis_motor4.target_current=chassis_motor4.pid.speed_loop.vpid.PID_OUT;
-//	 chassis_motor1.target_current = chassis_motor1.pid.speed_loop.vpid.PID_OUT;
-//	 chassis_motor2.target_current = chassis_motor2.pid.speed_loop.vpid.PID_OUT;
-//	 chassis_motor3.target_current = chassis_motor3.pid.speed_loop.vpid.PID_OUT;
-//	 chassis_motor4.target_current = chassis_motor4.pid.speed_loop.vpid.PID_OUT;
+	//	 chassis_motor1.target_current = chassis_motor1.pid.speed_loop.vpid.PID_OUT;
+	//	 chassis_motor2.target_current = chassis_motor2.pid.speed_loop.vpid.PID_OUT;
+	//	 chassis_motor3.target_current = chassis_motor3.pid.speed_loop.vpid.PID_OUT;
+	//	 chassis_motor4.target_current = chassis_motor4.pid.speed_loop.vpid.PID_OUT;
 
 	chassis_power_control();
 
-    chassis_motor1.target_current = motor_pid_out[0];
-    chassis_motor2.target_current = motor_pid_out[1];
-    chassis_motor3.target_current = motor_pid_out[2];
-    chassis_motor4.target_current = motor_pid_out[3];
+	chassis_motor1.target_current = motor_pid_out[0];
+	chassis_motor2.target_current = motor_pid_out[1];
+	chassis_motor3.target_current = motor_pid_out[2];
+	chassis_motor4.target_current = motor_pid_out[3];
 
-	//Power_limit(); // 新的功率限制 Rhn
+	// Power_limit(); // 新的功率限制 Rhn
 
 	// 发送电流
 	can_send_chassis_current();
 }
-
-
 
 /**
  * @breif         获取云台与底盘之间的夹角
@@ -236,21 +231,23 @@ static float Get_chassis_theta(uint8_t mode)
 	// if (chassis_center.actual_angle < GIMBAL_FOLLOW_ANGLE)
 	// 	temp = chassis_center.actual_angle + 360.0f;
 	// else
-	
-		temp = chassis_center.actual_angle;
-		if (mode == CHASSIS_FOLLOW)
-			{temp2 = temp - GIMBAL_FOLLOW_ANGLE;}
-			else if (mode == CHASSIS_SPIN)
-			{temp2 = temp - GIMBAL_SPIN_ANGLE;}
-		angle = temp2 / 360.0f * 2 * PI;
-		return angle;
+
+	temp = chassis_center.actual_angle;
+	if (mode == CHASSIS_FOLLOW)
+	{
+		temp2 = temp - GIMBAL_FOLLOW_ANGLE;
+	}
+	else if (mode == CHASSIS_SPIN)
+	{
+		temp2 = temp - GIMBAL_SPIN_ANGLE;
+	}
+	angle = temp2 / 360.0f * 2 * PI;
+	return angle;
 }
-
-
 
 float theta;
 float UI_theta;
-void chassis_spin(float *vx, float *vy,uint8_t mode)
+void chassis_spin(float *vx, float *vy, uint8_t mode)
 {
 	float pre_vx = *vx;
 	float pre_vy = *vy;
@@ -258,7 +255,7 @@ void chassis_spin(float *vx, float *vy,uint8_t mode)
 	UI_theta = theta + (PI / 2);
 	if (UI_theta > 2 * PI)
 		UI_theta -= 2 * PI;
-	*vx = (float)(pre_vx * arm_cos_f32(theta)-pre_vy * arm_sin_f32(theta));
+	*vx = (float)(pre_vx * arm_cos_f32(theta) - pre_vy * arm_sin_f32(theta));
 	*vy = (float)(pre_vx * arm_sin_f32(theta) + pre_vy * arm_cos_f32(theta));
 }
 
@@ -322,7 +319,7 @@ static void Power_limit(void) // 新的功率限制
 	if (max_power == 0)
 		max_power = 45; // 最低保护
 
-	 max_power=80;//裁判系统读取不到数据时自己赋值,比赛使用时要注释掉
+	max_power = 80; // 裁判系统读取不到数据时自己赋值,比赛使用时要注释掉
 	Power_out_1 = abs_f(((chassis_motor1.actual_speed / reduction_ratio) * 2.0f * 3.1415927f / 60.0f) * (K_M * chassis_motor1.target_current * 20.0f / 16384.0f));
 	Power_out_2 = abs_f(((chassis_motor2.actual_speed / reduction_ratio) * 2.0f * 3.1415927f / 60.0f) * (K_M * chassis_motor2.target_current * 20.0f / 16384.0f));
 	Power_out_3 = abs_f(((chassis_motor3.actual_speed / reduction_ratio) * 2.0f * 3.1415927f / 60.0f) * (K_M * chassis_motor3.target_current * 20.0f / 16384.0f));
@@ -418,8 +415,8 @@ static float chassis_buffer_loop(uint16_t buffer)
 	b_pid.target_buffer = 30;
 	b_pid.actual_buffer = buffer;
 	buffer_pid_realize(&b_pid);
-	temp = 1.07 - ((float)b_pid.PID_OUT / 1000.0f);
-	temp *= 0.85;
+	temp = 1.07f - ((float)b_pid.PID_OUT / 1000.0f);
+	temp *= 0.85f;
 	//	if(temp>1.2f)  temp-=0.2f;
 
 	return temp;
@@ -784,8 +781,7 @@ static void chassis_move_mode(void)
 	last_vx = (float)chassis_control_order.vx_set;
 	//	last_vx=yu;
 	last_vy = (float)chassis_control_order.vy_set;
-	chassis_speed_control(-vy, -
-    vx, wz);
+	chassis_speed_control(-vy, -vx, wz);
 }
 
 /**

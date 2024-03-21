@@ -263,7 +263,7 @@ void key_control_data(void)
 			else
 			{
 				//			  rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MIN;
-				//		    rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MIN;
+				//		    rc_shoot.right_fric.targept_speed = SHOOT_RIGHT_FRIC_SPEED_MIN;
 				rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MAX;
 				rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MAX;
 			}

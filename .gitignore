@@ -30,7 +30,7 @@
 *.elf
 *.hex
 *.h86
-*.lib
+#*.lib
 *.obj
 *.o
 *.sbr

@@ -62,7 +62,7 @@ void gimbal_control_behaviour(void)
 			{
 				if (gimbal_set_mode == GIMBAL_TOP_ANGLE)
 				{
-					gimbal_y.target_angle = gimbal_y.IMU_actual_angle - 10.0f - yaw_angle*1.7f;
+					gimbal_y.target_angle = gimbal_y.IMU_actual_angle - 5.0f - yaw_angle*1.25f;
 				}
 				else
 				{
