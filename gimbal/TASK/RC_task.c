@@ -9,11 +9,11 @@
 #include "upper_computer.h"
 #include "tim.h"
 #include "referee.h"
-
+extern uint8_t shoot_type;
 extern shoot_status_e shoot_status;
 extern ext_referee_rc_data_t referee_rc_data_t;
 extern uint8_t referee_priority_flag;
-KEY_CONTROL control_mode = KEY_OFF;	 // 控制模式
+KEY_CONTROL control_mode = KEY_ON;	 // 控制模式
 FIGHT_CONTROL fight_mode = FIGHT_ON; // 战斗模式
 
 extern int16_t SHOOT_LEFT_FRIC_SPEED_MAX;
@@ -61,7 +61,7 @@ static int deadline_judge_v(int16_t a)
 // 控制模式选择
 void control_mode_judge(void)
 {
-	if (rc_ctrl.rc.ch[0] != 0 || rc_ctrl.rc.ch[1] != 0 || rc_ctrl.rc.ch[2] != 0 || rc_ctrl.rc.ch[3] != 0 || rc_ctrl.rc.ch[4] != 0)
+	if ((referee_priority_flag == 0) && (rc_ctrl.rc.ch[0] != 0 || rc_ctrl.rc.ch[1] != 0 || rc_ctrl.rc.ch[2] != 0 || rc_ctrl.rc.ch[3] != 0 || rc_ctrl.rc.ch[4] != 0))
 		control_mode = KEY_OFF;
 	if (referee_priority_flag || KEY_board || MOUSE_x || MOUSE_y || MOUSE_z || RFR_KEY_board || RFR_MOUSE_X || RFR_MOUSE_Y || RFR_MOUSE_Z)
 		control_mode = KEY_ON;
@@ -224,6 +224,7 @@ void key_control_data(void)
 {
 	One_Shoot_flag = 0;
 	Ten_Shoot_flag = 0;
+	More_shoot_flag = 0;
 
 	// 战斗模式判断
 	if ((KEY_board & SHIFT_key) || (RFR_KEY_board & SHIFT_key)) // 按下shift键
@@ -266,28 +267,41 @@ void key_control_data(void)
 				rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MAX;
 				rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MAX;
 			}
-			One_Shoot_flag = 1;
+
+			switch (shoot_type)
+			{
+			case ONE_SHOOT:
+				One_Shoot_flag = 1;
+				break;
+			case FIVE_SHOOT:
+				Ten_Shoot_flag = 1;
+				break;
+			case TEN_SHOOT:
+				More_shoot_flag = 1;
+				break;
+
+			default:
+				break;
+			}
 		}
 
 		if (MOUSE_pre_right == 1)
 		{
-			pre_right_cnt++;
-			if (pre_right_cnt < 285) // 1s
-			{
-				Ten_Shoot_flag = 1;
-				pre_right_cnt = 0;
-			}
-			else
-			{
-				Ten_Shoot_flag = 0;
-				pre_right_cnt = 0;
-				More_shoot_flag = 1;
-			}
+			// pre_right_cnt++;
+			// if (pre_right_cnt < 285) // 1s
+			// {
+			// 	Ten_Shoot_flag = 1;
+			// 	pre_right_cnt = 0;
+			// }
+			// else
+			// {
+			// 	Ten_Shoot_flag = 0;
+			// 	pre_right_cnt = 0;
+			// 	More_shoot_flag = 1;
+			// }
 		}
 		else
 		{
-			pre_right_cnt = 0;
-			More_shoot_flag = 0;
 		}
 
 		/*       控制底盘     */
@@ -370,320 +384,345 @@ void key_control_data(void)
 				rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MAX;
 				rc_shoot.right_fric.target_speed = SHOOT_RIGHT_FRIC_SPEED_MAX;
 			}
-			One_Shoot_flag = 1;
-		}
-
-		if (MOUSE_pre_right == 1)
-		{
-			pre_right_cnt++;
-			if (pre_right_cnt < 285) // 1s
+			switch (shoot_type)
 			{
+			case ONE_SHOOT:
+				One_Shoot_flag = 1;
+				break;
+			case FIVE_SHOOT:
 				Ten_Shoot_flag = 1;
-				pre_right_cnt = 0;
+				break;
+			case TEN_SHOOT:
+				More_shoot_flag = 1;
+				break;
+
+			default:
+				break;
+			}
+		}
+			if (MOUSE_pre_right == 1)
+			{
+				// pre_right_cnt++;
+				// if (pre_right_cnt < 285) // 1s
+				// {
+				// 	Ten_Shoot_flag = 1;
+				// 	pre_right_cnt = 0;
+				// }
+				// else
+				// {
+				// 	Ten_Shoot_flag = 0;
+				// 	pre_right_cnt = 0;
+				// 	More_shoot_flag = 1;
+				// }
 			}
 			else
 			{
-				Ten_Shoot_flag = 0;
-				pre_right_cnt = 0;
-				More_shoot_flag = 1;
 			}
-		}
-		else
-		{
-			pre_right_cnt = 0;
-			More_shoot_flag = 0;
-		}
-		//						rc_shoot.left_fric.target_speed = -SHOOT_FRIC_SPEED_MIN;
-		//		  	rc_shoot.right_fric.target_speed = SHOOT_FRIC_SPEED_MIN;
-		/*       控制底盘     */
-		if (KEY_board & ws_key)
-		{
-			if ((KEY_board & W_key) && (!(KEY_board & S_key))) // 只按下w
+			//						rc_shoot.left_fric.target_speed = -SHOOT_FRIC_SPEED_MIN;
+			//		  	rc_shoot.right_fric.target_speed = SHOOT_FRIC_SPEED_MIN;
+			/*       控制底盘     */
+			if (KEY_board & ws_key)
 			{
-				rc_sent.x_speed = 450;
-			}
-			if ((KEY_board & S_key) && (!(KEY_board & W_key)))
-			{
-				rc_sent.x_speed = -450;
-			}
-			if ((KEY_board & W_key) && (KEY_board & S_key)) // 同时按下 遵循最后一个按下的按键
-			{
-				if ((last_key & W_key) && (!(last_key & S_key)))
-					rc_sent.x_speed = -450;
-				if ((last_key & S_key) && (!(last_key & W_key)))
+				if ((KEY_board & W_key) && (!(KEY_board & S_key))) // 只按下w
+				{
 					rc_sent.x_speed = 450;
+				}
+				if ((KEY_board & S_key) && (!(KEY_board & W_key)))
+				{
+					rc_sent.x_speed = -450;
+				}
+				if ((KEY_board & W_key) && (KEY_board & S_key)) // 同时按下 遵循最后一个按下的按键
+				{
+					if ((last_key & W_key) && (!(last_key & S_key)))
+						rc_sent.x_speed = -450;
+					if ((last_key & S_key) && (!(last_key & W_key)))
+						rc_sent.x_speed = 450;
+				}
 			}
-		}
-		else
-			rc_sent.x_speed = 0;
+			else
+				rc_sent.x_speed = 0;
 
-		if (KEY_board & ad_key)
-		{
-			if ((KEY_board & A_key) && (!(KEY_board & D_key))) // 只按下A
+			if (KEY_board & ad_key)
 			{
-				rc_sent.y_speed = -400;
-			}
-			if ((KEY_board & D_key) && (!(KEY_board & A_key)))
-			{
-				rc_sent.y_speed = 400;
-			}
-			if ((KEY_board & A_key) && (KEY_board & D_key)) // 同时按下 遵循最后一个按下的按键
-			{
-				if ((last_key & A_key) && (!(last_key & D_key)))
-					rc_sent.y_speed = 400;
-				if ((last_key & D_key) && (!(last_key & A_key)))
+				if ((KEY_board & A_key) && (!(KEY_board & D_key))) // 只按下A
+				{
 					rc_sent.y_speed = -400;
+				}
+				if ((KEY_board & D_key) && (!(KEY_board & A_key)))
+				{
+					rc_sent.y_speed = 400;
+				}
+				if ((KEY_board & A_key) && (KEY_board & D_key)) // 同时按下 遵循最后一个按下的按键
+				{
+					if ((last_key & A_key) && (!(last_key & D_key)))
+						rc_sent.y_speed = 400;
+					if ((last_key & D_key) && (!(last_key & A_key)))
+						rc_sent.y_speed = -400;
+				}
+			}
+			else
+				rc_sent.y_speed = 0;
+		}
+	}
+
+	uint8_t flag__ = 0;
+	void judge_q(void)
+	{
+		if (KEY_board & Q_key)
+			time_count_q++;
+		else
+		{
+			if (last_key & Q_key)
+			{
+				if (time_count_q >= KEY_COUNT) // 7*14ms按下时间
+				{
+					if (gimbal_set_mode == GIMBAL_ABSOLUTE_ANGLE)
+						gimbal_set_mode = GIMBAL_TOP_ANGLE; // 小陀螺
+					else
+						gimbal_set_mode = GIMBAL_ABSOLUTE_ANGLE;
+				}
+			}
+			time_count_q = 0; // 计数清零
+		}
+	}
+
+	void judge_f(void)
+	{
+		if (KEY_board & F_key)
+			time_count_f++;
+		else
+		{
+			if (last_key & F_key)
+			{
+				if (time_count_f >= KEY_COUNT)
+				{
+					if (vision_mode == VISION_OFF)
+					{
+						// HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET);  //开自瞄关闭激光
+						vision_yaw = gimbal_y.CAN_actual_angle;
+						vision_pitch = gimbal_p.IMU_actual_angle;
+						vision_mode = VISION_ON;
+						shoot_vision_mode = VISION_NOMAL;
+					}
+					else
+					{
+						// HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET);  //关自瞄开启激光
+						vision_mode = VISION_OFF;
+						shoot_vision_mode = VISION_NOMAL;
+					}
+				}
+			}
+			time_count_f = 0;
+		}
+	}
+
+	extern uint16_t set_compare;
+	void judge_e(void)
+	{
+		if (KEY_board & E_key)
+			time_count_e++;
+		else
+		{
+			if (last_key & E_key)
+			{
+				if (time_count_e >= KEY_COUNT)
+				{
+					if (set_compare == 2050)
+					{
+						bullet_state = CLOSE;
+						set_compare = 600;
+					}
+
+					else
+					{
+						bullet_state = OPEN;
+						set_compare = 2050;
+					}
+				}
+			}
+			time_count_e = 0;
+		}
+	}
+
+	void judge_c(void)
+	{
+		if (KEY_board & C_key)
+			time_count_c++;
+		else
+		{
+			if (last_key & C_key)
+			{
+				if (time_count_c >= KEY_COUNT)
+				{
+					gimbal_y.target_angle += 180;
+				}
+			}
+			time_count_c = 0;
+		}
+	}
+	extern uint8_t shoot_type;
+	void judge_v(void)
+	{
+		if (KEY_board & V_key)
+			time_count_v++;
+		else
+		{
+			if (last_key & V_key)
+			{
+				if (time_count_v >= KEY_COUNT)
+				{
+					switch (shoot_type)
+					{
+					case ONE_SHOOT:
+						shoot_type = FIVE_SHOOT;
+						break;
+					case FIVE_SHOOT:
+						shoot_type = TEN_SHOOT;
+						break;
+					case TEN_SHOOT:
+						shoot_type = ONE_SHOOT;
+						break;
+					default:
+						break;
+					}
+					// if (shoot_vision_mode != VISION_SMALL_WINDWILL)
+					// {
+					// 	shoot_vision_mode = VISION_SMALL_WINDWILL; // 开启小风车
+					// 	fricspeed = FRIC_MAX;
+					// 	vision_mode = VISION_ON;
+					// }
+					// else
+					// {
+					// 	shoot_vision_mode = VISION_NOMAL;
+					// 	vision_mode = VISION_OFF;
+					// }
+				}
+			}
+			time_count_v = 0;
+		}
+	}
+
+	void judge_g(void)
+	{
+		if (KEY_board & G_key)
+			time_count_g++;
+		else
+		{
+			if (last_key & G_key)
+			{
+				if (time_count_g >= KEY_COUNT)
+				{
+					if (shoot_vision_mode != VISION_BIG_WINDWILL)
+					{
+						shoot_vision_mode = VISION_BIG_WINDWILL; // 开启大风车
+						fricspeed = FRIC_MAX;
+						vision_mode = VISION_ON;
+					}
+					else // 给上位机发送正常自瞄模式  不使用上位机的值
+					{
+						shoot_vision_mode = VISION_NOMAL;
+						vision_mode = VISION_OFF;
+					}
+				}
+			}
+			time_count_g = 0;
+		}
+	}
+
+	static void judge_x(void)
+	{
+		if (KEY_board & X_key)
+		{
+			time_count_x++;
+			if (vision_mode == VISION_ON)
+			{
+				if (time_count_x >= LONG_KEY_COUNT) // 长按1s断开上位机继电器
+				{
+					HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_RESET);
+					reboot_flag = 1;
+				}
 			}
 		}
 		else
-			rc_sent.y_speed = 0;
-	}
-}
-
-uint8_t flag__ = 0;
-void judge_q(void)
-{
-	if (KEY_board & Q_key)
-		time_count_q++;
-	else
-	{
-		if (last_key & Q_key)
 		{
-			if (time_count_q >= KEY_COUNT) // 7*14ms按下时间
-			{
-				if (gimbal_set_mode == GIMBAL_ABSOLUTE_ANGLE)
-					gimbal_set_mode = GIMBAL_TOP_ANGLE; // 小陀螺
-				else
-					gimbal_set_mode = GIMBAL_ABSOLUTE_ANGLE;
-			}
+			time_count_x = 0;
 		}
-		time_count_q = 0; // 计数清零
 	}
-}
 
-void judge_f(void)
-{
-	if (KEY_board & F_key)
-		time_count_f++;
-	else
+	uint8_t time_count_ctrl;
+	void judge_ctrl(void)
 	{
-		if (last_key & F_key)
+		if (KEY_board & CTRL_key)
+		{ // 摩擦轮开关
+			time_count_ctrl++;
+		}
+		else
 		{
-			if (time_count_f >= KEY_COUNT)
+			if (last_key & CTRL_key)
 			{
-				if (vision_mode == VISION_OFF)
+				if (time_count_ctrl >= KEY_COUNT)
 				{
-					// HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET);  //开自瞄关闭激光
-					vision_yaw = gimbal_y.CAN_actual_angle;
-					vision_pitch = gimbal_p.IMU_actual_angle;
-					vision_mode = VISION_ON;
-					shoot_vision_mode = VISION_NOMAL;
-				}
-				else
-				{
-					// HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET);  //关自瞄开启激光
-					vision_mode = VISION_OFF;
-					shoot_vision_mode = VISION_NOMAL;
+					time_count_ctrl = 0;
+					if (shoot_status == SHOOT_ON)
+					{
+						shoot_status = SHOOT_OFF;
+					}
+					else
+					{
+						shoot_status = SHOOT_ON;
+					}
 				}
 			}
+			time_count_ctrl = 0;
 		}
-		time_count_f = 0;
 	}
-}
 
-extern uint16_t set_compare;
-void judge_e(void)
-{
-	if (KEY_board & E_key)
-		time_count_e++;
-	else
+	uint8_t supercap_reboot_flag;
+	void judge_z(void)
 	{
-		if (last_key & E_key)
+		if (KEY_board & Z_key)
+			time_count_z++;
+		else
 		{
-			if (time_count_e >= KEY_COUNT)
+			if (last_key & Z_key)
 			{
-				if (set_compare == 2050)
+				if (time_count_z >= LONG_KEY_COUNT) // 长按1s断开超电开关
 				{
-					bullet_state = CLOSE;
-					set_compare = 600;
-				}
-
-				else
-				{
-					bullet_state = OPEN;
-					set_compare = 2050;
+					if (supercap_reboot_flag == 0)
+						supercap_reboot_flag = 1;
+					else
+						supercap_reboot_flag = 0;
 				}
 			}
+			time_count_z = 0;
 		}
-		time_count_e = 0;
 	}
-}
 
-void judge_c(void)
-{
-	if (KEY_board & C_key)
-		time_count_c++;
-	else
+	void upper_computer_reboot(void)
 	{
-		if (last_key & C_key)
+		static uint16_t switch_cnt = 0;
+		if (reboot_flag)
 		{
-			if (time_count_c >= KEY_COUNT)
+			switch_cnt++;
+			if (switch_cnt >= 1500)
 			{
-				gimbal_y.target_angle += 180;
-			}
-		}
-		time_count_c = 0;
-	}
-}
-
-void judge_v(void)
-{
-	if (KEY_board & V_key)
-		time_count_v++;
-	else
-	{
-		if (last_key & V_key)
-		{
-			if (time_count_v >= KEY_COUNT)
-			{
-				if (shoot_vision_mode != VISION_SMALL_WINDWILL)
-				{
-					shoot_vision_mode = VISION_SMALL_WINDWILL; // 开启小风车
-					fricspeed = FRIC_MAX;
-					vision_mode = VISION_ON;
-				}
-				else
-				{
-					shoot_vision_mode = VISION_NOMAL;
-					vision_mode = VISION_OFF;
-				}
-			}
-		}
-		time_count_v = 0;
-	}
-}
-
-void judge_g(void)
-{
-	if (KEY_board & G_key)
-		time_count_g++;
-	else
-	{
-		if (last_key & G_key)
-		{
-			if (time_count_g >= KEY_COUNT)
-			{
-				if (shoot_vision_mode != VISION_BIG_WINDWILL)
-				{
-					shoot_vision_mode = VISION_BIG_WINDWILL; // 开启大风车
-					fricspeed = FRIC_MAX;
-					vision_mode = VISION_ON;
-				}
-				else // 给上位机发送正常自瞄模式  不使用上位机的值
-				{
-					shoot_vision_mode = VISION_NOMAL;
-					vision_mode = VISION_OFF;
-				}
-			}
-		}
-		time_count_g = 0;
-	}
-}
-
-static void judge_x(void)
-{
-	if (KEY_board & X_key)
-	{
-		time_count_x++;
-		if (vision_mode == VISION_ON)
-		{
-			if (time_count_x >= LONG_KEY_COUNT) // 长按1s断开上位机继电器
-			{
-				HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_RESET);
-				reboot_flag = 1;
+				switch_cnt = 0;
+				HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_SET);
+				reboot_flag = 0;
 			}
 		}
 	}
-	else
-	{
-		time_count_x = 0;
-	}
-}
 
-uint8_t time_count_ctrl;
-void judge_ctrl(void)
-{
-	if (KEY_board & CTRL_key)
-	{ // 摩擦轮开关
-		time_count_ctrl++;
-	}
-	else
+	void judge_key(void)
 	{
-		if (last_key & CTRL_key)
-		{
-			if (time_count_ctrl >= KEY_COUNT)
-			{
-				time_count_ctrl = 0;
-				if (shoot_status == SHOOT_ON)
-				{
-					shoot_status = SHOOT_OFF;
-				}
-				else
-				{
-					shoot_status = SHOOT_ON;
-				}
-			}
-		}
-		time_count_ctrl = 0;
+		judge_z();
+		judge_c();
+		judge_x();
+		judge_e();
+		judge_f();
+		judge_q();
+		judge_v();
+		judge_g();
+		judge_ctrl();
+		last_key = KEY_board;
 	}
-}
-
-uint8_t supercap_reboot_flag;
-void judge_z(void)
-{
-	if (KEY_board & Z_key)
-		time_count_z++;
-	else
-	{
-		if (last_key & Z_key)
-		{
-			if (time_count_z >= LONG_KEY_COUNT) // 长按1s断开超电开关
-			{
-				if (supercap_reboot_flag == 0)
-					supercap_reboot_flag = 1;
-				else
-					supercap_reboot_flag = 0;
-			}
-		}
-		time_count_z = 0;
-	}
-}
-
-void upper_computer_reboot(void)
-{
-	static uint16_t switch_cnt = 0;
-	if (reboot_flag)
-	{
-		switch_cnt++;
-		if (switch_cnt >= 1500)
-		{
-			switch_cnt = 0;
-			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_SET);
-			reboot_flag = 0;
-		}
-	}
-}
-
-void judge_key(void)
-{
-	judge_z();
-	judge_c();
-	judge_x();
-	judge_e();
-	judge_f();
-	judge_q();
-	judge_v();
-	judge_g();
-	judge_ctrl();
-	last_key = KEY_board;
-}

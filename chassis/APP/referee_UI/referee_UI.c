@@ -432,7 +432,7 @@ void referee_usart_task()
 	}
 	if (UI_PushUp_Counter % 111 == 0) // 静态UI预绘制 中央标尺2
 	{
-		UI_Draw_Line(&UI_Graph7.Graphic[0], "008", UI_Graph_Add, 0, UI_Color_White, 2, 900, y03, 940, y03);			  // 第三行左横线
+		UI_Draw_Line(&UI_Graph7.Graphic[0], "008", UI_Graph_Add, 0, UI_Color_White, 2, 850, y03, 940, y03);			  // 第三行左横线
 		UI_Draw_Line(&UI_Graph7.Graphic[1], "009", UI_Graph_Add, 0, UI_Color_White, 6, 959, y03, 960, y03);			  // 第三行中心点
 		UI_Draw_Line(&UI_Graph7.Graphic[2], "010", UI_Graph_Add, 0, UI_Color_White, 2, 980, y03, 1020, y03);		  // 第三行右横线
 		UI_Draw_Line(&UI_Graph7.Graphic[3], "011", UI_Graph_Add, 0, UI_Color_White, 2, 930, y04, 950, y04);			  // 第四行左横线
@@ -471,11 +471,7 @@ void referee_usart_task()
 		UI_Draw_String(&UI_String.String, "304", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 600, "auto"); // 自瞄
 		UI_PushUp_String(&UI_String, Robot_ID_Current);
 	}
-	if (UI_PushUp_Counter % 146 == 0) // 动态UI预绘制
-	{
-		UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 450, "None");
-		UI_PushUp_String(&UI_String_shoot_type, Robot_ID_Current);
-	}
+
 	if (UI_PushUp_Counter % 151 == 0) // 动态UI预绘制
 	{
 		UI_Draw_String(&UI_String2.String, "306", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 700, "spin"); // 小陀螺
@@ -504,30 +500,39 @@ void referee_usart_task()
 		UI_Draw_String(&UI_String1.String, "305", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 38, 650, "scap"); // 超级电容
 		UI_PushUp_String(&UI_String1, Robot_ID_Current);
 	}
-	if (UI_PushUp_Counter % 21 == 0) // 动态UI更新 圆圈位置和颜色
+	if (UI_PushUp_Counter % 201 == 0) // 动态UI预绘制
 	{
-
+		UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Add, 2, UI_Color_White, 18, 4, 3, 600, 850,
+					   "  1");
+		UI_PushUp_String(&UI_String_shoot_type, Robot_ID_Current);
+	}
+	if (UI_PushUp_Counter % 21 == 0) // 动态UI预绘制
+	{
 		switch (shoot_type)
 		{
-		case NO_SHOOT:
-			UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Change, 2, UI_Color_White, 18, 4, 3, 38, 450, "None");
-			UI_PushUp_String(&UI_String_shoot_type, Robot_ID_Current);
+			//		case NO_SHOOT:
+			//			UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Change, 2, UI_Color_White, 18, 4, 3, 38, 850, "none");
+			//			UI_PushUp_String(&UI_String_shoot_type, Robot_ID_Current);
 			break;
 		case ONE_SHOOT:
-			UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Change, 2, UI_Color_Green, 18, 5, 3, 38, 450, "One 1");
+			UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Change, 2, UI_Color_Cyan, 18, 4, 3, 600, 850, "  1");
 			UI_PushUp_String(&UI_String_shoot_type, Robot_ID_Current);
 			break;
 		case FIVE_SHOOT:
-			UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Change, 2, UI_Color_Orange, 18, 5, 3, 38, 450, "Fiv 5");
+			UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Change, 2, UI_Color_Orange, 18, 4, 3, 600, 850, "  5");
 			UI_PushUp_String(&UI_String_shoot_type, Robot_ID_Current);
 			break;
 		case TEN_SHOOT:
-			UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Change, 2, UI_Color_Pink, 18, 6, 3, 38, 450, "Ten 10");
+			UI_Draw_String(&UI_String_shoot_type.String, "309", UI_Graph_Change, 2, UI_Color_Pink, 18, 4, 3, 600, 850, "  10");
 			UI_PushUp_String(&UI_String_shoot_type, Robot_ID_Current);
 			break;
 		default:
 			break;
 		}
+	}
+	if (UI_PushUp_Counter % 21 == 0) // 动态UI更新 圆圈位置和颜色
+	{
+
 		if (shoot_status == 0)
 		{
 			UI_Draw_Arc(&UI_Graph1_Ar.Graphic[0], "113", UI_Graph_Change, 2, UI_Color_White, 0, 360, 5, 150, 790, 15, 15); // fire off

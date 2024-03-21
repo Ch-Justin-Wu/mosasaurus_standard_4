@@ -15,10 +15,8 @@
 */
 uint8_t data_[8] = {0}, state;
 extern uint16_t set_compare;
-extern uint8_t One_Shoot_flag;
-extern uint8_t Ten_Shoot_flag;
-extern uint8_t More_shoot_flag;
-uint8_t shoot_type = 0;
+
+uint8_t shoot_type = 1;
 extern enum {
 	CLOSE = 0,
 	OPEN
@@ -55,22 +53,7 @@ extern uint8_t chassis_power_flag;
 extern uint8_t supercap_reboot_flag;
 uint8_t canTX_chassis_second(uint8_t mode, uint8_t vision_mode)
 {
-	if(One_Shoot_flag==1)
-	{
-		shoot_type = 1;
-	}
-	else if(Ten_Shoot_flag==1)
-	{
-		shoot_type = 2;
-	}
-	else if(More_shoot_flag==1)
-	{
-		shoot_type = 3;
-	}
-	else
-	{
-		shoot_type = 0;
-	}
+
 	CAN_TxHeaderTypeDef canFrame;
 	uint8_t data[8] = {0};
 	uint32_t temp = 0;

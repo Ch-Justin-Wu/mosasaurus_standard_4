@@ -7,6 +7,14 @@
 //#define SHOOT_FRIC_SPEED_MAX  7700   //4000 8000 30
 //#define SHOOT_FRIC_SPEED_MIN  4850 //15 还要再调 4700
 
+typedef enum shoot_type_e
+{
+	NO_SHOOT = 0,
+	ONE_SHOOT,
+	FIVE_SHOOT,
+	TEN_SHOOT,
+} shoot_type_e;
+
 typedef struct{
 	
 	float target_speed;

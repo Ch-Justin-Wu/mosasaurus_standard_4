@@ -60,7 +60,8 @@ int8_t us;
 void Gimbal_Task(void)
 {
 	//舵机
-	__HAL_TIM_SET_COMPARE(&htim8,TIM_CHANNEL_3,set_compare);
+	//__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,set_compare);坏
+	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, set_compare);
 	//延时等待imu数据稳定
 	//IMU 数据接收
 	GIMBAL_CALBACK_GET();

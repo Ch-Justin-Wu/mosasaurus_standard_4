@@ -136,8 +136,8 @@ int main(void)
    Gimbal_Init();
    IMU_Init();
    cali_param_init();
-	 //HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
-   HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_3);
+	HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
+   //HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
    HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
 // uart_init();  //以前给上位机通讯用的
   /* USER CODE END 2 */
