@@ -7,12 +7,20 @@
 #include "vision_task.h"
 
 uint8_t chassis_speed_x, chassis_speed_y;
-
+enum
+{
+	__servo_open,
+	__servo_close
+};
+uint8_t servo_flag = __servo_close;
 uint16_t move_count = 0;
 short int f_move_flag = 0;
 short int l_move_flag = 0;
 
 int yuuuu = 0;
+extern uint16_t set_compare;
+extern const uint16_t SERVO_OPEN;
+extern const uint16_t SERVO_CLOSE;
 void remote_chassis(void)
 {
 	if (gimbal_set_mode == GIMBAL_INIT) // ≥ı º
@@ -41,5 +49,8 @@ void remote_chassis(void)
 		canTX_chassis_second(3, vision_mode);
 		canTX_gimbal_p_2(0);
 		canTX_fric(0, 0, 0);
+		
+		set_compare = SERVO_OPEN;
 	}
+	
 }
