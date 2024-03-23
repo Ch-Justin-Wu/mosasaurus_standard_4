@@ -577,6 +577,7 @@ extern "C"
 	extern void get_self_own_side_blood(uint16_t *outpost_blood, uint16_t *self_blood);
 	extern void get_game_process_get_time(uint8_t *game_process, uint16_t *time);
 
+	extern ext_game_robot_state_t robot_state;
 #ifdef __cplusplus
 }
 #endif

@@ -4,9 +4,9 @@
 #include <math.h>
 #include "arm_math.h"
 
-//#define CHASSIS_POWER_LIMIT_REFEREE
+#define CHASSIS_POWER_LIMIT_REFEREE
 
-#define CHASSIS_POWER_LIMIT
+//#define CHASSIS_POWER_LIMIT
 
 static float chassis_follow(void);
 static void chassis_speed_control(float speed_x, float speed_y, float speed_r);
@@ -85,7 +85,7 @@ float motor_speed[4];
 void chassis_power_control(void)
 {
 
-	uint16_t max_power_limit = 120;
+	uint16_t max_power_limit = 45;
 	fp32 chassis_max_power = 0;
 	float input_power = 0;		 // input power from battery (referee system)
 	float initial_give_power[4]; // initial power from PID calculation
@@ -111,14 +111,15 @@ void chassis_power_control(void)
 	motor_speed[3] = chassis_motor4.actual_speed;
 
 #if defined(CHASSIS_POWER_LIMIT_REFEREE)
-	get_chassis_power_and_buffer_and_max(&chassis_power, &chassis_power_buffer, &max_power_limit);
-	chassis_buffer_loop(chassis_power_buffer);
-	input_power = max_power_limit - b_pid.PID_OUT; // Input power floating at maximum power
+	 //get_chassis_power_and_buffer_and_max(&chassis_power, &chassis_power_buffer, &max_power_limit);
+	// chassis_buffer_loop(chassis_power_buffer);
+	// input_power = max_power_limit - b_pid.PID_OUT; // Input power floating at maximum power
+	input_power = robot_state.chassis_power_limit;
 #endif
 
 #if defined(CHASSIS_POWER_LIMIT)
 
-	input_power = max_power_limit;
+					   input_power = max_power_limit;
 #endif
 	// CAN_CMD_CAP(input_power); // set the input power of capacitor controller
 
