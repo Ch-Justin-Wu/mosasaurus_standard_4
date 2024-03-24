@@ -264,11 +264,11 @@ static void GIMBAL_PID(void)
 	}
 	if(gimbal_y.gimbal_motor_mode==GIMBAL_MOTOR_GYRO)
 	{
-		if(gimbal_y.target_angle-gimbal_y.IMU_actual_angle>180)
-			gimbal_y.target_angle -= 360;
-		if(gimbal_y.target_angle-gimbal_y.IMU_actual_angle<-180)
-			gimbal_y.target_angle += 360;	 
-		
+		if(gimbal_y.target_angle-gimbal_y.IMU_actual_angle>180.f)
+			gimbal_y.target_angle -= 360.f;
+		if(gimbal_y.target_angle-gimbal_y.IMU_actual_angle<-180.f)
+			gimbal_y.target_angle += 360.f;	 
+
 		gimbal_motor_gyro_pid(&gimbal_y);
 		
 		if(gimbal_y.IMU_actual_speed > - 0.0f && gimbal_y.IMU_actual_speed < 0.0f)
@@ -293,6 +293,16 @@ static void GIMBAL_PID(void)
 	}
 	if(gimbal_p.gimbal_motor_mode==GIMBAL_MOTOR_GYRO)
 	{
+		const float depress_limit = -20.5f;//俯角限制
+		const float elevation_limit = 38.30f;//仰角限制
+		if(gimbal_p.target_angle<depress_limit)
+		{
+			gimbal_p.target_angle=depress_limit;
+		}
+		if(gimbal_p.target_angle>elevation_limit)
+		{
+			gimbal_p.target_angle=elevation_limit;
+		}
 		gimbal_motor_gyro_pid(&gimbal_p);
 	}
 	if(gimbal_p.gimbal_motor_mode==GIMBAL_MOTOR_ENCONDE)
