@@ -578,6 +578,7 @@ extern "C"
 	extern void get_game_process_get_time(uint8_t *game_process, uint16_t *time);
 
 	extern ext_game_robot_state_t robot_state;
+	extern ext_power_heat_data_t power_heat_data_t;
 #ifdef __cplusplus
 }
 #endif

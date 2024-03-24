@@ -82,9 +82,26 @@ extern float blood;
 
 float motor_pid_out[4];
 float motor_speed[4];
+
+float power_buffer_scale(uint16_t remaning_buffer, uint8_t total_buffer)
+{
+	float scale;
+	float b = 30.0f;
+	scale = (float)(remaning_buffer - b) / (float)total_buffer;
+	if (remaning_buffer == total_buffer)
+	{
+		scale = 1.0f;
+	}
+	if (scale < 0)
+		scale = 0.0f;
+	return scale;
+}
+
 void chassis_power_control(void)
 {
-
+	uint16_t remaning_buffer=0;
+	const uint16_t max_output=12000;
+	uint8_t total_buffer=60;
 	uint16_t max_power_limit = 45;
 	fp32 chassis_max_power = 0;
 	float input_power = 0;		 // input power from battery (referee system)
@@ -112,14 +129,15 @@ void chassis_power_control(void)
 
 #if defined(CHASSIS_POWER_LIMIT_REFEREE)
 	 //get_chassis_power_and_buffer_and_max(&chassis_power, &chassis_power_buffer, &max_power_limit);
-	// chassis_buffer_loop(chassis_power_buffer);
+	 //chassis_buffer_loop(chassis_power_buffer);
 	// input_power = max_power_limit - b_pid.PID_OUT; // Input power floating at maximum power
 	input_power = robot_state.chassis_power_limit;
+	remaning_buffer = power_heat_data_t.chassis_power_buffer;
 #endif
 
 #if defined(CHASSIS_POWER_LIMIT)
 
-					   input_power = max_power_limit;
+		input_power = max_power_limit;
 #endif
 	// CAN_CMD_CAP(input_power); // set the input power of capacitor controller
 
@@ -138,7 +156,7 @@ void chassis_power_control(void)
 
 	if (initial_total_power > chassis_max_power) // determine if larger than max power
 	{
-		fp32 power_scale = chassis_max_power / initial_total_power;
+		fp32 power_scale = power_buffer_scale(remaning_buffer,total_buffer);
 		for (uint8_t i = 0; i < 4; i++)
 		{
 			scaled_give_power[i] = initial_give_power[i] * power_scale; // get scaled power
@@ -155,9 +173,9 @@ void chassis_power_control(void)
 				float temp_sqrt_1 = 0.0f;
 				arm_sqrt_f32(b * b - 4 * a * c, &temp_sqrt_1);
 				fp32 temp = (-b + temp_sqrt_1) / (2 * a);
-				if (temp > 16000)
+				if (temp > max_output)
 				{
-					motor_pid_out[i] = 16000;
+					motor_pid_out[i] = max_output;
 				}
 				else
 					motor_pid_out[i] = temp;
@@ -167,9 +185,9 @@ void chassis_power_control(void)
 				float temp_sqrt_2 = 0.0f;
 				arm_sqrt_f32(b * b - 4 * a * c, &temp_sqrt_2);
 				fp32 temp = (-b - temp_sqrt_2) / (2 * a);
-				if (temp < -16000)
+				if (temp < -max_output)
 				{
-					motor_pid_out[i] = -16000;
+					motor_pid_out[i] = -max_output;
 				}
 				else
 					motor_pid_out[i] = temp;
