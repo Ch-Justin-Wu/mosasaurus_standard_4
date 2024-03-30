@@ -6,7 +6,7 @@
 
 #define CHASSIS_POWER_LIMIT_REFEREE
 
-//#define CHASSIS_POWER_LIMIT
+// #define CHASSIS_POWER_LIMIT
 
 static float chassis_follow(void);
 static void chassis_speed_control(float speed_x, float speed_y, float speed_r);
@@ -99,9 +99,9 @@ float power_buffer_scale(uint16_t remaning_buffer, uint8_t total_buffer)
 
 void chassis_power_control(void)
 {
-	uint16_t remaning_buffer=0;
-	const uint16_t max_output=12000;
-	uint8_t total_buffer=60;
+	uint16_t remaning_buffer = 0;
+	const uint16_t max_output = 12000;
+	uint8_t total_buffer = 60;
 	uint16_t max_power_limit = 45;
 	fp32 chassis_max_power = 0;
 	float input_power = 0;		 // input power from battery (referee system)
@@ -128,8 +128,8 @@ void chassis_power_control(void)
 	motor_speed[3] = chassis_motor4.actual_speed;
 
 #if defined(CHASSIS_POWER_LIMIT_REFEREE)
-	 //get_chassis_power_and_buffer_and_max(&chassis_power, &chassis_power_buffer, &max_power_limit);
-	 //chassis_buffer_loop(chassis_power_buffer);
+	// get_chassis_power_and_buffer_and_max(&chassis_power, &chassis_power_buffer, &max_power_limit);
+	// chassis_buffer_loop(chassis_power_buffer);
 	// input_power = max_power_limit - b_pid.PID_OUT; // Input power floating at maximum power
 	input_power = robot_state.chassis_power_limit;
 	remaning_buffer = power_heat_data_t.chassis_power_buffer;
@@ -137,7 +137,7 @@ void chassis_power_control(void)
 
 #if defined(CHASSIS_POWER_LIMIT)
 
-		input_power = max_power_limit;
+	input_power = max_power_limit;
 #endif
 	// CAN_CMD_CAP(input_power); // set the input power of capacitor controller
 
@@ -156,7 +156,7 @@ void chassis_power_control(void)
 
 	if (initial_total_power > chassis_max_power) // determine if larger than max power
 	{
-		fp32 power_scale = power_buffer_scale(remaning_buffer,total_buffer);
+		fp32 power_scale = power_buffer_scale(remaning_buffer, total_buffer);
 		for (uint8_t i = 0; i < 4; i++)
 		{
 			scaled_give_power[i] = initial_give_power[i] * power_scale; // get scaled power
@@ -219,17 +219,17 @@ void chassis_move(void)
 	//	chassis_motor2.target_current=chassis_motor2.pid.speed_loop.vpid.PID_OUT;
 	//	chassis_motor3.target_current=chassis_motor3.pid.speed_loop.vpid.PID_OUT;
 	//	chassis_motor4.target_current=chassis_motor4.pid.speed_loop.vpid.PID_OUT;
-	//	 chassis_motor1.target_current = chassis_motor1.pid.speed_loop.vpid.PID_OUT;
-	//	 chassis_motor2.target_current = chassis_motor2.pid.speed_loop.vpid.PID_OUT;
-	//	 chassis_motor3.target_current = chassis_motor3.pid.speed_loop.vpid.PID_OUT;
-	//	 chassis_motor4.target_current = chassis_motor4.pid.speed_loop.vpid.PID_OUT;
+	chassis_motor1.target_current = chassis_motor1.pid.speed_loop.vpid.PID_OUT;
+	chassis_motor2.target_current = chassis_motor2.pid.speed_loop.vpid.PID_OUT;
+	chassis_motor3.target_current = chassis_motor3.pid.speed_loop.vpid.PID_OUT;
+	chassis_motor4.target_current = chassis_motor4.pid.speed_loop.vpid.PID_OUT;
 
-	chassis_power_control();
+	// chassis_power_control();
 
-	chassis_motor1.target_current = motor_pid_out[0];
-	chassis_motor2.target_current = motor_pid_out[1];
-	chassis_motor3.target_current = motor_pid_out[2];
-	chassis_motor4.target_current = motor_pid_out[3];
+	// chassis_motor1.target_current = motor_pid_out[0];
+	// chassis_motor2.target_current = motor_pid_out[1];
+	// chassis_motor3.target_current = motor_pid_out[2];
+	// chassis_motor4.target_current = motor_pid_out[3];
 
 	// Power_limit(); // 新的功率限制 Rhn
 

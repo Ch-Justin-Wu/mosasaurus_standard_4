@@ -6,7 +6,7 @@
 #include "bsp_math.h"
 #include <math.h>
 
-// #define TEST_SHOOT
+ #define TEST_SHOOT
 
 uint8_t data[2] = {1, 0};
 shoot_task_t rc_shoot;
@@ -29,7 +29,7 @@ float TriggerSpeed[6] = {3.0f, 0.01f, 0.0f, 8000, 500, 0}; // 拨弹轮速度环 8000 
 
 float TriggerAngle[6] = {0.25f, 0.0000f, 0.00f, 5000, 0, 0}; // 拨弹轮角度环 1700
 
-float FricLeftSpeed[6] = {8.0f, 0.0f, 0.0f, 10000.0f, 0.0f, 0}; // 左摩擦轮速度环
+float FricLeftSpeed[6] = {13.0f, 0.0f, 0.0f, 10000.0f, 0.0f, 0}; // 左摩擦轮速度环
 
 float FricRightSpeed[6] = {8.0f, 0.0f, 0.0f, 10000.0f, 0.0f, 0}; // 右摩擦轮速度环
 
@@ -87,6 +87,10 @@ int yuyuyu_flag = 65;
 uint16_t count;
 void fric_speed_control(void)
 {
+	#if defined(TEST_SHOOT)
+		speed_limit = 30;
+		shoot_speed = 25.0f;
+		#endif
 	if (speed_limit > 29.4f)
 	{
 		fricspeed = FRIC_MAX;
