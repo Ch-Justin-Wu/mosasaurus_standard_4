@@ -219,17 +219,17 @@ void chassis_move(void)
 	//	chassis_motor2.target_current=chassis_motor2.pid.speed_loop.vpid.PID_OUT;
 	//	chassis_motor3.target_current=chassis_motor3.pid.speed_loop.vpid.PID_OUT;
 	//	chassis_motor4.target_current=chassis_motor4.pid.speed_loop.vpid.PID_OUT;
-	chassis_motor1.target_current = chassis_motor1.pid.speed_loop.vpid.PID_OUT;
-	chassis_motor2.target_current = chassis_motor2.pid.speed_loop.vpid.PID_OUT;
-	chassis_motor3.target_current = chassis_motor3.pid.speed_loop.vpid.PID_OUT;
-	chassis_motor4.target_current = chassis_motor4.pid.speed_loop.vpid.PID_OUT;
+	// chassis_motor1.target_current = chassis_motor1.pid.speed_loop.vpid.PID_OUT;
+	// chassis_motor2.target_current = chassis_motor2.pid.speed_loop.vpid.PID_OUT;
+	// chassis_motor3.target_current = chassis_motor3.pid.speed_loop.vpid.PID_OUT;
+	// chassis_motor4.target_current = chassis_motor4.pid.speed_loop.vpid.PID_OUT;
 
-	// chassis_power_control();
+	chassis_power_control();
 
-	// chassis_motor1.target_current = motor_pid_out[0];
-	// chassis_motor2.target_current = motor_pid_out[1];
-	// chassis_motor3.target_current = motor_pid_out[2];
-	// chassis_motor4.target_current = motor_pid_out[3];
+	chassis_motor1.target_current = motor_pid_out[0];
+	chassis_motor2.target_current = motor_pid_out[1];
+	chassis_motor3.target_current = motor_pid_out[2];
+	chassis_motor4.target_current = motor_pid_out[3];
 
 	// Power_limit(); // 新的功率限制 Rhn
 

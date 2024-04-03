@@ -9,6 +9,11 @@
 #include "upper_computer.h"
 #include "tim.h"
 #include "referee.h"
+
+extern const uint16_t SERVO_CLOSE;
+extern const uint16_t SERVO_OPEN;
+extern uint16_t set_compare;
+
 extern uint8_t shoot_type;
 extern shoot_status_e shoot_status;
 extern ext_referee_rc_data_t referee_rc_data_t;
@@ -125,6 +130,7 @@ void remote_control_data(void)
 				shoot_safety_cnt = 0;
 				if (rc_ctrl.rc.ch[4] > 0)
 				{
+					set_compare = SERVO_OPEN;
 					shoot_status = SHOOT_ON;
 					if (fricspeed == FRIC_MIN)
 					{
@@ -140,6 +146,7 @@ void remote_control_data(void)
 				else
 				{
 					shoot_status = SHOOT_OFF;
+					set_compare = SERVO_CLOSE;
 				}
 			}
 		}
@@ -255,6 +262,7 @@ void key_control_data(void)
 		rc_sent.pitch.target_angle = -limits_change(KEY_PITCH_ANGLE_MAXX_ON, KEY_PITCH_ANGLE_MINN_ON, MOUSE_y, KEY_MAX, KEY_MINN);
 		if (MOUSE_pre_left == 1)
 		{
+			shoot_status = SHOOT_ON;
 			if (fricspeed == FRIC_MIN)
 			{
 				rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MIN;
@@ -362,6 +370,8 @@ void key_control_data(void)
 
 		if (MOUSE_pre_left == 1)
 		{
+			
+			shoot_status = SHOOT_ON;
 			if (fricspeed == FRIC_MIN)
 			{
 				rc_shoot.left_fric.target_speed = SHOOT_LEFT_FRIC_SPEED_MIN;

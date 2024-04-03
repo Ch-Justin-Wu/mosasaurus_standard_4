@@ -6,7 +6,7 @@
 #include "bsp_math.h"
 #include <math.h>
 
- #define TEST_SHOOT
+
 
 uint8_t data[2] = {1, 0};
 shoot_task_t rc_shoot;

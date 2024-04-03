@@ -73,6 +73,8 @@ void gimbal_control_behaviour(void)
 		if (deadline_judge(pitch_angle, 2) != 0)
 			gimbal_p.target_angle = gimbal_p.IMU_actual_angle + pitch_angle; // pitch_angle就是add_angle
 
+		gimbal_p.auto_aim_angle = gimbal_p.IMU_actual_angle; // 避免赋为上一次自瞄角度
+		gimbal_y.auto_aim_angle = gimbal_y.IMU_actual_angle;
 		// chassis_imu_data_get(); // 获取底盘imu数据
 		// fly_pitch_judge();		// 飞坡
 	}
