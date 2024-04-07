@@ -3,7 +3,7 @@
 #include "shoot_task.h"
 extern float shoot_speed;
 
-const float g = 12.0f;
+const float g = 9.8f;
 // 重力加速度
 float bullet_v = 30.0f; // 子弹速度
 /**

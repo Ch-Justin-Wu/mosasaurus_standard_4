@@ -3,6 +3,7 @@
 #include "bsp_math.h"
 #include "vision_task.h"
 #include "rc_task.h"
+#include "arm_math.h"
 #define yaw_angle gimbal_y.add_angle
 #define pitch_angle gimbal_p.add_angle
 
@@ -15,6 +16,10 @@ float chassis_pitch_angle;
 float chassis_pitch_speed;
 float chassis_yaw_angle;
 float chassis_yaw_speed;
+
+float accumulated_yaw_angle = 0.0f;	  // 初始化累计角度为0
+float accumulated_pitch_angle = 0.0f; // 初始化累计角度为0
+
 int8_t chassis_imu_data[8];
 
 static void gimbal_control_behaviour_mode(void);
@@ -83,6 +88,17 @@ void gimbal_control_behaviour(void)
 
 		if (assist_vision_mode == ASSIST_VISION_ON)
 		{
+			// accumulated_yaw_angle += yaw_angle;
+			// accumulated_pitch_angle += pitch_angle;
+			// if (fabss(accumulated_yaw_angle) > 10.0f)
+			// {
+			// 	accumulated_yaw_angle = 10.0f;
+			// }
+			// if (fabss(accumulated_pitch_angle) > 5.0f)
+			// {
+			// 	accumulated_pitch_angle = 5.0f;
+			// }
+
 			if (gimbal_set_mode == GIMBAL_TOP_ANGLE)
 			{
 				gimbal_y.target_angle = gimbal_y.auto_aim_angle - 5.0f - yaw_angle * 1.25f;
@@ -93,6 +109,11 @@ void gimbal_control_behaviour(void)
 			}
 			gimbal_p.target_angle = gimbal_p.auto_aim_angle + pitch_angle;
 			vision_sent.Control_priority = 0;
+		}
+		else
+		{
+			// accumulated_yaw_angle = 0.0f;
+			// accumulated_pitch_angle = 0.0f;
 		}
 		// if (traget_exit_flag) // 上位机获得操控权
 		// {

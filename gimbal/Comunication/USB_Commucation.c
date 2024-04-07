@@ -84,7 +84,7 @@ void cdc_vcp_data_rx(uint8_t *buf, uint32_t Len)
 {
   for (uint16_t j = 0; j < Len; j++)
   {
-    if (buf[j] == 0xA5) // 如果这一位等于帧头
+    if (buf[j] == 0xA5) // 如果这一位等于帧�?
     {
       start_receive_flag = 1;
     }
@@ -92,18 +92,18 @@ void cdc_vcp_data_rx(uint8_t *buf, uint32_t Len)
     {
       memcpy(receive_data, buf + j, Len);
       memcpy(&pack_rx, receive_data, Len);
-      if (pack_rx.target_y != 0)
-      { // 弹道解算，步兵火控
-        Auto_aim(pack_rx.target_x, pack_rx.target_y, pack_rx.target_z, &gimbal_y.auto_aim_angle, &gimbal_p.auto_aim_angle, &distance);
+      if (pack_rx.target_y != 0&&pack_rx.target_x!=0)
+      { // 弹道解算，�?�兵�?�?
+        Auto_aim(pack_rx.target_x, pack_rx.target_y, pack_rx.target_z - 0.08f, &gimbal_y.auto_aim_angle, &gimbal_p.auto_aim_angle, &distance);
 
-        // 自瞄标志位
+        // �?瞄标志位
         vision_sent.Control_priority = pack_rx.UP_flag;
 
         vision_sent.yaw.target_angle = gimbal_y.auto_aim_angle;
         vision_sent.pitch.target_angle = gimbal_p.auto_aim_angle;
       }
 
-      // 改为下位机解算后注释掉
+      // 改为下位机解算后注释�?
       start_receive_flag = 0;
     }
     return;
