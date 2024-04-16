@@ -66,7 +66,7 @@ float pitchTrajectoryCompensation(float s, float z, float v)
         }
     }
     // 将弧度制的俯仰角转换为角度制
-    angle_pitch = (angle_pitch * 180 / PI); // 向上为正，向下为负
+    angle_pitch = (angle_pitch * 180.f / PI); // 向上为正，向下为负
     return angle_pitch;
 }
 
@@ -87,7 +87,7 @@ float calc_yaw(float x, float y, float z)
     arm_atan2_f32(y, x, &aim_yaw);
 
     // 将弧度制的偏航角转换为角度制
-    aim_yaw = -(aim_yaw * 180 / PI); // 向左为正，向右为负
+    aim_yaw = -(aim_yaw * 180.f / PI); // 向左为正，向右为负
 
     return aim_yaw;
 }
@@ -163,7 +163,7 @@ float calc_pitch(float x, float y, float z)
     
 
      // 将弧度制的俯仰角转换为角度制
-     pitch = (pitch * 180 / PI); // 向上为正，向下为负
+     pitch = (pitch * 180.f / PI); // 向上为正，向下为负
 
     return pitch;
 }
