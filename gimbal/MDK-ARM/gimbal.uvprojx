@@ -601,6 +601,11 @@
               <FileType>1</FileType>
               <FilePath>..\Comunication\USB_Commucation.c</FilePath>
             </File>
+            <File>
+              <FileName>buzzer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APP\buzzer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -660,6 +665,11 @@
               <FileName>bsp_usb.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\BSP_USB\bsp_usb.c</FilePath>
+            </File>
+            <File>
+              <FileName>buzzer_bsp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\BSP_BUZZER\buzzer_bsp.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -133,6 +133,13 @@ void chassis_power_control(void)
 	// input_power = max_power_limit - b_pid.PID_OUT; // Input power floating at maximum power
 	input_power = robot_state.chassis_power_limit;
 	remaning_buffer = power_heat_data_t.chassis_power_buffer;
+	if(input_power<45)
+		{input_power = 45;
+
+		}
+
+	
+	
 #endif
 
 #if defined(CHASSIS_POWER_LIMIT)
@@ -157,6 +164,10 @@ void chassis_power_control(void)
 	if (initial_total_power > chassis_max_power) // determine if larger than max power
 	{
 		fp32 power_scale = power_buffer_scale(remaning_buffer, total_buffer);
+		if(input_power<45)
+		{
+			power_scale = 1.0f;
+		}
 		for (uint8_t i = 0; i < 4; i++)
 		{
 			scaled_give_power[i] = initial_give_power[i] * power_scale; // get scaled power
@@ -751,7 +762,7 @@ static void chassis_move_mode(void)
 	// 使用优化速度函数时使用
 	vx = ((float)real_chassis_speed.real_vx);
 	vy = ((float)real_chassis_speed.real_vy);
-	wz = 0.24 * ((float)chassis_control_order.wz_set);
+	wz = 0.24f * ((float)chassis_control_order.wz_set);
 	//	wz=2.5;
 	//	vx=yu;
 	avx = vx;

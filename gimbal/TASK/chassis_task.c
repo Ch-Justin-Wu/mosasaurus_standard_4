@@ -28,6 +28,7 @@ void remote_chassis(void)
 		canTX_chassis_first(rc_sent.x_speed, rc_sent.y_speed, rc_sent.r_speed, gimbal_y.given_current);
 		canTX_chassis_second(1, vision_mode);
 	}
+
 	if (gimbal_set_mode == GIMBAL_CALI || gimbal_set_mode == GIMBAL_RELATIVE_ANGLE) // Õý³£
 	{
 		canTX_chassis_first(rc_sent.x_speed, rc_sent.y_speed, rc_sent.r_speed, gimbal_y.given_current);
@@ -49,8 +50,7 @@ void remote_chassis(void)
 		canTX_chassis_second(3, vision_mode);
 		canTX_gimbal_p_2(0);
 		canTX_fric(0, 0, 0);
-		
-		set_compare = SERVO_OPEN;
+
+		// set_compare = SERVO_OPEN;
 	}
-	
 }

@@ -1,21 +1,21 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ * @attention
+ *
+ * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+ * All rights reserved.</center></h2>
+ *
+ * This software component is licensed by ST under BSD 3-Clause license,
+ * the "License"; You may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at:
+ *                        opensource.org/licenses/BSD-3-Clause
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -44,7 +44,7 @@
 #include "blueteeth.h"
 #include "referee.h"
 #include "bsp_referee_uart.h"
-
+#include "buzzer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -75,7 +75,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-//fp32 gyro[3], accel[3], temp;
+// fp32 gyro[3], accel[3], temp;
 /* USER CODE END 0 */
 
 /**
@@ -101,7 +101,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-//fp32 gyro[3], accel[3], temp;
+  // fp32 gyro[3], accel[3], temp;
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -123,30 +123,39 @@ int main(void)
   MX_TIM8_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-   HAL_TIM_Base_Start_IT(&htim3);
-   HAL_TIM_Base_Start_IT(&htim4);
-   HAL_TIM_Base_Start_IT(&htim5);
-   referee_usart_fifo_init();
-   led_init();
-   Bsp_canInit();
-   delay_init();
-   remote_control_init();
-   init_referee_struct_data();
-   shoot_init();
-   Gimbal_Init();
-   IMU_Init();
-   cali_param_init();
-	HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
-   //HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
-   HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
-// uart_init();  //以前给上位机通讯用的
+  buzzer_init_example();
+  
+  HAL_TIM_Base_Start_IT(&htim3);
+  // HAL_TIM_Base_Start_IT(&htim4);
+  HAL_TIM_Base_Start_IT(&htim5);
+  referee_usart_fifo_init();
+  led_init();
+  Bsp_canInit();
+  delay_init();
+  remote_control_init();
+  init_referee_struct_data();
+  shoot_init();
+  Gimbal_Init();
+  IMU_Init();
+  cali_param_init();
+  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+
+  buzzer_setTask(&buzzer, BUZZER_DJI_STARTUP_PRIORITY);
+
+  // HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
+  
+
+  // uart_init();  //以前给上位机通讯用的
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-while (1)
+  while (1)
   {
+    // HAL_Delay(1);
+    // buzzer_taskScheduler(&buzzer);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
