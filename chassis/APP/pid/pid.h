@@ -50,10 +50,10 @@ extern int CHASSIS_vPID_max;
 					chassis_center.pid.speed_loop.pid_Parameter.Vkd = 0.2; \
 					                   \
 					/*轮子速度环*/       \
-					chassis_motor1.pid.speed_loop.pid_Parameter.Vkp = 8;   \
-					chassis_motor2.pid.speed_loop.pid_Parameter.Vkp = 8;   \
-					chassis_motor3.pid.speed_loop.pid_Parameter.Vkp = 8;   \
-					chassis_motor4.pid.speed_loop.pid_Parameter.Vkp = 8;   \
+					chassis_motor1.pid.speed_loop.pid_Parameter.Vkp = 12;   \
+					chassis_motor2.pid.speed_loop.pid_Parameter.Vkp = 12;   \
+					chassis_motor3.pid.speed_loop.pid_Parameter.Vkp = 12;   \
+					chassis_motor4.pid.speed_loop.pid_Parameter.Vkp = 12;   \
 					chassis_motor1.pid.speed_loop.pid_Parameter.Vki = 0.05;   \
 					chassis_motor2.pid.speed_loop.pid_Parameter.Vki = 0.05;   \
 					chassis_motor3.pid.speed_loop.pid_Parameter.Vki = 0.05;   \
