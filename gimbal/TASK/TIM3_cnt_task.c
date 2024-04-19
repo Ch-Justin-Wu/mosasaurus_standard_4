@@ -68,7 +68,7 @@ void TIM3_CNT_TASK()
 
 		if (time_count % 13 == 0 && start_flag == 1)
 		{
-			if (rc_offline_flag != 1)
+			//if (rc_offline_flag != 1)
 			{
 				Gimbal_Task();
 				shoot_task();
@@ -80,7 +80,7 @@ void TIM3_CNT_TASK()
 		}
 		if (time_count % 7 == 0) // 3.5ms
 		{
-			if (rc_offline_flag != 1)
+			//if (rc_offline_flag != 1)
 			{
 				remote_chassis();
 			}
@@ -138,6 +138,7 @@ void TIM3_CNT_TASK()
 			if (start_flag == 0)
 			{
 				IMU_cnt++;
+				if(IMU_cnt==1)
 				buzzer_setTask(&buzzer, BUZZER_CALIBRATING_PRIORITY);
 			}
 		}
@@ -182,10 +183,6 @@ uint8_t rc_offline_check(void)
 		}
 		control_mode = KEY_ON;
 
-		canTX_chassis_first(0, 0, 0, 0);
-		canTX_chassis_second(3, vision_mode);
-		canTX_gimbal_p_2(0);
-		canTX_fric(0, 0, 0);
 
 		rc_ctrl.rc.ch[0] = 0;
 		rc_ctrl.rc.ch[1] = 0;

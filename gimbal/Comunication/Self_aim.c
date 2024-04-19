@@ -138,7 +138,7 @@ float calc_pitch(float x, float y, float z)
 #endif
 
     // 使用重力加速度模型迭代更新俯仰角
-    for (size_t i = 0; i < 20; i++)
+    for (int i = 0; i < 20; i++)
     {
 
         float v_x = bullet_v * arm_cos_f32(pitch);
@@ -152,7 +152,7 @@ float calc_pitch(float x, float y, float z)
         float dz = z - h;
         float abs_dz;
         arm_abs_f32(&dz, &abs_dz, 1);
-        if (abs_dz < 0.001f)
+        if (abs_dz < 0.00001f)
         {
             break;
         }

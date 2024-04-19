@@ -215,6 +215,10 @@ void remote_control_data(void)
 	}
 	if (switch_is_down(rc_ctrl.rc.s[0]))
 	{
+		if (gimbal_set_mode != GIMBAL_INIT)
+		{
+			gimbal_set_mode = GIMBAL_ZERO_FORCE;
+		}
 		if(last_s0!=2)
 		{
 			if (set_compare == SERVO_CLOSE)
