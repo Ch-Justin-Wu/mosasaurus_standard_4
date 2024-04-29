@@ -12,14 +12,15 @@ GIMBAL_t gimbal_y,gimbal_p,gimbal_r;
 GIMBAL_MODE_t gimbal_set_mode;
 //yaw轴PID控制
 //float YawGyroPid[7] 	= {0.2f,			0.0f,			0.0,	2.5f,			0.0f,	 0.0f};  //imu角度环  1.8 
-float YawGyroPid[7] 	= {0.17f,			0.0f,			0.00f,	10.0f,			0.0f,	 0.15f};  //imu角度环  1.8 
+float YawGyroPid[7] 	= {0.17f,			0.0f,			0.00f,	10.0f,			0.0f,	 0.04f};  //imu角度环  1.8 
 
 float YawEncondePid[7] 	= {0.3f,			0.0f,			0.010f,		50.0f,			0.0f,		0.0f};  //编码器角度环  rhn 1
 float YawEncondePidSpeed[7] 	= {500.0f,			50.0f,			0.0f,		10000.0f,			3000.0f,		0.0f};  //编码器速度环  rhn 3
 //float YawSpeedPid[6] 			= {10000.0f,			500.0f,			0.0f,		17000.0f,			6000.0f,		0.01f};     //速度环  rhn 7000  9000
 //float YawSpeedPid[7] 			= {9500.0f,			1800.0f,			0.0f,		17000.0f,			7000.0f,		0.01f, 0.0f };    //罗队pid
 //float YawSpeedPid[6] 			= {9500.0f,			500.0f,			0.0f,		17000.0f,			7000.0f,		0.01f};    //罗队pid
-float YawSpeedPid[7] 			= {10000.0f,			3100.0f,			0.0f,		17000.0f,			6500.0f,		0.01f,  0.7};    //luounyu 新积分分离
+float YawSpeedPid[7] 			= {10000.0f,			3100.0f,			0.0f,		25000.0f,			6500.0f,		0.01f,  0.7f};    //luounyu 新积分分离
+float YawSpeedPid_2[7] 			= {12000.0f,			3100.0f,			0.0f,		30000.0f,			6500.0f,		0.01f,  0.7f};    //luounyu 新积分分离
 //float YawSpeedPid[7] 			= {5500.0f,			1800.0f,			0.0f,		17000.0f,			8000.0f,		0.01f,  1.3};    //luounyu 新积分分离
 
 
@@ -27,9 +28,10 @@ float YawSpeedPid[7] 			= {10000.0f,			3100.0f,			0.0f,		17000.0f,			6500.0f,		0
 //float PitchGyroPid[6] = {50.0f,			0.0f,			0.0f,		500.0f,			0.0f		,1.5f};
 
 float PitchGyroPid[7] = {0.5f,			0.0f,			0.0f,		50.0f,			0.0f		,0.0f};
+float PitchSpeedPid[7] = {110.0f, 1.0f, 0.0f, 600.0f, 300.0f, 0.0f,10.f};
 float PitchEncondePid[7] = {0.0f,			0.0f,			0.0f,		0.0f,			0.0f	,0.0f};
 float PitchEncondePidSpeed[7] = {0.0f,			0.0f,			0.0f,		0.0f,			0.0f	,0.0f};
-float PitchSpeedPid[7] 		= {100.0f,			0.5f,			0.0f,		600.0f,	15.0f,	0.0f};
+
 
 //PID初始化	
 static void YawPitch_PIDinit(void);

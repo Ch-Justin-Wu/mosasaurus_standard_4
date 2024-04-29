@@ -30,8 +30,8 @@ typedef struct
 } PidTypeDef;
 
 
-extern void PID_Init(PidTypeDef *pid,  const float PID[5]);
+extern void PID_Init(PidTypeDef *pid,  const float PID[7]);
 extern float PID_Calc(PidTypeDef *pid, float ref, float set);
 extern void PID_clear(PidTypeDef *pid);
-
+extern void PID_Set(PidTypeDef *pid, const float PID[7]);
 #endif

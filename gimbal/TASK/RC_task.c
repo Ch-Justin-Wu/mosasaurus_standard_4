@@ -10,6 +10,8 @@
 #include "tim.h"
 #include "referee.h"
 
+extern float YawSpeedPid[7];
+extern float YawSpeedPid_2[7];
 extern const uint16_t SERVO_CLOSE;
 extern const uint16_t SERVO_OPEN;
 extern uint16_t set_compare;
@@ -219,7 +221,7 @@ void remote_control_data(void)
 		{
 			gimbal_set_mode = GIMBAL_ZERO_FORCE;
 		}
-		if(last_s0!=2)
+		if (last_s0 != 2)
 		{
 			if (set_compare == SERVO_CLOSE)
 			{
@@ -252,7 +254,6 @@ void remote_control_data(void)
 			{
 				Ten_Shoot_flag = 1;
 			}
-			
 		}
 	}
 	// rc_sent.r_speed = (100.0 / 32000.0) * (float)(rc_ctrl.rc.ch[4]);
@@ -313,15 +314,15 @@ void key_control_data(void)
 		/*       控制云台      */
 		if (gimbal_set_mode == GIMBAL_TOP_ANGLE) // 小陀螺的yaw
 		{
-			gimbal_y.gimbal_raw_pid.Kp = 12000;
-			gimbal_y.gimbal_raw_pid.max_out = 27000;
+
+			PID_Set(&gimbal_y.gimbal_raw_pid, YawSpeedPid_2);
 			//			rc_sent.yaw.target_angle=limits_change_(KEY_YAW_ANGLE_MAXX_ON,KEY_YAW_ANGLE_MINN_ON,MOUSE_x,RIGHT_YAW_KEY_MAXX,LEFT_YAW_KEY_MAXX,LEFT_YAW_KEY_RANGE,RIGHT_YAW_KEY_RANGE);
 		}
 		//        rc_sent.yaw.target_angle=limits_change(KEY_YAW_ANGLE_MAXX_ON,KEY_YAW_ANGLE_MINN_ON,MOUSE_x,KEY_MAX,KEY_MINN);
 		else
 		{
-			gimbal_y.gimbal_raw_pid.Kp = 10000;
-			gimbal_y.gimbal_raw_pid.max_out = 17000;
+
+			PID_Set(&gimbal_y.gimbal_raw_pid, YawSpeedPid);
 		}
 		rc_sent.yaw.target_angle = limits_change(KEY_YAW_ANGLE_MAXX_ON, KEY_YAW_ANGLE_MINN_ON, MOUSE_x, KEY_MAX, KEY_MINN); // 映射鼠标的值到pitch和yaw
 		rc_sent.pitch.target_angle = -limits_change(KEY_PITCH_ANGLE_MAXX_ON, KEY_PITCH_ANGLE_MINN_ON, MOUSE_y, KEY_MAX, KEY_MINN);

@@ -1,7 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" noNamespaceSchemaLocation="project_projx.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_projx.xsd">
+
   <SchemaVersion>2.1</SchemaVersion>
+
   <Header>### uVision Project, (C) Keil Software</Header>
+
   <Targets>
     <Target>
       <TargetName>gimbal</TargetName>
@@ -16,28 +19,28 @@
           <PackID>Keil.STM32F4xx_DFP.2.17.1</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IROM(0x08000000,0x100000) IRAM(0x20000000,0x20000) IRAM2(0x10000000,0x10000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
-          <FlashUtilSpec />
-          <StartupFile />
+          <FlashUtilSpec></FlashUtilSpec>
+          <StartupFile></StartupFile>
           <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_1024 -FS08000000 -FL0100000 -FP0($$Device:STM32F407IG$Flash\STM32F4xx_1024.FLM))</FlashDriverDll>
           <DeviceId>0</DeviceId>
           <RegisterFile>$$Device:STM32F407IG$Device\Include\stm32f4xx.h</RegisterFile>
-          <MemoryEnv />
-          <Cmp />
-          <Asm />
-          <Linker />
-          <OHString />
-          <InfinionOptionDll />
-          <SLE66CMisc />
-          <SLE66AMisc />
-          <SLE66LinkerMisc />
+          <MemoryEnv></MemoryEnv>
+          <Cmp></Cmp>
+          <Asm></Asm>
+          <Linker></Linker>
+          <OHString></OHString>
+          <InfinionOptionDll></InfinionOptionDll>
+          <SLE66CMisc></SLE66CMisc>
+          <SLE66AMisc></SLE66AMisc>
+          <SLE66LinkerMisc></SLE66LinkerMisc>
           <SFDFile>$$Device:STM32F407IG$SVD\STM32F40x.svd</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
-          <BinPath />
-          <IncludePath />
-          <LibPath />
-          <RegisterFilePath />
-          <DBRegisterFilePath />
+          <BinPath></BinPath>
+          <IncludePath></IncludePath>
+          <LibPath></LibPath>
+          <RegisterFilePath></RegisterFilePath>
+          <DBRegisterFilePath></DBRegisterFilePath>
           <TargetStatus>
             <Error>0</Error>
             <ExitCodeStop>0</ExitCodeStop>
@@ -52,15 +55,15 @@
           <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath />
+          <ListingPath></ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
           <BeforeCompile>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name />
-            <UserProg2Name />
+            <UserProg1Name></UserProg1Name>
+            <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopU1X>0</nStopU1X>
@@ -69,8 +72,8 @@
           <BeforeMake>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name />
-            <UserProg2Name />
+            <UserProg1Name></UserProg1Name>
+            <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopB1X>0</nStopB1X>
@@ -79,15 +82,15 @@
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
-            <UserProg1Name />
-            <UserProg2Name />
+            <UserProg1Name></UserProg1Name>
+            <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>0</nStopA1X>
             <nStopA2X>0</nStopA2X>
           </AfterMake>
           <SelectedForBatchBuild>0</SelectedForBatchBuild>
-          <SVCSIdString />
+          <SVCSIdString></SVCSIdString>
         </TargetCommonOption>
         <CommonProperty>
           <UseCPPCompiler>0</UseCPPCompiler>
@@ -101,8 +104,8 @@
           <AssembleAssemblyFile>0</AssembleAssemblyFile>
           <PublicsOnly>0</PublicsOnly>
           <StopOnExitCode>3</StopOnExitCode>
-          <CustomArgument />
-          <IncludeLibraryModules />
+          <CustomArgument></CustomArgument>
+          <IncludeLibraryModules></IncludeLibraryModules>
           <ComprImg>0</ComprImg>
         </CommonProperty>
         <DllOption>
@@ -136,10 +139,10 @@
           <bUseTDR>1</bUseTDR>
           <Flash2>STLink\ST-LINKIII-KEIL_SWO.dll</Flash2>
           <Flash3>"" ()</Flash3>
-          <Flash4 />
-          <pFcarmOut />
-          <pFcarmGrp />
-          <pFcArmRoot />
+          <Flash4></Flash4>
+          <pFcarmOut></pFcarmOut>
+          <pFcarmGrp></pFcarmGrp>
+          <pFcArmRoot></pFcArmRoot>
           <FcArmLst>0</FcArmLst>
         </Utilities>
         <TargetArmAds>
@@ -172,7 +175,7 @@
             <RvctClst>0</RvctClst>
             <GenPPlst>0</GenPPlst>
             <AdsCpuType>"Cortex-M4"</AdsCpuType>
-            <RvctDeviceName />
+            <RvctDeviceName></RvctDeviceName>
             <mOS>0</mOS>
             <uocRom>0</uocRom>
             <uocRam>0</uocRam>
@@ -307,7 +310,7 @@
                 <Size>0x10000</Size>
               </OCR_RVCT10>
             </OnChipMemories>
-            <RvctStartVector />
+            <RvctStartVector></RvctStartVector>
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
@@ -334,9 +337,9 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls />
+              <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx,ARM_MATH_CM4,__CC_ARM,ARM_MATH_MATRIX_CHECK,ARM_MATH_ROUNDING,__TARGET_FPU_VFP,__FPU_PRESENT=1</Define>
-              <Undefine />
+              <Undefine></Undefine>
               <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../APP;../BSP/BSP_CAN;../BSP/BSP_TIM;../Core/Src;../BSP/BSP_IMU;../components/algorithm;../components/devices;../BSP/BSP_SPI;../BSP/BSP_FLASH;../BSP/BSP_BUZZER;../BSP/BSP_UART;../BSP/BSP_MATH;../TASK;../components/support;../USB_DEVICE/App;../USB_DEVICE/Target;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc;../BSP/BSP_USB;../Comunication;../Drivers/CMSIS/DSP/Include;../Drivers/CMSIS/DSP/Source/FastMathFunctions</IncludePath>
             </VariousControls>
           </Cads>
@@ -352,10 +355,10 @@
             <useXO>0</useXO>
             <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
-              <MiscControls />
-              <Define />
-              <Undefine />
-              <IncludePath />
+              <MiscControls></MiscControls>
+              <Define></Define>
+              <Undefine></Undefine>
+              <IncludePath></IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
@@ -367,13 +370,13 @@
             <useFile>0</useFile>
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
-            <pXoBase />
-            <ScatterFile />
-            <IncludeLibs />
-            <IncludeLibsPath />
-            <Misc />
-            <LinkerInputFile />
-            <DisabledWarnings />
+            <pXoBase></pXoBase>
+            <ScatterFile></ScatterFile>
+            <IncludeLibs></IncludeLibs>
+            <IncludeLibsPath></IncludeLibsPath>
+            <Misc></Misc>
+            <LinkerInputFile></LinkerInputFile>
+            <DisabledWarnings></DisabledWarnings>
           </LDads>
         </TargetArmAds>
       </TargetOption>
@@ -428,6 +431,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -455,6 +460,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -476,6 +487,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -503,6 +516,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -789,6 +808,8 @@
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
               <PublicsOnly>2</PublicsOnly>
               <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
               <ComprImg>0</ComprImg>
             </CommonProperty>
             <GroupArmAds>
@@ -816,6 +837,12 @@
                 <v6Lto>2</v6Lto>
                 <v6WtE>2</v6WtE>
                 <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
               </Cads>
               <Aads>
                 <interw>2</interw>
@@ -828,6 +855,12 @@
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
                 <ClangAsOpt>0</ClangAsOpt>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
               </Aads>
             </GroupArmAds>
           </GroupOption>
@@ -849,6 +882,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -876,6 +911,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -897,6 +938,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -924,6 +967,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -945,6 +994,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -972,6 +1023,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -993,6 +1050,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1020,6 +1079,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1041,6 +1106,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1068,6 +1135,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1089,6 +1162,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1116,6 +1191,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1137,6 +1218,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1164,6 +1247,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1185,6 +1274,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1212,6 +1303,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1233,6 +1330,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1260,6 +1359,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1281,6 +1386,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1308,6 +1415,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1329,6 +1442,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1356,6 +1471,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1377,6 +1498,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1404,6 +1527,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1425,6 +1554,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1452,6 +1583,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1473,6 +1610,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1500,6 +1639,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1521,6 +1666,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1548,6 +1695,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1569,6 +1722,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1596,6 +1751,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1617,6 +1778,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1644,6 +1807,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1665,6 +1834,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1692,6 +1863,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1713,6 +1890,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1740,6 +1919,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1761,6 +1946,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1788,6 +1975,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1809,6 +2002,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1836,6 +2031,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1857,6 +2058,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1884,6 +2087,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1905,6 +2114,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1932,6 +2143,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1953,6 +2170,8 @@
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
               <PublicsOnly>2</PublicsOnly>
               <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
               <ComprImg>0</ComprImg>
             </CommonProperty>
             <GroupArmAds>
@@ -1980,6 +2199,12 @@
                 <v6Lto>2</v6Lto>
                 <v6WtE>2</v6WtE>
                 <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
               </Cads>
               <Aads>
                 <interw>2</interw>
@@ -1992,6 +2217,12 @@
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
                 <ClangAsOpt>0</ClangAsOpt>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
               </Aads>
             </GroupArmAds>
           </GroupOption>
@@ -2018,6 +2249,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -2045,6 +2278,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -2066,6 +2305,8 @@
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
               <PublicsOnly>2</PublicsOnly>
               <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
               <ComprImg>0</ComprImg>
             </CommonProperty>
             <GroupArmAds>
@@ -2093,6 +2334,12 @@
                 <v6Lto>2</v6Lto>
                 <v6WtE>2</v6WtE>
                 <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
               </Cads>
               <Aads>
                 <interw>2</interw>
@@ -2105,6 +2352,12 @@
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
                 <ClangAsOpt>0</ClangAsOpt>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
               </Aads>
             </GroupArmAds>
           </GroupOption>
@@ -2126,6 +2379,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -2153,6 +2408,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -2174,6 +2435,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -2201,6 +2464,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -2222,6 +2491,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -2249,6 +2520,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -2270,6 +2547,8 @@
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
               <PublicsOnly>2</PublicsOnly>
               <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
               <ComprImg>0</ComprImg>
             </CommonProperty>
             <GroupArmAds>
@@ -2297,6 +2576,12 @@
                 <v6Lto>2</v6Lto>
                 <v6WtE>2</v6WtE>
                 <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
               </Cads>
               <Aads>
                 <interw>2</interw>
@@ -2309,6 +2594,12 @@
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
                 <ClangAsOpt>0</ClangAsOpt>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
               </Aads>
             </GroupArmAds>
           </GroupOption>
@@ -2330,6 +2621,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -2357,6 +2650,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -2378,6 +2677,8 @@
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
               <PublicsOnly>2</PublicsOnly>
               <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
               <ComprImg>0</ComprImg>
             </CommonProperty>
             <GroupArmAds>
@@ -2405,6 +2706,12 @@
                 <v6Lto>2</v6Lto>
                 <v6WtE>2</v6WtE>
                 <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
               </Cads>
               <Aads>
                 <interw>2</interw>
@@ -2417,6 +2724,12 @@
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
                 <ClangAsOpt>0</ClangAsOpt>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
               </Aads>
             </GroupArmAds>
           </GroupOption>
@@ -2438,6 +2751,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -2465,6 +2780,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -2486,6 +2807,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -2513,6 +2836,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -2534,6 +2863,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -2561,6 +2892,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -2582,6 +2919,8 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -2609,6 +2948,12 @@
                     <v6Lto>2</v6Lto>
                     <v6WtE>2</v6WtE>
                     <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -2621,18 +2966,20 @@
       </Groups>
     </Target>
   </Targets>
+
   <RTE>
-    <apis />
+    <apis/>
     <components>
       <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.6.0" condition="ARMv6_7_8-M Device">
-        <package name="CMSIS" schemaVersion="1.7.7" url="http://www.keil.com/pack/" vendor="ARM" version="5.9.0" />
+        <package name="CMSIS" schemaVersion="1.7.7" url="http://www.keil.com/pack/" vendor="ARM" version="5.9.0"/>
         <targetInfos>
-          <targetInfo name="gimbal" />
+          <targetInfo name="gimbal"/>
         </targetInfos>
       </component>
     </components>
-    <files />
+    <files/>
   </RTE>
+
   <LayerInfo>
     <Layers>
       <Layer>
@@ -2641,5 +2988,5 @@
       </Layer>
     </Layers>
   </LayerInfo>
-</Project>
 
+</Project>

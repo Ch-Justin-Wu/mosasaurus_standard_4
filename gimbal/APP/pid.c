@@ -30,6 +30,21 @@ void PID_Init(PidTypeDef *pid, const float PID[7])
     pid->error[0] = pid->error[1] = pid->error[2] = pid->Pout = pid->Iout = pid->Dout = pid->out = 0.0f;
 }
 
+void PID_Set(PidTypeDef *pid, const float PID[7])
+{
+    if (pid == NULL || PID == NULL)
+    {
+        return;
+    }
+    pid->Kp = PID[0];
+    pid->Ki = PID[1];
+    pid->Kd = PID[2];
+    pid->max_out = PID[3];
+    pid->max_iout = PID[4];
+    pid->deadband = PID[5];
+    pid->interal_seprate = PID[6];
+}
+
 // pidº∆À„
 float PID_Calc(PidTypeDef *pid, float ref, float fdb)
 {

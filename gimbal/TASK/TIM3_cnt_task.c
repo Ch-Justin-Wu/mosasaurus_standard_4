@@ -120,10 +120,10 @@ void TIM3_CNT_TASK()
 			rc_offline_flag = rc_offline_check();
 		}
 
-		if (time_count_2 % 2 == 0)
-		{
-			buzzer_taskScheduler(&buzzer);
-		}
+		// if (time_count_2 % 2 == 0)
+		// {
+		// 	buzzer_taskScheduler(&buzzer);
+		// }
 		count_2++;
 		if (IMU_cnt > 5)
 		{
