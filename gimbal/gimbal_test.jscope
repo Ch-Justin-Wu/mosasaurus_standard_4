@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<JScopeProject>
+    <FileVersion major="1" minor="1" />
+    <Project>
+        <Configuration>
+            <JLink>
+                <Options Connection="1" IsRTTSession="0" IsRTTWithTimeStamp="0" SamplingPeriod="1000" SerialNo="0" JTAG_IRPre="0" JTAG_DRPre="0" IP="" TargetDevice="STM32F407IG" TargetInterface="SWD" InterfaceSpeed="4000" />
+            </JLink>
+            <ElfFile Name="F:\code\mosasaurus_standard_4\gimbal\MDK-ARM\gimbal\gimbal.axf" />
+            <Scope>
+                <Options TimeResolutionUs="1000000" />
+            </Scope>
+        </Configuration>
+        <Windows>
+            <Graph Show="1" />
+            <Watch Show="1" />
+        </Windows>
+        <SelectedSymbols>
+            <Symbol>
+                <Options Name="target_angle" Address="0x20001780" Type="float" TypeID="1" Size="4" GraphColorRed="255" GraphColorGreen="0" GraphColorBlue="0" YMinSampled="-5.91301" YMaxSampled="30" YAvgSampled="1.62251" Offset="4" ShowInGraph="1" YOffset="0" IsAutoConfig="0" YResolution="10" MaxValue="-2147483648" File="" Scope="1" DrawStyle="0" NameWithParents="gimbal_y.target_angle" />
+            </Symbol>
+            <Symbol>
+                <Options Name="IMU_actual_angle" Address="0x20001784" Type="float" TypeID="1" Size="4" GraphColorRed="0" GraphColorGreen="0" GraphColorBlue="255" YMinSampled="-6.15549" YMaxSampled="30.281" YAvgSampled="1.60285" Offset="8" ShowInGraph="1" YOffset="0" IsAutoConfig="0" YResolution="10" MaxValue="-2147483648" File="" Scope="1" DrawStyle="0" NameWithParents="gimbal_y.IMU_actual_angle" />
+            </Symbol>
+            <Symbol>
+                <Options Name="target_angle" Address="0x200018E8" Type="float" TypeID="1" Size="4" GraphColorRed="0" GraphColorGreen="255" GraphColorBlue="0" YMinSampled="-20.5" YMaxSampled="30" YAvgSampled="-3.15089" Offset="12" ShowInGraph="1" YOffset="0" IsAutoConfig="0" YResolution="10" MaxValue="-2147483648" File="" Scope="1" DrawStyle="0" NameWithParents="gimbal_p.target_angle" />
+            </Symbol>
+            <Symbol>
+                <Options Name="IMU_actual_angle" Address="0x200018EC" Type="float" TypeID="1" Size="4" GraphColorRed="255" GraphColorGreen="255" GraphColorBlue="0" YMinSampled="-21.2109" YMaxSampled="33.8911" YAvgSampled="-2.72808" Offset="16" ShowInGraph="1" YOffset="0" IsAutoConfig="0" YResolution="20" MaxValue="-2147483648" File="" Scope="1" DrawStyle="0" NameWithParents="gimbal_p.IMU_actual_angle" />
+            </Symbol>
+        </SelectedSymbols>
+    </Project>
+</JScopeProject>

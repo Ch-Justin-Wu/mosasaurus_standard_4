@@ -29,9 +29,9 @@ float TriggerSpeed[6] = {3.0f, 0.01f, 0.0f, 8000, 500, 0}; // 拨弹轮速度环 8000 
 
 float TriggerAngle[6] = {0.25f, 0.0000f, 0.00f, 5000, 0, 0}; // 拨弹轮角度环 1700
 
-float FricLeftSpeed[6] = {13.0f, 0.0f, 0.0f, 10000.0f, 0.0f, 0}; // 左摩擦轮速度环
+float FricLeftSpeed[6] = {13.0f, 0.0f, 0.0f, 16000.0f, 0.0f, 0}; // 左摩擦轮速度环
 
-float FricRightSpeed[6] = {8.0f, 0.0f, 0.0f, 10000.0f, 0.0f, 0}; // 右摩擦轮速度环
+float FricRightSpeed[6] = {13.0f, 0.0f, 0.0f, 16000.0f, 0.0f, 0}; // 右摩擦轮速度环
 
 static float abs_f(float a);
 
