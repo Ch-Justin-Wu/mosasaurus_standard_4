@@ -131,7 +131,7 @@ void TIM3_CNT_TASK()
 			buzzer_flag = 1;
 			// buzzer_setTask(&buzzer, BUZZER_CALIBRATED_PRIORITY);
 		}
-		INS_task();
+		//INS_task();
 		if (count_2 >= 1000)
 		{
 			count_2 = 0;

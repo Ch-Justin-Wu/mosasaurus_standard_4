@@ -8,6 +8,7 @@
 #include <math.h>
 #include "tim.h"
 
+
 GIMBAL_t gimbal_y,gimbal_p,gimbal_r;
 GIMBAL_MODE_t gimbal_set_mode;
 //yaw轴PID控制
@@ -235,19 +236,19 @@ static void GIMBAL_CALBACK_GET(void)
 	gimbal_y.CAN_total_angle =yaw_can_rx.turns*360.0f+gimbal_y.CAN_actual_angle;		//计算yaw的total_angle
 	gimbal_y.CAN_actual_speed=yaw_can_rx.speed;
 	//yaw轴IMU数据获取
-    gimbal_y.IMU_actual_angle=INS_angle[0]/(2*3.141590f)*360.0f;
-	gimbal_y.IMU_actual_speed=INS_gyro[2];
+    // gimbal_y.IMU_actual_angle=INS_angle[0]/(2*3.141590f)*360.0f;
+	// gimbal_y.IMU_actual_speed=INS_gyro[2];
 	
-	//pitch数据返回
-	gimbal_p.CAN_actual_angle=pitch_can_rx.angle/8191.0f*360.0f;
-	gimbal_p.CAN_actual_speed=pitch_can_rx.speed;
-	//pitchIMU数据获取
-    gimbal_p.IMU_actual_angle=-1.00f*INS_angle[1]/(2*3.141590f)*360.0f;
-	gimbal_p.IMU_actual_speed=-1.00f*INS_gyro[0];
+	// //pitch数据返回
+	// gimbal_p.CAN_actual_angle=pitch_can_rx.angle/8191.0f*360.0f;
+	// gimbal_p.CAN_actual_speed=pitch_can_rx.speed;
+	// //pitchIMU数据获取
+    // gimbal_p.IMU_actual_angle=-1.00f*INS_angle[1]/(2*3.141590f)*360.0f;
+	// gimbal_p.IMU_actual_speed=-1.00f*INS_gyro[0];
 
-	//
-	gimbal_r.IMU_actual_angle=INS_angle[2]/(2*3.141590f)*360.0f;
-	gimbal_r.IMU_actual_speed=INS_gyro[1];
+	// //
+	// gimbal_r.IMU_actual_angle=INS_angle[2]/(2*3.141590f)*360.0f;
+	// gimbal_r.IMU_actual_speed=INS_gyro[1];
 	
 	
 	if(first_update_flag==0)  //读取上电时yaw编码器角度和imu角度的固定差值  并且只读取一次
