@@ -46,6 +46,7 @@
 #include "bsp_referee_uart.h"
 #include "buzzer.h"
 #include "ins_task.h"
+#include "bsp_dwt.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -124,12 +125,17 @@ int main(void)
   MX_TIM8_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
+
+  DWT_Init(168);
+  while (BMI088_init(&hspi1, 1) != BMI088_NO_ERROR)
+    ;
+
   INS_Init();
 
   buzzer_init_example();
 
   HAL_TIM_Base_Start_IT(&htim3);
-  // HAL_TIM_Base_Start_IT(&htim4);
+
   HAL_TIM_Base_Start_IT(&htim5);
   referee_usart_fifo_init();
   led_init();
@@ -145,7 +151,7 @@ int main(void)
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
 
   time_1ms = uwTick;
-  //buzzer_setTask(&buzzer, BUZZER_DJI_STARTUP_PRIORITY);
+  buzzer_setTask(&buzzer, BUZZER_DJI_STARTUP_PRIORITY);
 
   // HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
 
