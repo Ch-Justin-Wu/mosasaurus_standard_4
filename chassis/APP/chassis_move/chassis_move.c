@@ -133,13 +133,11 @@ void chassis_power_control(void)
 	// input_power = max_power_limit - b_pid.PID_OUT; // Input power floating at maximum power
 	input_power = robot_state.chassis_power_limit;
 	remaning_buffer = power_heat_data_t.chassis_power_buffer;
-	if(input_power<45)
-		{input_power = 45;
+	if (input_power < 45)
+	{
+		input_power = 45;
+	}
 
-		}
-
-	
-	
 #endif
 
 #if defined(CHASSIS_POWER_LIMIT)
@@ -164,7 +162,7 @@ void chassis_power_control(void)
 	if (initial_total_power > chassis_max_power) // determine if larger than max power
 	{
 		fp32 power_scale = power_buffer_scale(remaning_buffer, total_buffer);
-		if(input_power<45)
+		if (input_power < 45)
 		{
 			power_scale = 1.0f;
 		}
@@ -778,28 +776,42 @@ static void chassis_move_mode(void)
 	switch (chassis_control_order.chassis_mode)
 	{
 	case CHASSIS_NORMAL: // 正常模式   0
+		chassis_control_order.last_chassis_mode = CHASSIS_NORMAL;
 		break;
 	// case CHASSIS_NO_FORCE:
 	case CHASSIS_NO_FORCE: // 无力模式  3
-	{
+		chassis_control_order.last_chassis_mode = CHASSIS_NO_FORCE;
+
 		wz = 0;
 		vx = 0;
 		vy = 0;
-	}
-	break;
+
+		break;
 	case CHASSIS_FOLLOW: // 跟随模式   1
-	{
+		chassis_control_order.last_chassis_mode = CHASSIS_FOLLOW;
+
 		chassis_spin(&vx, &vy, CHASSIS_FOLLOW);
 		wz = -1.0f * chassis_follow();
-	}
-	break;
+
+		break;
 	case CHASSIS_SPIN: // 小陀螺模式   2
-	{
 		chassis_spin(&vx, &vy, CHASSIS_SPIN);
-		wz = 7.0f;
+
+		if (chassis_control_order.control_mode == KEY_OFF)
+		{
+			if (chassis_control_order.last_chassis_mode == CHASSIS_FOLLOW)
+			{
+				chassis_control_order.spin_dir *= (-1);
+			}
+			wz = 7.f * chassis_control_order.spin_dir;
+		}
+		if (chassis_control_order.control_mode == KEY_ON)
+		{
+			wz = 7.0f;
+		}
+		chassis_control_order.last_chassis_mode = CHASSIS_SPIN;
 		//
-	}
-	break;
+		break;
 	default:
 		break;
 	}

@@ -14,6 +14,22 @@
 
 #define	Supercap_Connected		1
 #define Supercap_Disconnected	0
+
+
+
+typedef struct
+{
+    float max_power;
+    float actual_power;
+
+    uint8_t rx_buff[8];
+    uint8_t tx_buff[8];
+
+    uint32_t online_cnt;
+    uint32_t last_online_cnt;
+    uint32_t offline_cnt;
+}supercap_handle_t;
+
 /***********************************************************
 *@Brief	供外部调用的变量
 ***********************************************************/

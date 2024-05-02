@@ -39,4 +39,5 @@ void mode_init(void)
 	chassis_motor3.pid.loop_flag=SPEED_LOOP;
 	chassis_motor4.pid.loop_flag=SPEED_LOOP;
 	chassis_center.switch_mode_angle=0;
+	chassis_control_order.spin_dir = 1;
 }

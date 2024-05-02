@@ -45,7 +45,7 @@ void TIM3_CNT_TASK()
 	if (htim->Instance == TIM3)
 	{
 		time_count++;
-		upper_computer_reboot();
+		// upper_computer_reboot();
 		if (rc_shoot.trigger.record_begin_angle_status > 0 && rc_shoot.trigger.record_begin_angle_status < 5)
 		{
 			buzzer_setTask(&buzzer, BUZZER_CALIBRATED_PRIORITY);
@@ -67,9 +67,9 @@ void TIM3_CNT_TASK()
 		if (psc >= 89)
 			psc = 0;
 
-		if (time_count % 13 == 0 && start_flag == 1)
+		if (time_count % 13 == 0 && start_flag == 1) // 6.5
 		{
-			//if (rc_offline_flag != 1)
+			// if (rc_offline_flag != 1)
 			{
 				Gimbal_Task();
 				shoot_task();
@@ -81,10 +81,10 @@ void TIM3_CNT_TASK()
 		}
 		if (time_count % 7 == 0) // 3.5ms
 		{
-			//if (rc_offline_flag != 1)
-			{
-				remote_chassis();
-			}
+			// if (rc_offline_flag != 1)
+
+			remote_chassis();
+
 			// ¶ÁÈ¡²ÃÅÐÏµÍ³
 			referee_unpack_fifo_data();
 			control_mode_judge();
@@ -121,7 +121,7 @@ void TIM3_CNT_TASK()
 			rc_offline_flag = rc_offline_check();
 		}
 
-		if (time_count_2 % 2 == 0)//1000Hz
+		if (time_count_2 % 2 == 0) // 1000Hz
 		{
 			INS_Task();
 		}
@@ -132,15 +132,15 @@ void TIM3_CNT_TASK()
 			buzzer_flag = 1;
 			// buzzer_setTask(&buzzer, BUZZER_CALIBRATED_PRIORITY);
 		}
-		//INS_task();
+		// INS_task();
 		if (count_2 >= 1000)
 		{
 			count_2 = 0;
 			if (start_flag == 0)
 			{
 				IMU_cnt++;
-				if(IMU_cnt==1)
-				buzzer_setTask(&buzzer, BUZZER_CALIBRATING_PRIORITY);
+				if (IMU_cnt == 1)
+					buzzer_setTask(&buzzer, BUZZER_CALIBRATING_PRIORITY);
 			}
 		}
 	}
@@ -183,7 +183,6 @@ uint8_t rc_offline_check(void)
 			buzzer_setTask(&buzzer, BUZZER_FREE_PRIORITY);
 		}
 		control_mode = KEY_ON;
-
 
 		rc_ctrl.rc.ch[0] = 0;
 		rc_ctrl.rc.ch[1] = 0;

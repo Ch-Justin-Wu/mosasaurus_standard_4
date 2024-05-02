@@ -86,6 +86,7 @@ uint8_t canTX_chassis_second(uint8_t mode, uint8_t vision_mode)
 	data[4] = bullet_state;
 	data[5] = shoot_status;
 	data[6] = shoot_type;
+	data[7] = control_mode;
 	HAL_CAN_AddTxMessage(&hcan2, &canFrame, data, &temp);
 	return temp;
 }

@@ -50,6 +50,7 @@
 
 /* USER CODE BEGIN PV */
 uint32_t time_3ms = 0;
+uint32_t time_1ms = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -108,6 +109,7 @@ int main(void)
   all_init();
   mode_init();
   time_3ms = uwTick;
+  time_1ms = uwTick;
   //	LQR_Init();
   //	LQR_Controller();
   /* USER CODE END 2 */
@@ -120,6 +122,10 @@ int main(void)
     {
       time_3ms = uwTick;
       referee_usart_task();
+    }
+    if (time_1ms - uwTick >= 1)
+    {
+      time_1ms = uwTick;
     }
 
     // HAL_Delay(3);

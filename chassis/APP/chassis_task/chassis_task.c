@@ -2,6 +2,7 @@
 #include "supercap.h"
 #include "MY_anonymous.h"
 #include "referee_UI.h"
+
 /**
  * @breif         底盘所有任务函数，实质上是定时器中断，1ms进入一次
  * @param[in]     none
@@ -12,6 +13,8 @@ int IMU_cnt = 0, start_flag = 0, calibrate_start_flag;
 
 int MS_Count = 0;
 int S_Count = 0;
+// uint8_t offline_check_(void);
+void my_offline_check(void);
 void Time_Service_Task(void);
 void CHASSIS_TASK()
 {
@@ -22,7 +25,8 @@ void CHASSIS_TASK()
 
 	time_count++;
 
-	//INS_task();
+	// INS_task();
+	my_offline_check();
 	Time_Service_Task();
 	if (time_count % 13 == 0 && start_flag == 1)
 	{
@@ -60,7 +64,7 @@ void CHASSIS_TASK()
 			IMU_cnt++;
 	}
 	// 超级电容
-	//supercap(S_Count, MS_Count);
+	// supercap(S_Count, MS_Count);
 }
 void Time_Service_Task(void)
 {
@@ -71,3 +75,39 @@ void Time_Service_Task(void)
 		S_Count++;
 	}
 }
+
+void my_offline_check(void)
+{ // 上板离线检测
+	if (offline_check(&chassis_control_order.offline_check, 100) == OFFLINE)
+	{
+		chassis_control_order.chassis_mode = CHASSIS_NO_FORCE;
+	}
+	// 电机离线检测
+	if (offline_check(&chassis_motor1.offline_check, 100) == OFFLINE || offline_check(&chassis_motor2.offline_check, 100) == OFFLINE || offline_check(&chassis_motor3.offline_check, 100) == OFFLINE || offline_check(&chassis_motor4.offline_check, 100) == OFFLINE || offline_check(&chassis_center.offline_check, 100) == OFFLINE)
+	{
+	}
+}
+
+// uint8_t offline_check_(void)
+// {
+
+// 	if (chassis_control_order.can2_online_cnt == chassis_control_order.can2_last_online_cnt)
+// 	{
+// 		chassis_control_order.can2_offline_cnt++;
+// 	}
+// 	else
+// 	{
+// 		chassis_control_order.can2_offline_cnt = 0;
+// 	}
+// 	if (chassis_control_order.can2_offline_cnt > 100)
+// 	{
+// 		chassis_control_order.can2_online_cnt = 0;
+// 		chassis_control_order.can2_last_online_cnt = 0;
+// 		chassis_control_order.chassis_mode = CHASSIS_NO_FORCE;
+
+// 		return 1;
+// 	}
+
+// 	chassis_control_order.can2_last_online_cnt = chassis_control_order.can2_online_cnt;
+// 	return 0;
+// }

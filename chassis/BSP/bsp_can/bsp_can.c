@@ -1,5 +1,7 @@
 #include "bsp_can.h"
 
+
+
 extern enum shoot_status_e {
 	SHOOT_OFF = 0,
 	SHOOT_ON,
@@ -135,18 +137,23 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		switch (CAN_RxHeaderStruct.StdId)
 		{
 		case CAN_3508Motor1_ID:
+		chassis_motor1.offline_check.online_cnt++;
 			get_motor_data(&chassis_motor1, angle, speed, current);
 			break;
 		case CAN_3508Motor2_ID:
+		chassis_motor2.offline_check.online_cnt++;
 			get_motor_data(&chassis_motor2, angle, speed, current);
 			break;
 		case CAN_3508Motor3_ID:
+		chassis_motor3.offline_check.online_cnt++;
 			get_motor_data(&chassis_motor3, angle, speed, current);
 			break;
 		case CAN_3508Motor4_ID:
+		chassis_motor4.offline_check.online_cnt++;
 			get_motor_data(&chassis_motor4, angle, speed, current);
 			break;
 		case CAN_GIMBAL_Y_ID:
+		chassis_center.offline_check.online_cnt++;
 			record_chassis_callback(&chassis_center, angle, current);
 			gimbal_y_CAN_actual_speed = speed;
 			gimbal_y_CAN_actual_angle = angle;
@@ -159,8 +166,10 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 	}
 	else if (hcan == &hcan2)
 	{
-		if (HAL_CAN_GetRxMessage(&hcan2, CAN_RX_FIFO0, &CAN_RxHeaderStruct, rxdata) != HAL_OK)
-			chassis_control_order.chassis_mode = CHASSIS_NO_FORCE;
+		chassis_control_order.offline_check.online_cnt++;
+		
+			if (HAL_CAN_GetRxMessage(&hcan2, CAN_RX_FIFO0, &CAN_RxHeaderStruct, rxdata) != HAL_OK)
+				chassis_control_order.chassis_mode = CHASSIS_NO_FORCE;
 		gdata = read_motor_data(rxdata);
 		if (CAN_RxHeaderStruct.StdId == GIMBAL_CONTROL_ID_1)
 		{
@@ -170,7 +179,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		}
 		if (CAN_RxHeaderStruct.StdId == GIMBAL_CONTROL_ID_2)
 		{
-			chassis_control_order.last_chassis_mode = chassis_control_order.chassis_mode;
+			//chassis_control_order.last_chassis_mode = chassis_control_order.chassis_mode;
 			chassis_control_order.chassis_mode = rxdata[0];
 			vision_mode = rxdata[1];
 			supercap_reboot_flag = rxdata[2];
@@ -178,6 +187,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			bullet_flag = rxdata[4];
 			shoot_status = rxdata[5];
 			shoot_type = rxdata[6];
+			chassis_control_order.control_mode = rxdata[7];
 
 			//			if(gdata[3]==0)chassis_control_order.chassis_mode=CHASSIS_NO_FORCE;   //Ð¡ÍÓÂÝ¹Ø±Õ
 			//			else
