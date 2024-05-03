@@ -39,6 +39,7 @@ static const uint16_t W_CRC_TABLE[256] =
 typedef struct
 {
 	uint8_t hander;
+  uint8_t game_status;
 	uint8_t detect_color;
 	uint8_t target_id;
 	float roll;

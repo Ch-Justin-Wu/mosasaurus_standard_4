@@ -30,6 +30,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "referee_UI.h"
+#include "buzzer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -106,10 +107,15 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
+  //MX_TIM4_Init();
+  //buzzer_init_example();
+  //HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+  
   all_init();
   mode_init();
   time_3ms = uwTick;
   time_1ms = uwTick;
+  //buzzer_setTask(&buzzer, BUZZER_DJI_STARTUP_PRIORITY);
   //	LQR_Init();
   //	LQR_Controller();
   /* USER CODE END 2 */
@@ -118,14 +124,15 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    if (time_3ms - uwTick >= 3)
+    if (uwTick - time_3ms >= 3)
     {
       time_3ms = uwTick;
       referee_usart_task();
     }
-    if (time_1ms - uwTick >= 1)
+    if (uwTick - time_1ms >= 1)
     {
       time_1ms = uwTick;
+      
     }
 
     // HAL_Delay(3);

@@ -36,6 +36,7 @@ extern uint8_t bullet_flag;
 extern uint8_t target_exit;
 uint8_t bsp_can_init(void);
 uint8_t Can_Tx_Message(CAN_HandleTypeDef *hcan, uint8_t *mdata);
+uint8_t CAN_Send_Data(CAN_HandleTypeDef *hcan, uint16_t ID, uint8_t *Data, uint16_t Length);
 void send_gimbal_data(void);
 void canTX_gimbal_2(int16_t vx, int16_t vy);
 void send_gimbal_data_2(void);

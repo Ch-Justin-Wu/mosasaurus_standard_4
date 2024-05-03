@@ -10,7 +10,7 @@
 #include "gimbal_task.h"
 
 #include "Self_aim.h"
-
+extern uint8_t game_status;
 Pack_tx_t pack;
 uint8_t start_receive_flag = 0;
 Pack_rx_t pack_rx;
@@ -84,7 +84,7 @@ void cdc_vcp_data_rx(uint8_t *buf, uint32_t Len)
 {
   for (uint16_t j = 0; j < Len; j++)
   {
-    if (buf[j] == 0xA5) // 如果这一位等于帧�?
+    if (buf[j] == 0xA5) // 如果这一位等于帧�?
     {
       start_receive_flag = 1;
     }
@@ -93,17 +93,17 @@ void cdc_vcp_data_rx(uint8_t *buf, uint32_t Len)
       memcpy(receive_data, buf + j, Len);
       memcpy(&pack_rx, receive_data, Len);
       if (pack_rx.target_y != 0&&pack_rx.target_x!=0)
-      { // 弹道解算，�?�兵�?�?
+      { // 弹道解算，�?�兵�?�?
         Auto_aim(pack_rx.target_x, pack_rx.target_y, pack_rx.target_z - 0.08f, &gimbal_y.auto_aim_angle, &gimbal_p.auto_aim_angle, &distance);
 
-        // �?瞄标志位
+        // �?瞄标志位
         vision_sent.Control_priority = pack_rx.UP_flag;
 
         vision_sent.yaw.target_angle = gimbal_y.auto_aim_angle;
         vision_sent.pitch.target_angle = gimbal_p.auto_aim_angle;
       }
 
-      // 改为下位机解算后注释�?
+      // 改为下位机解算后注释�?
       start_receive_flag = 0;
     }
     return;
@@ -113,6 +113,7 @@ void cdc_vcp_data_rx(uint8_t *buf, uint32_t Len)
 void USB_TX(void)
 {
   pack.hander = 0x5A;
+  pack.game_status=game_status;
   pack.detect_color = 1;
   pack.target_id = 0x01;
   pack.pitch = gimbal_p.IMU_actual_angle;

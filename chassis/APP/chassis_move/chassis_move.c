@@ -86,7 +86,7 @@ float motor_speed[4];
 float power_buffer_scale(uint16_t remaning_buffer, uint8_t total_buffer)
 {
 	float scale;
-	float b = 30.0f;
+	float b = 10.0f;
 	scale = (float)(remaning_buffer - b) / (float)total_buffer;
 	if (remaning_buffer == total_buffer)
 	{

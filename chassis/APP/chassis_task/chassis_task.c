@@ -2,6 +2,7 @@
 #include "supercap.h"
 #include "MY_anonymous.h"
 #include "referee_UI.h"
+#include "buzzer.h"
 
 /**
  * @breif         底盘所有任务函数，实质上是定时器中断，1ms进入一次
@@ -24,7 +25,10 @@ void CHASSIS_TASK()
 		start_flag = 1;
 
 	time_count++;
-
+	// if(time_count%2==0)
+	// {
+	// 	buzzer_taskScheduler(&buzzer);
+	// }
 	// INS_task();
 	my_offline_check();
 	Time_Service_Task();
@@ -81,10 +85,17 @@ void my_offline_check(void)
 	if (offline_check(&chassis_control_order.offline_check, 100) == OFFLINE)
 	{
 		chassis_control_order.chassis_mode = CHASSIS_NO_FORCE;
+		//buzzer_setTask(&buzzer, BUZZER_DEVICE_OFFLINE_PRIORITY);
 	}
 	// 电机离线检测
 	if (offline_check(&chassis_motor1.offline_check, 100) == OFFLINE || offline_check(&chassis_motor2.offline_check, 100) == OFFLINE || offline_check(&chassis_motor3.offline_check, 100) == OFFLINE || offline_check(&chassis_motor4.offline_check, 100) == OFFLINE || offline_check(&chassis_center.offline_check, 100) == OFFLINE)
 	{
+		//buzzer_setTask(&buzzer, BUZZER_DEVICE_OFFLINE_PRIORITY);
+	}
+	//电容离线检测
+	if (offline_check(&supercap_object.offline_check, 200) == OFFLINE)
+	{
+		
 	}
 }
 

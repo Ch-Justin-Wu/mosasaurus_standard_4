@@ -22,9 +22,9 @@ void all_init(void)
 	HAL_TIM_PWM_Start(&htim10, TIM_CHANNEL_1);
 	init_referee_struct_data();
 	delay_init();
-	IMU_Init();
+	//IMU_Init();
 	uart_init();
-	cali_param_init();
+	//cali_param_init();
 	HAL_Delay(1000);
 	HAL_TIM_Base_Start_IT(&htim3);
 	HAL_UART_Receive_DMA(&huart3,sbus_rx_buffer,18);

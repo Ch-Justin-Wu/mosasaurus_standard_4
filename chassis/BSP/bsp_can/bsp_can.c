@@ -1,6 +1,6 @@
 #include "bsp_can.h"
 
-
+#include "supercap.h"
 
 extern enum shoot_status_e {
 	SHOOT_OFF = 0,
@@ -53,6 +53,32 @@ uint8_t bsp_can_init(void)
 	HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING); // can1 接收fifo 0不为空中断
 	HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING); // can2 接收fifo 0不为空中断
 	return status;
+}
+
+/**
+ * @brief 发送数据帧
+ *
+ * @param hcan CAN编号
+ * @param ID ID
+ * @param Data 被发送的数据指针
+ * @param Length 长度
+ * @return uint8_t 执行状态
+ */
+uint8_t CAN_Send_Data(CAN_HandleTypeDef *hcan, uint16_t ID, uint8_t *Data, uint16_t Length)
+{
+	CAN_TxHeaderTypeDef tx_header;
+	uint32_t used_mailbox;
+
+	// 检测传参是否正确
+	assert_param(hcan != NULL);
+
+	tx_header.StdId = ID;
+	tx_header.ExtId = 0;
+	tx_header.IDE = 0;
+	tx_header.RTR = 0;
+	tx_header.DLC = Length;
+
+	return (HAL_CAN_AddTxMessage(hcan, &tx_header, Data, &used_mailbox));
 }
 
 /**
@@ -120,7 +146,7 @@ int16_t spss;
  * @param[out]    can1接收四个电机返回的电流值，can2接收上板传来的数据
  * @retval        none
  */
-uint8_t bullet_flag=1;
+uint8_t bullet_flag = 1;
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
 	CAN_RxHeaderTypeDef CAN_RxHeaderStruct;
@@ -137,27 +163,31 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		switch (CAN_RxHeaderStruct.StdId)
 		{
 		case CAN_3508Motor1_ID:
-		chassis_motor1.offline_check.online_cnt++;
+			chassis_motor1.offline_check.online_cnt++;
 			get_motor_data(&chassis_motor1, angle, speed, current);
 			break;
 		case CAN_3508Motor2_ID:
-		chassis_motor2.offline_check.online_cnt++;
+			chassis_motor2.offline_check.online_cnt++;
 			get_motor_data(&chassis_motor2, angle, speed, current);
 			break;
 		case CAN_3508Motor3_ID:
-		chassis_motor3.offline_check.online_cnt++;
+			chassis_motor3.offline_check.online_cnt++;
 			get_motor_data(&chassis_motor3, angle, speed, current);
 			break;
 		case CAN_3508Motor4_ID:
-		chassis_motor4.offline_check.online_cnt++;
+			chassis_motor4.offline_check.online_cnt++;
 			get_motor_data(&chassis_motor4, angle, speed, current);
 			break;
 		case CAN_GIMBAL_Y_ID:
-		chassis_center.offline_check.online_cnt++;
+			chassis_center.offline_check.online_cnt++;
 			record_chassis_callback(&chassis_center, angle, current);
 			gimbal_y_CAN_actual_speed = speed;
 			gimbal_y_CAN_actual_angle = angle;
 			break;
+		case SUPER_CAP_RX_ID:
+			supercap_object.offline_check.online_cnt++;
+			memcpy(&supercap_object.voltage, rxdata, 4);
+			memcpy(&supercap_object.percent, rxdata + 4, 4);
 		case LOOP_BACK_ID:
 			get_motor_data(&chassis_motor1, angle, speed, current);
 		default:
@@ -167,9 +197,9 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 	else if (hcan == &hcan2)
 	{
 		chassis_control_order.offline_check.online_cnt++;
-		
-			if (HAL_CAN_GetRxMessage(&hcan2, CAN_RX_FIFO0, &CAN_RxHeaderStruct, rxdata) != HAL_OK)
-				chassis_control_order.chassis_mode = CHASSIS_NO_FORCE;
+
+		if (HAL_CAN_GetRxMessage(&hcan2, CAN_RX_FIFO0, &CAN_RxHeaderStruct, rxdata) != HAL_OK)
+			chassis_control_order.chassis_mode = CHASSIS_NO_FORCE;
 		gdata = read_motor_data(rxdata);
 		if (CAN_RxHeaderStruct.StdId == GIMBAL_CONTROL_ID_1)
 		{
@@ -179,7 +209,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		}
 		if (CAN_RxHeaderStruct.StdId == GIMBAL_CONTROL_ID_2)
 		{
-			//chassis_control_order.last_chassis_mode = chassis_control_order.chassis_mode;
+			// chassis_control_order.last_chassis_mode = chassis_control_order.chassis_mode;
 			chassis_control_order.chassis_mode = rxdata[0];
 			vision_mode = rxdata[1];
 			supercap_reboot_flag = rxdata[2];
@@ -288,6 +318,7 @@ void send_gimbal_data(void) // 给上板发送裁判系统数据
 	canTX_gimbal(game_status, heat0, heat0_limit, (int16_t)bullet_speed, bullet_speedlimit);
 }
 
+
 /**
  * @breif         can发送上板函数
  * @param[in]     game_status：对局状态
@@ -309,7 +340,7 @@ static void canTX_gimbal(int8_t game_status, int16_t heat0, int16_t heat0_limit,
 	data[4] = heat0_limit & 0xff;
 	data[5] = bullet_speed >> 8;
 	data[6] = bullet_speed & 0xff;
-	//data[7] = bullet_speedlimit;
+	//data[7] = ;
 	Can_Tx_Message(&hcan2, data);
 }
 
