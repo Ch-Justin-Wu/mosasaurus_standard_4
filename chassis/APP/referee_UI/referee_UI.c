@@ -40,6 +40,7 @@ UI_String_t UI_String2;
 UI_String_t UI_String3;
 UI_String_t UI_String4;
 UI_String_t UI_String_shoot_type;
+UI_Graph5_t UI_Supercap;
 
 UI_Graph5_t UI_Graph5_Arc;
 UI_Delete_t UI_Delete;
@@ -404,6 +405,8 @@ void UI_PushUp_Delete(UI_Delete_t *Delete, uint8_t RobotID)
 	HAL_UART_Transmit(&huart6, (uint8_t *)Delete, sizeof(UI_Delete_t), 0xff);
 }
 uint16_t UI_PushUp_Counter = 0;
+uint8_t CapName1[] = "Out";
+uint8_t CapName2[] = "In";
 void referee_usart_task()
 {
 	/* 动态UI控制变量 */
@@ -419,6 +422,10 @@ void referee_usart_task()
 
 	/* UI更新 */
 	UI_PushUp_Counter++;
+
+	if (UI_PushUp_Counter % 91 == 0)
+	{
+	}
 	if (UI_PushUp_Counter % 101 == 0) // 静态UI预绘制 中央标尺1
 	{
 		UI_Draw_Line(&UI_Graph7.Graphic[0], "001", UI_Graph_Add, 0, UI_Color_White, 2, 840, y01, 920, y01);			  // 第一行左横线
@@ -506,6 +513,7 @@ void referee_usart_task()
 					   "  1");
 		UI_PushUp_String(&UI_String_shoot_type, Robot_ID_Current);
 	}
+
 	if (UI_PushUp_Counter % 26 == 0) // 动态UI预绘制
 	{
 		switch (shoot_type)
@@ -543,11 +551,11 @@ void referee_usart_task()
 			UI_Draw_Arc(&UI_Graph1_Ar.Graphic[0], "113", UI_Graph_Change, 2, UI_Color_Green, 0, 360, 5, 200, 790, 15, 15); // fire on
 			UI_PushUp_Graphs(1, &UI_Graph1_Ar, Robot_ID_Current);
 		}
-		if (vision_mode == 1||vision_mode==3)
+		if (vision_mode == 1 || vision_mode == 3)
 		{
 			UI_Draw_Arc(&UI_Graph7.Graphic[0], "106", UI_Graph_Change, 2, UI_Color_White, 0, 360, 5, 150, 590, 15, 15); // vision_off
 		}
-		else if (vision_mode == 0||vision_mode==2)
+		else if (vision_mode == 0 || vision_mode == 2)
 		{
 			UI_Draw_Arc(&UI_Graph7.Graphic[0], "106", UI_Graph_Change, 2, UI_Color_Green, 0, 360, 5, 200, 590, 15, 15); // vision_on
 		}
@@ -580,7 +588,7 @@ void referee_usart_task()
 			UI_Draw_Line(&UI_Graph7.Graphic[5], "111", UI_Graph_Change, 2, UI_Color_Green, 2, 1400, 640, 1400 + 45 * cos(UI_theta), 640 + 45 * arm_sin_f32(UI_theta)); // 绘制底盘姿态线
 		else
 			UI_Draw_Line(&UI_Graph7.Graphic[5], "111", UI_Graph_Change, 2, UI_Color_Yellow, 2, 1400, 640, 1400 + 45 * cos(UI_theta), 640 + 45 * arm_sin_f32(UI_theta));
-		UI_Draw_Float(&UI_Graph7.Graphic[6], "112", UI_Graph_Change, 2, UI_Color_Yellow, 20, 2, 3, 140, 650, supercap_per); // 电容容量
+		UI_Draw_Float(&UI_Graph7.Graphic[6], "112", UI_Graph_Change, 2, UI_Color_Yellow, 20, 2, 3, 140, 650, supercap_object.percent); // 电容容量
 	}
 	// 最后发送出去
 	UI_PushUp_Graphs(7, &UI_Graph7, Robot_ID_Current);

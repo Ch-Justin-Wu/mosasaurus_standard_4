@@ -6,8 +6,6 @@
 #include "bsp_math.h"
 #include <math.h>
 
-
-
 uint8_t data[2] = {1, 0};
 shoot_task_t rc_shoot;
 FRIC_SPEED fricspeed = FRIC_MAX;
@@ -64,9 +62,9 @@ void shoot_task(void)
 		}
 
 		fric_pid();
-
-		if ((rc_shoot.left_fric.actual_speed < -4000) && (rc_shoot.right_fric.actual_speed > 4000)) // 等待摩擦轮转动之后才能拨弹
-			shoot_angle_clc();
+		// 转移至卡弹状态机
+		//  if ((rc_shoot.left_fric.actual_speed < -4000) && (rc_shoot.right_fric.actual_speed > 4000)) // 等待摩擦轮转动之后才能拨弹
+		//  	shoot_angle_clc();
 
 		trigger_pid();
 
@@ -87,10 +85,10 @@ int yuyuyu_flag = 65;
 uint16_t count;
 void fric_speed_control(void)
 {
-	#if defined(TEST_SHOOT)
-		speed_limit = 30;
-		shoot_speed = 25.0f;
-		#endif
+#if defined(TEST_SHOOT)
+	speed_limit = 30;
+	shoot_speed = 25.0f;
+#endif
 	if (speed_limit > 29.4f)
 	{
 		fricspeed = FRIC_MAX;
@@ -165,6 +163,7 @@ void fric_speed_control(void)
 // 拨弹轮和摩擦轮的初始化
 void shoot_init(void)
 {
+	FSM_Init(&rc_shoot.shoot_fsm, 4, 0);
 
 	PID_Init(&rc_shoot.trigger.speed_pid, TriggerSpeed);
 	PID_Init(&rc_shoot.trigger.angle_pid, TriggerAngle);
@@ -251,70 +250,123 @@ int trigger_cnt = 0, trigger_cnt_flag = 0, remain_bullet = 0;
 void trigger_angle_set(void)
 {
 	trigger_cnt_flag = 1;
-	if(More_shoot_flag)
+	if (More_shoot_flag)
 	{
 		remain_bullet = ((heat_limit - heat) / 10.0f) - 5; // 计算热量限制下的剩余弹量
 	}
-	else if (Ten_Shoot_flag )
+	else if (Ten_Shoot_flag)
 	{
 		remain_bullet = ((heat_limit - heat) / 10.0f) - 4; // 计算热量限制下的剩余弹量
 	}
-	else if(One_Shoot_flag)
+	else if (One_Shoot_flag)
 	{
 		remain_bullet = ((heat_limit - heat) / 10.0f) - 2; // 计算热量限制下的剩余弹量
 	}
 #if defined(TEST_SHOOT)
-		remain_bullet = 5;
+	remain_bullet = 5;
 #endif
-		if (remain_bullet < 0)
-			remain_bullet = 0;
-		if (One_Shoot_flag == 1) // 单发
-		{
-			if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
-			{
-				if (remain_bullet >= 1)
-					rc_shoot.trigger.target_angle -= ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
-			}
-		}
-		else if (Ten_Shoot_flag == 1) // 五连发
-		{
-			if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
-			{
-				if (remain_bullet >= 5)
-					rc_shoot.trigger.target_angle -= ((5.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f); // 改成五连发了
-				else
-					rc_shoot.trigger.target_angle -= ((remain_bullet * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
-			}
-		}
-		else if (More_shoot_flag == 1) // 连发
-		{
-			if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
-			{
-				if (remain_bullet >= 10)
-					rc_shoot.trigger.target_angle -= ((10.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
-				else
-					rc_shoot.trigger.target_angle -= ((remain_bullet * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
-			}
-		}
-	}
-	// 拨弹轮数据返回
-	void Trigger_Motor_Callback(trigger_t * motor, uint16_t angle, int16_t speed)
+	if (remain_bullet < 0)
+		remain_bullet = 0;
+	if (One_Shoot_flag == 1) // 单发
 	{
-		motor->last_angle = motor->actual_angle;
-		motor->actual_angle = angle;
-		motor->actual_speed = 0.5 * (speed + motor->last_speed);
-		motor->last_speed = speed;
-
-		if (motor->record_begin_angle_status < 50)
+		if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
 		{
-			motor->begin_angle = angle;
-			motor->actual_angle = angle;
-			motor->last_angle = angle;
-			motor->record_begin_angle_status++;
+			if (remain_bullet >= 1)
+				rc_shoot.trigger.target_angle -= ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
 		}
-		if (motor->actual_angle - motor->last_angle > 4096)
-			motor->rounds--;
-		else if (motor->actual_angle - motor->last_angle < -4096)
-			motor->rounds++;
-		motor->total_angle = motor->rounds * 8192 + motor->actual_angle - motor->begin_angle;
 	}
+	else if (Ten_Shoot_flag == 1) // 五连发
+	{
+		if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
+		{
+			if (remain_bullet >= 5)
+				rc_shoot.trigger.target_angle -= ((5.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f); // 改成五连发了
+			else
+				rc_shoot.trigger.target_angle -= ((remain_bullet * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
+		}
+	}
+	else if (More_shoot_flag == 1) // 连发
+	{
+		if (fabs(rc_shoot.trigger.target_angle - rc_shoot.trigger.total_angle) < ((1.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f))
+		{
+			if (remain_bullet >= 10)
+				rc_shoot.trigger.target_angle -= ((10.0f * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
+			else
+				rc_shoot.trigger.target_angle -= ((remain_bullet * 36.0f * (360.0f / 8.0f)) / 360.0f * 8191.0f);
+		}
+	}
+}
+// 拨弹轮数据返回
+void Trigger_Motor_Callback(trigger_t *motor, uint16_t angle, int16_t speed)
+{
+	motor->last_angle = motor->actual_angle;
+	motor->actual_angle = angle;
+	motor->actual_speed = 0.5 * (speed + motor->last_speed);
+	motor->last_speed = speed;
+
+	if (motor->record_begin_angle_status < 50)
+	{
+		motor->begin_angle = angle;
+		motor->actual_angle = angle;
+		motor->last_angle = angle;
+		motor->record_begin_angle_status++;
+	}
+	if (motor->actual_angle - motor->last_angle > 4096)
+		motor->rounds--;
+	else if (motor->actual_angle - motor->last_angle < -4096)
+		motor->rounds++;
+	motor->total_angle = motor->rounds * 8192 + motor->actual_angle - motor->begin_angle;
+}
+
+// 1ms
+void antijam_fsm_task(Struct_FSM *fsm, shoot_task_t *booster)
+{
+	fsm->Status[fsm->Now_Status_Serial].Time++;
+	switch (fsm->Now_Status_Serial)
+	{
+	// 正常状态
+	case 0:
+		if (booster->left_fric.actual_speed < -4000 && booster->right_fric.actual_speed > 4000)
+		{
+			shoot_angle_clc();
+		}
+		booster->booster_jamming_type = BOOSTER_NOT_JAMMING;
+		if (booster->trigger.acutal_currunt <= -5500)
+		{
+			// 疑似卡弹状态
+			fsm->Now_Status_Serial = 1;
+		}
+		break;
+	// 疑似卡弹状态
+	case 1:
+		if (booster->left_fric.actual_speed < -4000 && booster->right_fric.actual_speed > 4000)
+		{
+			shoot_angle_clc();
+		}
+		if (fsm->Status[fsm->Now_Status_Serial].Time >= 100)
+		{
+			// 疑似卡弹状态->卡弹状态
+			fsm->Now_Status_Serial = 2;
+		}
+		else if (booster->trigger.acutal_currunt > -5500)
+		{
+			// 疑似卡弹状态->正常状态
+			fsm->Now_Status_Serial = 0;
+		}
+		break;
+		// 准备卡弹处理状态
+	case 2:
+		booster->booster_jamming_type = BOOSTER_JAMMING;
+		booster->trigger.target_angle += ((36.0f * (15.0f)) / 360.0f * 8191.0f);
+		fsm->Now_Status_Serial = 3;
+		break;
+		// 卡弹处理状态
+	case 3:
+		if (fsm->Status[fsm->Now_Status_Serial].Time >= 300)
+		{
+			// 卡弹处理状态->正常状态
+			fsm->Now_Status_Serial = 0;
+		}
+		break;
+	}
+}

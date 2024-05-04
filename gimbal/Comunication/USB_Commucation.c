@@ -94,7 +94,7 @@ void cdc_vcp_data_rx(uint8_t *buf, uint32_t Len)
       memcpy(&pack_rx, receive_data, Len);
       if (pack_rx.target_y != 0&&pack_rx.target_x!=0)
       { // 弹道解算，�?�兵�?�?
-        Auto_aim(pack_rx.target_x, pack_rx.target_y, pack_rx.target_z - 0.08f, &gimbal_y.auto_aim_angle, &gimbal_p.auto_aim_angle, &distance);
+        Auto_aim(pack_rx.target_x, pack_rx.target_y, pack_rx.target_z + 0.00f, &gimbal_y.auto_aim_angle, &gimbal_p.auto_aim_angle, &distance);
 
         // �?瞄标志位
         vision_sent.Control_priority = pack_rx.UP_flag;
@@ -117,7 +117,7 @@ void USB_TX(void)
   pack.detect_color = 1;
   pack.target_id = 0x01;
   pack.pitch = gimbal_p.IMU_actual_angle;
-  pack.roll = 2.2f+gimbal_r.IMU_actual_angle;
+  pack.roll = gimbal_r.IMU_actual_angle;
   // pack.pitch = gimbal_r.IMU_actual_angle;
   // pack.roll = -gimbal_p.IMU_actual_angle;
   pack.yaw = gimbal_y.IMU_actual_angle;

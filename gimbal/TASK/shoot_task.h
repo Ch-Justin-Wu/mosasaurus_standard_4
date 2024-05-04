@@ -2,7 +2,7 @@
 #define __SHOOT_TASK_H
 
 #include "pid.h"
-
+#include "fsm.h"
 //#define TEST_SHOOT
 
 #define SHOOT_NUM 1
@@ -17,6 +17,16 @@ typedef enum shoot_type_e
 	TEN_SHOOT,
 } shoot_type_e;
 
+/**
+ * @brief 发射机构卡弹状态
+ *
+ */
+typedef enum enum_booster_jamming_type
+{
+	BOOSTER_NOT_JAMMING = 0,
+	BOOSTER_JAMMING,
+} enum_booster_jamming_type;
+
 typedef struct
 {
 
@@ -29,7 +39,7 @@ typedef struct
 	int last_shoot_flag;
 	int last_back_flag;
 	float set_currunt;
-
+	int16_t acutal_currunt;
 	float last_angle;			   // 上一次机械转子角度
 	int rounds;					   // 转过的圈数
 	int total_angle;			   // 总共转过的角度
@@ -59,6 +69,9 @@ typedef struct
 	fric_t right_fric;
 
 	trigger_t trigger;
+
+	Struct_FSM shoot_fsm;
+	enum_booster_jamming_type booster_jamming_type;
 } shoot_task_t;
 
 typedef enum
@@ -78,6 +91,7 @@ void shoot_init(void);
 void shoot_task(void);
 void fric_speed_control(void);
 void Trigger_Motor_Callback(trigger_t *motor, uint16_t angle, int16_t speed);
+void antijam_fsm_task(Struct_FSM *fsm, shoot_task_t *booster);
 extern shoot_task_t rc_shoot;
 extern int One_Shoot_flag;
 extern int Ten_Shoot_flag;

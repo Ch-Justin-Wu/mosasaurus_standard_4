@@ -34,7 +34,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		case SHOOT_MOTOR_TRIGGER_ID:
 		{
 			Trigger_Motor_Callback(&rc_shoot.trigger, (int16_t)rxData[0] << 8 | rxData[1], (int16_t)rxData[2] << 8 | rxData[3]);
-			break;
+			rc_shoot.trigger.acutal_currunt=(int16_t)rxData[4] << 8 | rxData[5];
 		} // 接收拨弹轮数据
 		case PITCH_MOTOR_ID:
 		{
