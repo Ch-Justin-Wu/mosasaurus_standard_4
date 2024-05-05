@@ -14,39 +14,41 @@ void FSM_Init(Struct_FSM *FSM, uint8_t Status_Num, uint8_t Now_Status_Serial)
     FSM->Status[Now_Status_Serial].Status_Stage = Status_Stage_ENABLE;
 }
 
+// 定义状态
+typedef enum
+{
+    STATE_A,
+    STATE_B,
+    STATE_C,
+    // 添加更多状态...
+    STATE_NUM
+} State_example;
+
 void FSM_example(void)
 {
     Struct_FSM FSM;
     FSM_Init(&FSM, 3, 0);
-    // 状态机状态数量
-    uint8_t Status_Num = 10;
-    // 状态机当前状态
-    uint8_t Now_Status_Serial = 0;
-    // 状态机状态
-    Struct_Status Status[STATUS_MAX];
-    // 状态机状态所处的阶段
-    Enum_Status_Stage Status_Stage;
-    // 状态机状态时间
-    uint32_t Time;
 
     // task loop 例如周期为1ms
-    //自己列一个状态转移图，然后根据状态转移图写状态机
+    // 自己列一个状态转移图，然后根据状态转移图写状态机
+    // 根据状态转移图写状态机
+    switch (FSM.Now_Status_Serial)
     {
-        FSM.Status[Now_Status_Serial].Time++;
-        switch (FSM.Status[Now_Status_Serial].Status_Stage)
-        {
-        case 0:
-            // do something
-            FSM.Status[Now_Status_Serial].Status_Stage = 1;
-            break;
-        case 1:
-            // do something
-            FSM.Status[Now_Status_Serial].Status_Stage = 2;
-            break;
-        case 2:
-            // do something
-            FSM.Status[Now_Status_Serial].Status_Stage = 0;
-            break;
-        }
+    case STATE_A:
+        // 处理状态A
+        // 如果满足转换条件，转换到其他状态
+        // FSM->Now_Status_Serial = STATE_B;
+        break;
+    case STATE_B:
+        // 处理状态B
+        // 如果满足转换条件，转换到其他状态
+        // FSM->Now_Status_Serial = STATE_C;
+        break;
+    case STATE_C:
+        // 处理状态C
+        // 如果满足转换条件，转换到其他状态
+        // FSM->Now_Status_Serial = STATE_A;
+        break;
+        // 添加更多状态...
     }
 }

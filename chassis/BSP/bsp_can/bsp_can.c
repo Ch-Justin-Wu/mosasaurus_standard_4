@@ -163,29 +163,29 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		switch (CAN_RxHeaderStruct.StdId)
 		{
 		case CAN_3508Motor1_ID:
-			chassis_motor1.offline_check.online_cnt++;
+			increment_online_count(&chassis_motor1.offline_check);
 			get_motor_data(&chassis_motor1, angle, speed, current);
 			break;
 		case CAN_3508Motor2_ID:
-			chassis_motor2.offline_check.online_cnt++;
+			increment_online_count(&chassis_motor2.offline_check);
 			get_motor_data(&chassis_motor2, angle, speed, current);
 			break;
 		case CAN_3508Motor3_ID:
-			chassis_motor3.offline_check.online_cnt++;
+			increment_online_count(&chassis_motor3.offline_check);
 			get_motor_data(&chassis_motor3, angle, speed, current);
 			break;
 		case CAN_3508Motor4_ID:
-			chassis_motor4.offline_check.online_cnt++;
+			increment_online_count(&chassis_motor4.offline_check);
 			get_motor_data(&chassis_motor4, angle, speed, current);
 			break;
 		case CAN_GIMBAL_Y_ID:
-			chassis_center.offline_check.online_cnt++;
+			increment_online_count(&chassis_center.offline_check);
 			record_chassis_callback(&chassis_center, angle, current);
 			gimbal_y_CAN_actual_speed = speed;
 			gimbal_y_CAN_actual_angle = angle;
 			break;
 		case SUPER_CAP_RX_ID:
-			supercap_object.offline_check.online_cnt++;
+			increment_online_count(&supercap_object.offline_check);
 			memcpy(&supercap_object.voltage, rxdata, 4);
 			memcpy(&supercap_object.percent, rxdata + 4, 4);
 		case LOOP_BACK_ID:

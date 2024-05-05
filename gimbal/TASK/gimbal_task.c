@@ -76,7 +76,10 @@ void Gimbal_Task(void)
 	//	gimbal_p.target_angle=us;
 	GIMBAL_PID();
 	//	canTX_gimbal_p(gimbal_p.gimbal_raw_pid.out);
-	canTX_gimbal_p_2(gimbal_p.gimbal_raw_pid.out);
+	if (gimbal_set_mode != GIMBAL_ZERO_FORCE)
+	{
+		canTX_gimbal_p_2(gimbal_p.gimbal_raw_pid.out);
+	}
 }
 // ‘∆Ã®≥ı ºªØ
 void Gimbal_Init(void)

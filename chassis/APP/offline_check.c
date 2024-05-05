@@ -23,3 +23,10 @@ online_status_enum offline_check(offline_check_handle *ptr, uint32_t offline_tri
     ptr->status = ONLINE;
     return ONLINE;
 }
+
+inline void increment_online_count(offline_check_handle *ptr)
+{
+    ptr->online_cnt++;
+}
+
+

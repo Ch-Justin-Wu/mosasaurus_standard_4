@@ -19,4 +19,5 @@ typedef struct
 } offline_check_handle;
 
 online_status_enum offline_check(offline_check_handle *ptr, uint32_t offline_trigger_cnt);
+void increment_online_count(offline_check_handle *ptr);
 #endif // _OFFLINE_CHECK_H_
