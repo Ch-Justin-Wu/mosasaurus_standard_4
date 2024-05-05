@@ -104,7 +104,7 @@ void fric_speed_control(void)
 
 	if (speed_change_flag)
 	{
-		if (fricspeed == FRIC_MAX && shoot_speed >= 29.0f)
+		if (fricspeed == FRIC_MAX && shoot_speed > 29.5f)
 		{
 			SHOOT_LEFT_FRIC_SPEED_MAX += 80;
 			SHOOT_RIGHT_FRIC_SPEED_MAX -= 80;
@@ -131,14 +131,14 @@ void fric_speed_control(void)
 			else if (fricspeed == FRIC_MAX) // 30
 			{
 				// if (((speed_limit - speed_average < 0.7f) && (speed_limit >= 10.0f)) || (shoot_speed >= 29.5))
-				if (shoot_speed >= 28.5f)
+				if (shoot_speed > 29.4f)
 				{
 					SHOOT_LEFT_FRIC_SPEED_MAX += 50;
 					SHOOT_RIGHT_FRIC_SPEED_MAX -= 50;
 				}
 
 				// else if (((speed_limit - speed_average > 1.3f) && (speed_limit >= 10.0f)) || (shoot_speed <= 20.0))
-				if (shoot_speed <= 28.0f)
+				if (shoot_speed <= 28.5f)
 				{
 					SHOOT_LEFT_FRIC_SPEED_MAX -= 25;
 					SHOOT_RIGHT_FRIC_SPEED_MAX += 25;
@@ -322,7 +322,7 @@ void Trigger_Motor_Callback(trigger_t *motor, uint16_t angle, int16_t speed)
 void antijam_fsm_task(Struct_FSM *fsm, shoot_task_t *booster)
 {
 	fsm->Status[fsm->Now_Status_Serial].Time++;
-	switch (fsm->Now_Status_Serial)
+	switch (Get_Now_Status_Serial(fsm))
 	{
 	// Õý³£×´Ì¬
 	case 0:
@@ -334,7 +334,7 @@ void antijam_fsm_task(Struct_FSM *fsm, shoot_task_t *booster)
 		if (booster->trigger.acutal_currunt <= -5500)
 		{
 			// ÒÉËÆ¿¨µ¯×´Ì¬
-			fsm->Now_Status_Serial = 1;
+			Set_FSM_Status(fsm, 1);
 		}
 		break;
 	// ÒÉËÆ¿¨µ¯×´Ì¬
@@ -343,29 +343,29 @@ void antijam_fsm_task(Struct_FSM *fsm, shoot_task_t *booster)
 		{
 			shoot_angle_clc();
 		}
-		if (fsm->Status[fsm->Now_Status_Serial].Time >= 100)
+		if (fsm->Status[fsm->Now_Status_Serial].Time >= 1)
 		{
 			// ÒÉËÆ¿¨µ¯×´Ì¬->¿¨µ¯×´Ì¬
-			fsm->Now_Status_Serial = 2;
+			Set_FSM_Status(fsm, 2);
 		}
 		else if (booster->trigger.acutal_currunt > -5500)
 		{
 			// ÒÉËÆ¿¨µ¯×´Ì¬->Õý³£×´Ì¬
-			fsm->Now_Status_Serial = 0;
+			Set_FSM_Status(fsm, 0);
 		}
 		break;
-		// ×¼±¸¿¨µ¯´¦Àí×´Ì¬
+	// ×¼±¸¿¨µ¯´¦Àí×´Ì¬
 	case 2:
 		booster->booster_jamming_type = BOOSTER_JAMMING;
 		booster->trigger.target_angle += ((36.0f * (15.0f)) / 360.0f * 8191.0f);
-		fsm->Now_Status_Serial = 3;
+		Set_FSM_Status(fsm, 3);
 		break;
-		// ¿¨µ¯´¦Àí×´Ì¬
+	// ¿¨µ¯´¦Àí×´Ì¬
 	case 3:
-		if (fsm->Status[fsm->Now_Status_Serial].Time >= 300)
+		if (fsm->Status[fsm->Now_Status_Serial].Time >= 1)
 		{
 			// ¿¨µ¯´¦Àí×´Ì¬->Õý³£×´Ì¬
-			fsm->Now_Status_Serial = 0;
+			Set_FSM_Status(fsm, 0);
 		}
 		break;
 	}

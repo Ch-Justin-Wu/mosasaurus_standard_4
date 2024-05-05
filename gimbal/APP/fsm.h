@@ -35,5 +35,7 @@ typedef struct
 } Struct_FSM;
 
 void FSM_Init(Struct_FSM *FSM, uint8_t Status_Num, uint8_t Now_Status_Serial);
+uint8_t Get_Now_Status_Serial(Struct_FSM *FSM);
+void Set_FSM_Status(Struct_FSM *FSM, uint8_t Next_Status_serial);
 
 #endif

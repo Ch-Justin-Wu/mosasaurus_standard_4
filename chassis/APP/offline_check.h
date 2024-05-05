@@ -2,11 +2,13 @@
 #define _OFFLINE_CHECK_H_
 
 #include "stdint.h"
+#include "fsm.h"
 
 typedef enum
 {
     ONLINE,
     OFFLINE,
+    OFFLINE_SUSPECT
 } online_status_enum;
 
 typedef struct
@@ -15,6 +17,7 @@ typedef struct
     uint32_t last_online_cnt;
     uint32_t offline_cnt;
 
+    Struct_FSM fsm;
     online_status_enum status;
 } offline_check_handle;
 

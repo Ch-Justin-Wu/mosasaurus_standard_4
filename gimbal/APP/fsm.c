@@ -14,6 +14,21 @@ void FSM_Init(Struct_FSM *FSM, uint8_t Status_Num, uint8_t Now_Status_Serial)
     FSM->Status[Now_Status_Serial].Status_Stage = Status_Stage_ENABLE;
 }
 
+inline uint8_t Get_Now_Status_Serial(Struct_FSM *FSM)
+{
+    return FSM->Now_Status_Serial;
+}
+
+void Set_FSM_Status(Struct_FSM *FSM, uint8_t Next_Status_serial)
+{
+    // 失能当前状态, 计时器清零
+    FSM->Status[FSM->Now_Status_Serial].Status_Stage = Status_Stage_DISABLE;
+    FSM->Status[FSM->Now_Status_Serial].Time = 0;
+    // 使能下一个状态
+    FSM->Status[Next_Status_serial].Status_Stage = Status_Stage_ENABLE;
+    FSM->Now_Status_Serial = Next_Status_serial;
+}
+
 // 定义状态
 typedef enum
 {
@@ -37,17 +52,17 @@ void FSM_example(void)
     case STATE_A:
         // 处理状态A
         // 如果满足转换条件，转换到其他状态
-        // FSM->Now_Status_Serial = STATE_B;
+        //Set_FSM_Status(&FSM, STATE_B)  
         break;
     case STATE_B:
         // 处理状态B
         // 如果满足转换条件，转换到其他状态
-        // FSM->Now_Status_Serial = STATE_C;
+        //Set_FSM_Status(&FSM, STATE_C)
         break;
     case STATE_C:
         // 处理状态C
         // 如果满足转换条件，转换到其他状态
-        // FSM->Now_Status_Serial = STATE_A;
+        //Set_FSM_Status(&FSM, STATE_A)
         break;
         // 添加更多状态...
     }

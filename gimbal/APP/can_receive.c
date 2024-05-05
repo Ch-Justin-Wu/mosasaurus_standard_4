@@ -14,7 +14,7 @@ int16_t euler_angle[3];
 uint8_t game_status, speed_limit=30;
 extern int8_t upper_computer_data[8];
 extern int8_t chassis_imu_data[8];
-float shoot_speed=28.25f;
+float shoot_speed=28.75f;
 uint8_t target_exit_rec_flag; // 上位机卡死时使用的判断标志位
 float last_shoot_speed;
 uint8_t speed_change_flag;
