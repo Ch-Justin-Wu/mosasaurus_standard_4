@@ -27,7 +27,7 @@ float YawSpeedPid_2[7] = {12000.0f, 3100.0f, 0.0f, 30000.0f, 6500.0f, 0.01f, 0.7
 // pitch÷·PIDøÿ÷∆
 // float PitchGyroPid[6] = {50.0f,			0.0f,			0.0f,		500.0f,			0.0f		,1.5f};
 
-float PitchGyroPid[7] = {0.5f, 0.0f, 0.0f, 50.0f, 0.0f, 0.0f};
+float PitchGyroPid[7] = {0.25f, 0.0f, 0.0f, 50.0f, 0.0f, 0.0f};
 float PitchSpeedPid[7] = {110.0f, 1.0f, 0.0f, 600.0f, 300.0f, 0.0f, 10.f};
 float PitchEncondePid[7] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 float PitchEncondePidSpeed[7] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};

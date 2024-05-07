@@ -185,11 +185,11 @@ void TIM3_CNT_TASK()
 			offline_buzzer_cnt++;
 			if (offline_buzzer_cnt < 2000) // 1min 10s
 			{
-				buzzer_setTask(&buzzer, BUZZER_DEVICE_OFFLINE_PRIORITY);
+				//buzzer_setTask(&buzzer, BUZZER_DEVICE_OFFLINE_PRIORITY);
 			}
 			else
 			{
-				buzzer_setTask(&buzzer, BUZZER_FREE_PRIORITY);
+				//buzzer_setTask(&buzzer, BUZZER_FREE_PRIORITY);
 			}
 			control_mode = KEY_ON;
 

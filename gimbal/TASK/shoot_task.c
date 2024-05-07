@@ -104,7 +104,7 @@ void fric_speed_control(void)
 
 	if (speed_change_flag)
 	{
-		if (fricspeed == FRIC_MAX && shoot_speed > 29.5f)
+		if (fricspeed == FRIC_MAX && shoot_speed > 29.0f)
 		{
 			SHOOT_LEFT_FRIC_SPEED_MAX += 80;
 			SHOOT_RIGHT_FRIC_SPEED_MAX -= 80;
@@ -131,14 +131,14 @@ void fric_speed_control(void)
 			else if (fricspeed == FRIC_MAX) // 30
 			{
 				// if (((speed_limit - speed_average < 0.7f) && (speed_limit >= 10.0f)) || (shoot_speed >= 29.5))
-				if (shoot_speed > 29.4f)
+				if (shoot_speed > 28.7f)
 				{
 					SHOOT_LEFT_FRIC_SPEED_MAX += 50;
 					SHOOT_RIGHT_FRIC_SPEED_MAX -= 50;
 				}
 
 				// else if (((speed_limit - speed_average > 1.3f) && (speed_limit >= 10.0f)) || (shoot_speed <= 20.0))
-				if (shoot_speed <= 28.5f)
+				if (shoot_speed <= 28.2f)
 				{
 					SHOOT_LEFT_FRIC_SPEED_MAX -= 25;
 					SHOOT_RIGHT_FRIC_SPEED_MAX += 25;

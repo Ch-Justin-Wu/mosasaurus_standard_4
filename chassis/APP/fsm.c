@@ -39,15 +39,16 @@ typedef enum
     STATE_NUM
 } State_example;
 
-void FSM_example(void)
+void FSM_example(Struct_FSM *FSM)
 {
-    Struct_FSM FSM;
-    FSM_Init(&FSM, 3, 0);
+
+    FSM_Init(FSM, 3, 0);
 
     // task loop 例如周期为1ms
+    FSM->Status[FSM->Now_Status_Serial].Time++;
     // 自己列一个状态转移图，然后根据状态转移图写状态机
     // 根据状态转移图写状态机
-    switch (FSM.Now_Status_Serial)
+    switch (Get_Now_Status_Serial(FSM))
     {
     case STATE_A:
         // 处理状态A
