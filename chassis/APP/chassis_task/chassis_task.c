@@ -25,6 +25,11 @@ void CHASSIS_TASK()
 		start_flag = 1;
 
 	time_count++;
+
+	if(time_count%500==0)//0.5s
+	{
+		send_game_time();
+	}
 	// if(time_count%2==0)
 	// {
 	// 	buzzer_taskScheduler(&buzzer);
@@ -57,6 +62,8 @@ void CHASSIS_TASK()
 		referee_unpack_fifo_data();
 		// 向云台发送数据
 		send_gimbal_data();
+
+		supercap_can_tx();
 	}
 
 	if (time_count >= 1000) // 清除计数标志    1s

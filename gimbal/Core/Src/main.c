@@ -47,6 +47,8 @@
 #include "buzzer.h"
 #include "ins_task.h"
 #include "bsp_dwt.h"
+#include "USB_Commucation.h"
+#include "vision_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -151,8 +153,10 @@ int main(void)
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
 
   time_1ms = uwTick;
+  pack.point_num = 4;//默认是四点
   buzzer_setTask(&buzzer, BUZZER_DJI_STARTUP_PRIORITY);
-
+  //三种状态 1.普通自瞄 2.大风车 3.小风车
+  FSM_Init(&vision_sent.fsm, 3, 0);
   // HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
 
   // uart_init();  //以前给上位机通讯用的

@@ -5,6 +5,7 @@
 #include "can_receive.h"
 #include "bsp_uart.h"
 #include "vision_task.h"
+#include "USB_Commucation.h"
 
 uint8_t chassis_speed_x, chassis_speed_y;
 enum
@@ -36,13 +37,30 @@ void remote_chassis(void)
 	}
 	if (gimbal_set_mode == GIMBAL_ABSOLUTE_ANGLE) // 随动
 	{
+
 		canTX_chassis_first(rc_sent.x_speed, rc_sent.y_speed, rc_sent.r_speed, gimbal_y.given_current);
-		canTX_chassis_second(1, vision_mode);
+		if (pack.point_num == 5)
+		{
+			// 底盘不动
+			canTX_chassis_second(3, vision_mode);
+		}
+		else
+		{
+			canTX_chassis_second(1, vision_mode);
+		}
 	}
 	if (gimbal_set_mode == GIMBAL_TOP_ANGLE) // 小陀螺
 	{
 		canTX_chassis_first(rc_sent.x_speed, rc_sent.y_speed, rc_sent.r_speed, gimbal_y.given_current);
-		canTX_chassis_second(2, vision_mode);
+		if (pack.point_num == 5)
+		{
+			// 底盘不动
+			canTX_chassis_second(3, vision_mode);
+		}
+		else
+		{
+			canTX_chassis_second(2, vision_mode);
+		}
 	}
 	if (gimbal_set_mode == GIMBAL_ZERO_FORCE) // 无力
 	{

@@ -19,6 +19,7 @@ volatile uint32_t referee_uart_rx_cnt = 0;
 
 extern volatile uint32_t rc_update_cnt;
 extern RC_ctrl_t rc_ctrl;
+extern RC_GET_t rc_sent;
 
 void referee_data_solve(uint8_t *frame);
 static void referee_rc_data_process(RC_ctrl_t *rc_ctrl, ext_referee_rc_data_t *referee_data);

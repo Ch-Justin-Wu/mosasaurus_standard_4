@@ -18,6 +18,7 @@ uint8_t supercap_reboot_flag;
 uint8_t target_exit;
 int16_t vision_mode;
 uint8_t shoot_status = SHOOT_OFF; // fire UI绘图
+uint8_t can_0x010_tx_data[8];
 /**
  * @breif         can通信初始化
  * @param[in]     none
@@ -113,6 +114,17 @@ uint8_t Can_Tx_Message(CAN_HandleTypeDef *hcan, uint8_t *mdata)
 	}
 	status = HAL_CAN_AddTxMessage(hcan, &CAN_TxHeaderStruct, mdata, &pTxMailbox);
 	return status;
+}
+
+
+void send_game_time(void)
+{
+	//高八位
+	can_0x010_tx_data[0] = (uint8_t)game_state.stage_remain_time >> 8;
+	//低八位
+	can_0x010_tx_data[1] = (uint8_t)game_state.stage_remain_time;
+
+	CAN_Send_Data(&hcan2, 0x010, can_0x010_tx_data, 8);
 }
 
 // 控制yaw轴

@@ -240,13 +240,7 @@ void chassis_move(void)
 	chassis_motor3.target_current = motor_pid_out[2];
 	chassis_motor4.target_current = motor_pid_out[3];
 
-	if (chassis_control_order.chassis_mode == CHASSIS_NO_FORCE)
-	{
-		chassis_motor1.target_current = 0;
-		chassis_motor2.target_current = 0;
-		chassis_motor3.target_current = 0;
-		chassis_motor4.target_current = 0;
-	}
+
 
 	// Power_limit(); // 新的功率限制 Rhn
 

@@ -6,7 +6,7 @@
 #include "main.h"
 
 
-//用于与上位机进行USB通信的校验
+//用于与上位机进�?�USB通信的校�?
 static const uint16_t CRC16_INIT = 0xFFFF;
 
 static const uint16_t W_CRC_TABLE[256] = 
@@ -40,7 +40,9 @@ typedef struct
 {
 	uint8_t hander;
   uint8_t game_status;
-	uint8_t detect_color;
+  uint8_t point_num;
+  uint8_t is_large_buff;//0 small 1 large
+  uint8_t detect_color;
 	uint8_t target_id;
 	float roll;
 	float pitch;
@@ -65,6 +67,6 @@ typedef struct
 
 void cdc_vcp_data_rx(uint8_t *buf, uint32_t Len);
 void USB_TX(void);
-
+extern Pack_tx_t pack;
 
 #endif

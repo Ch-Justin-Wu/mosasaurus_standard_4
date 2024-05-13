@@ -44,5 +44,7 @@ extern int Supercap_Connection_Status;
 *@Brief	供外部调用的函数
 ***********************************************************/
 void supercap(int S_Cnt, int MS_Cnt);
+
+void supercap_can_tx(void);
 #endif
 

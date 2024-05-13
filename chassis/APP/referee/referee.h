@@ -579,6 +579,7 @@ extern "C"
 
 	extern ext_game_robot_state_t robot_state;
 	extern ext_power_heat_data_t power_heat_data_t;
+	extern ext_game_status_t game_state;
 #ifdef __cplusplus
 }
 #endif

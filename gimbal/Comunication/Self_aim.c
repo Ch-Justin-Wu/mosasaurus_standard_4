@@ -4,41 +4,41 @@
 extern float shoot_speed;
 
 struct SolveTrajectoryParams st;
-struct tar_pos tar_position[4]; // æœ€å¤šåªæœ‰å››å—è£…ç”²æ¿
-float t = 0.5f;                 // é£è¡Œæ—¶é—´
+struct tar_pos tar_position[4]; // ×î¶àÖ»ÓĞËÄ¿é×°¼×°å
+float t = 0.5f;                 // ·ÉĞĞÊ±¼ä
 
 const float g = 9.78f;
-// é‡åŠ›åŠ é€Ÿåº¦
-float bullet_v = 25.0f; // å­å¼¹é€Ÿåº¦
+// ÖØÁ¦¼ÓËÙ¶È
+float bullet_v = 25.0f; // ×Óµ¯ËÙ¶È
 
 /*
-@brief å•æ–¹å‘ç©ºæ°”é˜»åŠ›å¼¹é“æ¨¡å‹
-@param s:m è·ç¦»
-@param v:m/s é€Ÿåº¦
-@param angle:rad è§’åº¦
+@brief µ¥·½Ïò¿ÕÆø×èÁ¦µ¯µÀÄ£ĞÍ
+@param s:m ¾àÀë
+@param v:m/s ËÙ¶È
+@param angle:rad ½Ç¶È
 @return z:m
 */
 float monoDirectionalAirResistanceModel(float s, float v, float angle)
 {
     float z;
-    st.k = 0.092f; // å¼¹é“ç³»æ•°
-    // tä¸ºç»™å®švä¸angleæ—¶çš„é£è¡Œæ—¶é—´
+    st.k = 0.092f; // µ¯µÀÏµÊı
+    // tÎª¸ø¶¨vÓëangleÊ±µÄ·ÉĞĞÊ±¼ä
     t = (float)((expf(st.k * s) - 1) / (st.k * v * arm_cos_f32(angle)));
     if (t < 0)
     {
-        // ç›®æ ‡ç‚¹è¶…å‡ºæœ€å¤§å°„ç¨‹
+        // Ä¿±êµã³¬³ö×î´óÉä³Ì
         t = 0;
         return 0;
     }
-    // zä¸ºç»™å®švä¸angleæ—¶çš„é«˜åº¦
+    // zÎª¸ø¶¨vÓëangleÊ±µÄ¸ß¶È
     z = (float)(v * arm_sin_f32(angle) * t - GRAVITY * t * t / 2.0f);
     return z;
 }
 
 /*
-@brief pitchè½´è§£ç®—
-@param s:m è·ç¦»
-@param z:m é«˜åº¦
+@brief pitchÖá½âËã
+@param s:m ¾àÀë
+@param z:m ¸ß¶È
 @param v:m/s
 @return angle_pitch:rad
 */
@@ -65,44 +65,44 @@ float pitchTrajectoryCompensation(float s, float z, float v)
             break;
         }
     }
-    // å°†å¼§åº¦åˆ¶çš„ä¿¯ä»°è§’è½¬æ¢ä¸ºè§’åº¦åˆ¶
-    angle_pitch = (angle_pitch * 180.f / PI); // å‘ä¸Šä¸ºæ­£ï¼Œå‘ä¸‹ä¸ºè´Ÿ
+    // ½«»¡¶ÈÖÆµÄ¸©Ñö½Ç×ª»»Îª½Ç¶ÈÖÆ
+    angle_pitch = (angle_pitch * 180.f / PI); // ÏòÉÏÎªÕı£¬ÏòÏÂÎª¸º
     return angle_pitch;
 }
 
 /**
- * è®¡ç®—ç»™å®šå‘é‡çš„åèˆªè§’ï¼ˆyawï¼‰ã€‚
+ * ¼ÆËã¸ø¶¨ÏòÁ¿µÄÆ«º½½Ç£¨yaw£©¡£
  *
- * @param x å‘é‡çš„xåˆ†é‡
- * @param y å‘é‡çš„yåˆ†é‡
- * @param z å‘é‡çš„zåˆ†é‡ï¼ˆæœªä½¿ç”¨ï¼‰
- * @return è®¡ç®—å¾—åˆ°çš„åèˆªè§’ï¼ˆä»¥è§’åº¦åˆ¶è¡¨ç¤ºï¼‰
+ * @param x ÏòÁ¿µÄx·ÖÁ¿
+ * @param y ÏòÁ¿µÄy·ÖÁ¿
+ * @param z ÏòÁ¿µÄz·ÖÁ¿£¨Î´Ê¹ÓÃ£©
+ * @return ¼ÆËãµÃµ½µÄÆ«º½½Ç£¨ÒÔ½Ç¶ÈÖÆ±íÊ¾£©
  */
 float calc_yaw(float x, float y, float z)
 {
     float aim_yaw = 0.0f;
-    // ä½¿ç”¨ atan2f å‡½æ•°è®¡ç®—åæ­£åˆ‡å€¼ï¼Œå¾—åˆ°å¼§åº¦åˆ¶çš„åèˆªè§’
+    // Ê¹ÓÃ atan2f º¯Êı¼ÆËã·´ÕıÇĞÖµ£¬µÃµ½»¡¶ÈÖÆµÄÆ«º½½Ç
     // float yaw = atan2f(y, x);//
-    // arm_math.håº“ä¸­çš„atan2få‡½æ•°
+    // arm_math.h¿âÖĞµÄatan2fº¯Êı
     arm_atan2_f32(y, x, &aim_yaw);
 
-    // å°†å¼§åº¦åˆ¶çš„åèˆªè§’è½¬æ¢ä¸ºè§’åº¦åˆ¶
-    aim_yaw = -(aim_yaw * 180.f / PI); // å‘å·¦ä¸ºæ­£ï¼Œå‘å³ä¸ºè´Ÿ
+    // ½«»¡¶ÈÖÆµÄÆ«º½½Ç×ª»»Îª½Ç¶ÈÖÆ
+    aim_yaw = -(aim_yaw * 180.f / PI); // Ïò×óÎªÕı£¬ÏòÓÒÎª¸º
 
     return aim_yaw;
 }
 
 /**
- * è®¡ç®—ç»™å®šå‘é‡çš„æ¬§å‡ é‡Œå¾·è·ç¦»ã€‚
+ * ¼ÆËã¸ø¶¨ÏòÁ¿µÄÅ·¼¸ÀïµÂ¾àÀë¡£
  *
- * @param x å‘é‡çš„xåˆ†é‡
- * @param y å‘é‡çš„yåˆ†é‡
- * @param z å‘é‡çš„zåˆ†é‡
- * @return è®¡ç®—å¾—åˆ°çš„æ¬§å‡ é‡Œå¾·è·ç¦»
+ * @param x ÏòÁ¿µÄx·ÖÁ¿
+ * @param y ÏòÁ¿µÄy·ÖÁ¿
+ * @param z ÏòÁ¿µÄz·ÖÁ¿
+ * @return ¼ÆËãµÃµ½µÄÅ·¼¸ÀïµÂ¾àÀë
  */
 static inline float calc_distance(float x, float y, float z)
 {
-    // è®¡ç®—å„åˆ†é‡çš„å¹³æ–¹å’Œï¼Œå¹¶å–å…¶å¹³æ–¹æ ¹å¾—åˆ°æ¬§å‡ é‡Œå¾·è·ç¦»
+    // ¼ÆËã¸÷·ÖÁ¿µÄÆ½·½ºÍ£¬²¢È¡ÆäÆ½·½¸ùµÃµ½Å·¼¸ÀïµÂ¾àÀë
     // float distance = sqrtf(x * x + y * y + z * z);
     float distance = 0.0f;
     arm_sqrt_f32(x * x + y * y + z * z, &distance);
@@ -111,21 +111,21 @@ static inline float calc_distance(float x, float y, float z)
 }
 
 /**
- * è®¡ç®—ç»™å®šå‘é‡çš„ä¿¯ä»°è§’ï¼ˆpitchï¼‰ã€‚
+ * ¼ÆËã¸ø¶¨ÏòÁ¿µÄ¸©Ñö½Ç£¨pitch£©¡£
  *
- * @param x å‘é‡çš„xåˆ†é‡
- * @param y å‘é‡çš„yåˆ†é‡
- * @param z å‘é‡çš„zåˆ†é‡
- * @return è®¡ç®—å¾—åˆ°çš„ä¿¯ä»°è§’ï¼ˆä»¥è§’åº¦åˆ¶è¡¨ç¤ºï¼‰
+ * @param x ÏòÁ¿µÄx·ÖÁ¿
+ * @param y ÏòÁ¿µÄy·ÖÁ¿
+ * @param z ÏòÁ¿µÄz·ÖÁ¿
+ * @return ¼ÆËãµÃµ½µÄ¸©Ñö½Ç£¨ÒÔ½Ç¶ÈÖÆ±íÊ¾£©
  */
 float calc_pitch(float x, float y, float z)
 {
     float pitch = 0.0f;
-    // æ ¹æ® xã€y åˆ†é‡è®¡ç®—çš„å¹³é¢æŠ•å½±çš„æ¨¡é•¿å’Œ z åˆ†é‡è®¡ç®—çš„åæ­£åˆ‡å€¼ï¼Œå¾—åˆ°å¼§åº¦åˆ¶çš„ä¿¯ä»°è§’
+    // ¸ù¾İ x¡¢y ·ÖÁ¿¼ÆËãµÄÆ½ÃæÍ¶Ó°µÄÄ£³¤ºÍ z ·ÖÁ¿¼ÆËãµÄ·´ÕıÇĞÖµ£¬µÃµ½»¡¶ÈÖÆµÄ¸©Ñö½Ç
     //  arm_atan2_f32(z, sqrtf(x * x + y * y),&pitch);
     float temp_sqrt = 0.0f;
     arm_sqrt_f32(x * x + y * y, &temp_sqrt);
-    // æ ¹æ® xã€y åˆ†é‡è®¡ç®—çš„å¹³é¢æŠ•å½±çš„æ¨¡é•¿å’Œ z åˆ†é‡è®¡ç®—çš„åæ­£åˆ‡å€¼ï¼Œå¾—åˆ°å¼§åº¦åˆ¶çš„ä¿¯ä»°è§’
+    // ¸ù¾İ x¡¢y ·ÖÁ¿¼ÆËãµÄÆ½ÃæÍ¶Ó°µÄÄ£³¤ºÍ z ·ÖÁ¿¼ÆËãµÄ·´ÕıÇĞÖµ£¬µÃµ½»¡¶ÈÖÆµÄ¸©Ñö½Ç
     arm_atan2_f32(z, temp_sqrt, &pitch);
 
     if (shoot_speed > 10.0f)
@@ -137,7 +137,7 @@ float calc_pitch(float x, float y, float z)
     bullet_v = 30.0f;
 #endif
 
-    // ä½¿ç”¨é‡åŠ›åŠ é€Ÿåº¦æ¨¡å‹è¿­ä»£æ›´æ–°ä¿¯ä»°è§’
+    // Ê¹ÓÃÖØÁ¦¼ÓËÙ¶ÈÄ£ĞÍµü´ú¸üĞÂ¸©Ñö½Ç
     for (int i = 0; i < 20; i++)
     {
 
@@ -157,28 +157,27 @@ float calc_pitch(float x, float y, float z)
             break;
         }
 
-        // æ ¹æ® dz å’Œå‘é‡çš„æ¬§å‡ é‡Œå¾·è·ç¦»è®¡ç®—æ–°çš„ä¿¯ä»°è§’çš„å˜åŒ–é‡ï¼Œè¿›è¡Œè¿­ä»£æ›´æ–°
+        // ¸ù¾İ dz ºÍÏòÁ¿µÄÅ·¼¸ÀïµÂ¾àÀë¼ÆËãĞÂµÄ¸©Ñö½ÇµÄ±ä»¯Á¿£¬½øĞĞµü´ú¸üĞÂ
         pitch += asinf(dz / calc_distance(x, y, z));
     }
-    
 
-     // å°†å¼§åº¦åˆ¶çš„ä¿¯ä»°è§’è½¬æ¢ä¸ºè§’åº¦åˆ¶
-     pitch = (pitch * 180.f / PI); // å‘ä¸Šä¸ºæ­£ï¼Œå‘ä¸‹ä¸ºè´Ÿ
+    // ½«»¡¶ÈÖÆµÄ¸©Ñö½Ç×ª»»Îª½Ç¶ÈÖÆ
+    pitch = (pitch * 180.f / PI); // ÏòÉÏÎªÕı£¬ÏòÏÂÎª¸º
 
     return pitch;
 }
 /**
- * è®¡ç®—è®¡ç®—yawï¼Œpitch
+ * ¼ÆËã¼ÆËãyaw£¬pitch
  *
- * @param x å‘é‡çš„xåˆ†é‡
- * @param y å‘é‡çš„yåˆ†é‡
- * @param z å‘é‡çš„zåˆ†é‡
- * @return è®¡ç®—å¾—åˆ°çš„ç›®æ ‡è§’ï¼ˆä»¥è§’åº¦åˆ¶è¡¨ç¤ºï¼‰
+ * @param x ÏòÁ¿µÄx·ÖÁ¿
+ * @param y ÏòÁ¿µÄy·ÖÁ¿
+ * @param z ÏòÁ¿µÄz·ÖÁ¿
+ * @return ¼ÆËãµÃµ½µÄÄ¿±ê½Ç£¨ÒÔ½Ç¶ÈÖÆ±íÊ¾£©
  */
 void Auto_aim(float x, float y, float z, float *yaw, float *pitch, float *distance)
 {
     *distance = calc_distance(x, y, z);
     *yaw = -calc_yaw(x, y, z);
-//*pitch = pitchTrajectoryCompensation(sqrtf(x*x+y*y), z, bullet_v);
+    //*pitch = pitchTrajectoryCompensation(sqrtf(x*x+y*y), z, bullet_v);
     *pitch = calc_pitch(x, y, z);
 }

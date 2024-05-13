@@ -27,6 +27,7 @@
 #define LOOP_BACK_ID 0x003
 #define CHASSIS_TO_GIMBAL_ID_2 0x009
 
+
 #define SUPER_CAP_TX_ID 0x066
 #define SUPER_CAP_RX_ID 0x067
 
@@ -34,6 +35,7 @@
 
 extern uint8_t bullet_flag;
 extern uint8_t target_exit;
+extern uint8_t can_0x010_tx_data[8];
 uint8_t bsp_can_init(void);
 uint8_t Can_Tx_Message(CAN_HandleTypeDef *hcan, uint8_t *mdata);
 uint8_t CAN_Send_Data(CAN_HandleTypeDef *hcan, uint16_t ID, uint8_t *Data, uint16_t Length);
@@ -42,5 +44,6 @@ void canTX_gimbal_2(int16_t vx, int16_t vy);
 void send_gimbal_data_2(void);
 void canTX_chassis_imu(void);
 uint8_t canTX_gimbal_y(int16_t yaw);
+void send_game_time(void);
 
 #endif

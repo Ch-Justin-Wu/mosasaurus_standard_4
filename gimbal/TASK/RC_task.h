@@ -93,8 +93,11 @@
 #define CTRL_key             0x000020
 	
 #define C_key                0x002000
-#define G_key                0x000400  
+#define G_key                0x000400
+//14bit  
 #define V_key                0x004000  
+//15bit
+#define B_key                0x008000
 #define NULL_Key             0x000000
 
 #define   prepare_status  (uint8_t)(1<<3)  //准备模式

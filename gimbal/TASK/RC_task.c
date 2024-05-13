@@ -44,7 +44,7 @@ uint16_t last_key;
 uint8_t spin_flag_1, spin_flag_2, fly_flag = 0, chassis_power_flag = 1;
 uint8_t last_TOP_ANGLE_flag = 0;
 uint8_t add_flag = 0;
-uint8_t time_count_q = 0, time_count_f = 0, time_count_e = 0, time_count_c = 0, time_count_v = 0, time_count_x = 0, time_count_z = 0, time_count_g = 0;
+uint8_t time_count_q = 0, time_count_f = 0, time_count_e = 0, time_count_c = 0, time_count_v = 0, time_count_x = 0, time_count_z = 0, time_count_g = 0,time_count_b = 0;
 float target_angle = 0;
 static int deadline_judge_v(int16_t a);
 // 死区判断
@@ -669,17 +669,18 @@ void judge_g(void)
 		{
 			if (time_count_g >= KEY_COUNT)
 			{
-				if (shoot_vision_mode != VISION_BIG_WINDWILL)
-				{
-					shoot_vision_mode = VISION_BIG_WINDWILL; // 开启大风车
-					fricspeed = FRIC_MAX;
-					vision_mode = VISION_ON;
-				}
-				else // 给上位机发送正常自瞄模式  不使用上位机的值
-				{
-					shoot_vision_mode = VISION_NOMAL;
-					vision_mode = VISION_OFF;
-				}
+				vision_sent.windwill_press_flag = 1;
+				// if (shoot_vision_mode != VISION_BIG_WINDWILL)
+				// {
+				// 	shoot_vision_mode = VISION_BIG_WINDWILL; // 开启大风车
+				// 	fricspeed = FRIC_MAX;
+				// 	vision_mode = VISION_ON;
+				// }
+				// else // 给上位机发送正常自瞄模式  不使用上位机的值
+				// {
+				// 	shoot_vision_mode = VISION_NOMAL;
+				// 	vision_mode = VISION_OFF;
+				// }
 			}
 		}
 		time_count_g = 0;
@@ -693,10 +694,11 @@ static void judge_x(void)
 		time_count_x++;
 		if (vision_mode == VISION_ON)
 		{
-			if (time_count_x >= LONG_KEY_COUNT) // 长按1s断开上位机继电器
+			if (time_count_x >= KEY_COUNT) // 
 			{
-				HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_RESET);
-				reboot_flag = 1;
+				// HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_RESET);
+				// reboot_flag = 1;
+
 			}
 		}
 	}
@@ -755,6 +757,23 @@ void judge_z(void)
 	}
 }
 
+void judge_b(void)
+{
+	if (KEY_board & B_key)
+		time_count_b++;
+	else
+	{
+		if (last_key & B_key)
+		{
+			if (time_count_b >= KEY_COUNT)
+			{
+				vision_sent.amor_press_flag = 1;
+			}
+		}
+		time_count_b = 0;
+	}
+}
+
 void upper_computer_reboot(void)
 {
 	static uint16_t switch_cnt = 0;
@@ -780,6 +799,7 @@ void judge_key(void)
 	judge_q();
 	judge_v();
 	judge_g();
+	judge_b();
 	judge_ctrl();
 	last_key = KEY_board;
 }

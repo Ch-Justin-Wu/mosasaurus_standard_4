@@ -79,31 +79,32 @@ void Append_CRC16_Check_Sum(uint8_t *pchMessage, uint32_t dwLength)
   pchMessage[dwLength - 1] = (uint8_t)((w_crc >> 8) & 0x00ff);
 }
 
-// æ¥æ”¶å¤„ç†å‡½æ•°
+// ½ÓÊÕ´¦Àíº¯Êı
 void cdc_vcp_data_rx(uint8_t *buf, uint32_t Len)
 {
   for (uint16_t j = 0; j < Len; j++)
   {
-    if (buf[j] == 0xA5) // å¦‚æœè¿™ä¸€ä½ç­‰äºå¸§ï¿½?
+    if (buf[j] == 0xA5) // Èç¹ûÕâÒ»Î»µÈÓÚÖ¡Í·
     {
       start_receive_flag = 1;
     }
-    if (start_receive_flag == 1) // æ•°æ®å¤„ç†
+    if (start_receive_flag == 1) // Êı¾İ´¦Àí
     {
       memcpy(receive_data, buf + j, Len);
       memcpy(&pack_rx, receive_data, Len);
-      if (pack_rx.target_y != 0&&pack_rx.target_x!=0)
-      { // å¼¹é“è§£ç®—ï¼Œï¿½?ï¿½å…µï¿½?ï¿½?
+      if (pack_rx.target_y != 0 && pack_rx.target_x != 0)
+      { // µ¯µÀ½âËã
         Auto_aim(pack_rx.target_x, pack_rx.target_y, pack_rx.target_z + 0.00f, &gimbal_y.auto_aim_angle, &gimbal_p.auto_aim_angle, &distance);
 
-        // ï¿½?ç„æ ‡å¿—ä½
+        // ×ÔÃé±êÖ¾Î»
         vision_sent.Control_priority = pack_rx.UP_flag;
-
+        pack_rx.UP_flag = 0;
+        
         vision_sent.yaw.target_angle = gimbal_y.auto_aim_angle;
         vision_sent.pitch.target_angle = gimbal_p.auto_aim_angle;
       }
 
-      // æ”¹ä¸ºä¸‹ä½æœºè§£ç®—åæ³¨é‡Šï¿½?
+      // ¸ÄÎªÏÂÎ»»ú½âËãºó×¢ÊÍ??
       start_receive_flag = 0;
     }
     return;
@@ -113,7 +114,7 @@ void cdc_vcp_data_rx(uint8_t *buf, uint32_t Len)
 void USB_TX(void)
 {
   pack.hander = 0x5A;
-  pack.game_status=game_status;
+  pack.game_status = game_status;
   pack.detect_color = 1;
   pack.target_id = 0x01;
   pack.pitch = gimbal_p.IMU_actual_angle;

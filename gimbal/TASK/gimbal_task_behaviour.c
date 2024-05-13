@@ -108,7 +108,7 @@ void gimbal_control_behaviour(void)
 				gimbal_y.target_angle = gimbal_y.auto_aim_angle - yaw_angle;
 			}
 			gimbal_p.target_angle = gimbal_p.auto_aim_angle + pitch_angle;
-			vision_sent.Control_priority = 0;
+			
 		}
 		else
 		{
@@ -128,7 +128,7 @@ void gimbal_control_behaviour(void)
 			if (deadline_judge(yaw_angle, 1) != 0)
 			{
 
-				vision_sent.Control_priority = 0;
+				\
 				if (gimbal_y.gimbal_motor_mode == GIMBAL_MOTOR_ENCONDE)
 				{
 					gimbal_y.target_angle = gimbal_y.CAN_actual_angle - yaw_angle;
