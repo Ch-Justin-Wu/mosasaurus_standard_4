@@ -116,12 +116,11 @@ uint8_t Can_Tx_Message(CAN_HandleTypeDef *hcan, uint8_t *mdata)
 	return status;
 }
 
-
 void send_game_time(void)
 {
-	//高八位
+	// 高八位
 	can_0x010_tx_data[0] = (uint8_t)game_state.stage_remain_time >> 8;
-	//低八位
+	// 低八位
 	can_0x010_tx_data[1] = (uint8_t)game_state.stage_remain_time;
 
 	CAN_Send_Data(&hcan2, 0x010, can_0x010_tx_data, 8);
@@ -196,10 +195,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			gimbal_y_CAN_actual_speed = speed;
 			gimbal_y_CAN_actual_angle = angle;
 			break;
-		case SUPER_CAP_RX_ID:
-			increment_online_count(&supercap_object.offline_check);
-			memcpy(&supercap_object.voltage, rxdata, 4);
-			memcpy(&supercap_object.percent, rxdata + 4, 4);
+
 		case LOOP_BACK_ID:
 			get_motor_data(&chassis_motor1, angle, speed, current);
 		default:
@@ -213,18 +209,29 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		if (HAL_CAN_GetRxMessage(&hcan2, CAN_RX_FIFO0, &CAN_RxHeaderStruct, rxdata) != HAL_OK)
 			chassis_control_order.chassis_mode = CHASSIS_NO_FORCE;
 		gdata = read_motor_data(rxdata);
-		if (CAN_RxHeaderStruct.StdId == GIMBAL_CONTROL_ID_1)
+		if (CAN_RxHeaderStruct.StdId == SUPER_CAP_RX_ID)
 		{
-			chassis_data_analyze();
-			chassis_control_order.vx_set;
-			chassis_control_order.vy_set;
+			increment_online_count(&supercap_object.offline_check);
+			memcpy(&supercap_object.voltage, rxdata, 4);
+			memcpy(&supercap_object.percent, rxdata + 4, 4);
 		}
+		if (CAN_RxHeaderStruct.StdId ==0x114)
+		{
+			chassis_control_order.aim_mode=rxdata[0];
+		}
+			if (CAN_RxHeaderStruct.StdId == GIMBAL_CONTROL_ID_1)
+			{
+				chassis_data_analyze();
+				chassis_control_order.vx_set;
+				chassis_control_order.vy_set;
+			}
 		if (CAN_RxHeaderStruct.StdId == GIMBAL_CONTROL_ID_2)
 		{
 			// chassis_control_order.last_chassis_mode = chassis_control_order.chassis_mode;
 			chassis_control_order.chassis_mode = rxdata[0];
 			vision_mode = rxdata[1];
 			supercap_reboot_flag = rxdata[2];
+			supercap_object.change_flag = rxdata[2];
 			target_exit = rxdata[3];
 			bullet_flag = rxdata[4];
 			shoot_status = rxdata[5];
@@ -330,7 +337,6 @@ void send_gimbal_data(void) // 给上板发送裁判系统数据
 	canTX_gimbal(game_status, heat0, heat0_limit, (int16_t)bullet_speed, bullet_speedlimit);
 }
 
-
 /**
  * @breif         can发送上板函数
  * @param[in]     game_status：对局状态
@@ -352,7 +358,7 @@ static void canTX_gimbal(int8_t game_status, int16_t heat0, int16_t heat0_limit,
 	data[4] = heat0_limit & 0xff;
 	data[5] = bullet_speed >> 8;
 	data[6] = bullet_speed & 0xff;
-	//data[7] = ;
+	// data[7] = ;
 	Can_Tx_Message(&hcan2, data);
 }
 

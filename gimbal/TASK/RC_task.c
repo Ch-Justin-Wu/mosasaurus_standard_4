@@ -44,7 +44,7 @@ uint16_t last_key;
 uint8_t spin_flag_1, spin_flag_2, fly_flag = 0, chassis_power_flag = 1;
 uint8_t last_TOP_ANGLE_flag = 0;
 uint8_t add_flag = 0;
-uint8_t time_count_q = 0, time_count_f = 0, time_count_e = 0, time_count_c = 0, time_count_v = 0, time_count_x = 0, time_count_z = 0, time_count_g = 0,time_count_b = 0;
+uint8_t time_count_q = 0, time_count_f = 0, time_count_e = 0, time_count_c = 0, time_count_v = 0, time_count_x = 0, time_count_z = 0, time_count_g = 0, time_count_b = 0;
 float target_angle = 0;
 static int deadline_judge_v(int16_t a);
 // 死区判断
@@ -669,7 +669,8 @@ void judge_g(void)
 		{
 			if (time_count_g >= KEY_COUNT)
 			{
-				vision_sent.windwill_press_flag = 1;
+				vision_sent.amor_press_flag = 1;
+				
 				// if (shoot_vision_mode != VISION_BIG_WINDWILL)
 				// {
 				// 	shoot_vision_mode = VISION_BIG_WINDWILL; // 开启大风车
@@ -694,11 +695,10 @@ static void judge_x(void)
 		time_count_x++;
 		if (vision_mode == VISION_ON)
 		{
-			if (time_count_x >= KEY_COUNT) // 
+			if (time_count_x >= KEY_COUNT) //
 			{
 				// HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_RESET);
 				// reboot_flag = 1;
-
 			}
 		}
 	}
@@ -745,7 +745,7 @@ void judge_z(void)
 	{
 		if (last_key & Z_key)
 		{
-			if (time_count_z >= LONG_KEY_COUNT) // 长按1s断开超电开关
+			if (time_count_z >= KEY_COUNT) // 切换超电开关
 			{
 				if (supercap_reboot_flag == 0)
 					supercap_reboot_flag = 1;
@@ -767,7 +767,10 @@ void judge_b(void)
 		{
 			if (time_count_b >= KEY_COUNT)
 			{
-				vision_sent.amor_press_flag = 1;
+				if (vision_mode == VISION_ON || vision_mode == ASSIST_VISION_ON)
+				{
+					vision_sent.windwill_press_flag = 1;
+				}
 			}
 		}
 		time_count_b = 0;

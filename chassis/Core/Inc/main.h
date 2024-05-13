@@ -87,10 +87,10 @@ void Error_Handler(void);
 #define RSTN_IST8310_GPIO_Port GPIOG
 #define DRDY_IST8310_Pin GPIO_PIN_3
 #define DRDY_IST8310_GPIO_Port GPIOG
-#define Battry_Pin GPIO_PIN_2
-#define Battry_GPIO_Port GPIOB
-#define Supercap_Pin GPIO_PIN_1
-#define Supercap_GPIO_Port GPIOB
+#define Supercap_Pin GPIO_PIN_9
+#define Supercap_GPIO_Port GPIOE
+#define Battry_Pin GPIO_PIN_11
+#define Battry_GPIO_Port GPIOE
 
 /* USER CODE BEGIN Private defines */
 

@@ -26,7 +26,7 @@ void CHASSIS_TASK()
 
 	time_count++;
 
-	if(time_count%500==0)//0.5s
+	if (time_count % 500 == 0) // 0.5s
 	{
 		send_game_time();
 	}
@@ -44,6 +44,12 @@ void CHASSIS_TASK()
 		// 	calibrate_task();
 		// IMU_read();
 	}
+	if(time_count%2==0)
+	{
+		supercap_can_tx();
+		
+	}
+
 	if (time_count % 7 == 0)
 	{
 		// 远程遥控，调试时使用
@@ -62,8 +68,8 @@ void CHASSIS_TASK()
 		referee_unpack_fifo_data();
 		// 向云台发送数据
 		send_gimbal_data();
-
-		supercap_can_tx();
+		//设置
+		set_power_mode(&supercap_object, supercap_object.change_flag);
 	}
 
 	if (time_count >= 1000) // 清除计数标志    1s
@@ -92,17 +98,21 @@ void my_offline_check(void)
 	if (offline_check(&chassis_control_order.offline_check, 100) == OFFLINE)
 	{
 		chassis_control_order.chassis_mode = CHASSIS_NO_FORCE;
-		//buzzer_setTask(&buzzer, BUZZER_DEVICE_OFFLINE_PRIORITY);
+		// buzzer_setTask(&buzzer, BUZZER_DEVICE_OFFLINE_PRIORITY);
 	}
 	// 电机离线检测
 	if (offline_check(&chassis_motor1.offline_check, 100) == OFFLINE || offline_check(&chassis_motor2.offline_check, 100) == OFFLINE || offline_check(&chassis_motor3.offline_check, 100) == OFFLINE || offline_check(&chassis_motor4.offline_check, 100) == OFFLINE || offline_check(&chassis_center.offline_check, 100) == OFFLINE)
 	{
-		//buzzer_setTask(&buzzer, BUZZER_DEVICE_OFFLINE_PRIORITY);
+		// buzzer_setTask(&buzzer, BUZZER_DEVICE_OFFLINE_PRIORITY);
 	}
-	//电容离线检测
+	// 电容离线检测
 	if (offline_check(&supercap_object.offline_check, 200) == OFFLINE)
 	{
-		
+		//set_power_mode(&supercap_object, BATTRY);
+	}
+	else
+	{
+		//set_power_mode(&supercap_object, SUPER_CAP);
 	}
 }
 

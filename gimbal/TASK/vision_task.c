@@ -7,6 +7,8 @@
 #include "USB_Commucation.h"
 #include "usbd_cdc_if.h"
 #include "RC_task.h"
+#include "sent_task.h"
+
 VISION_t vision_mode = VISION_OFF;
 VISION_t assist_vision_mode = ASSIST_VISION_OFF;
 
@@ -194,6 +196,8 @@ void auto_aim_fsm_task(Struct_FSM *fsm, VISION_GET_t *ptr)
 		break;
 	}
 	ptr->last_s1 = rc_ctrl.rc.s[1];
+
+	can_tx_0x114_data[0] = ptr->status;
 }
 
 // double vision_actual_speed,vision_actual_angle;

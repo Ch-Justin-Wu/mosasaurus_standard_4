@@ -9,6 +9,7 @@
 #include "bsp_can.h"
 #include "supercap.h"
 #include "arm_math.h"
+#include "chassis_move.h"
 typedef enum shoot_status_e
 {
 	SHOOT_OFF = 0,
@@ -21,6 +22,13 @@ typedef enum shoot_type_e
 	FIVE_SHOOT,
 	TEN_SHOOT,
 } shoot_type_e;
+
+typedef enum
+{
+	NORMAL_AIM,
+	SMALL_WINDWILL_AIM,
+	BIG_WINDWILL_AIM,
+} enum_auto_aim_status;
 
 extern uint8_t shoot_status;
 extern int time2;
@@ -557,7 +565,16 @@ void referee_usart_task()
 		}
 		else if (vision_mode == 0 || vision_mode == 2)
 		{
-			UI_Draw_Arc(&UI_Graph7.Graphic[0], "106", UI_Graph_Change, 2, UI_Color_Green, 0, 360, 5, 200, 590, 15, 15); // vision_on
+			if (chassis_control_order.aim_mode == NORMAL_AIM)
+			{
+				UI_Draw_Arc(&UI_Graph7.Graphic[0], "106", UI_Graph_Change, 2, UI_Color_Green, 0, 360, 5, 200, 590, 15, 15);
+			}
+			if (chassis_control_order.aim_mode ==SMALL_WINDWILL_AIM||chassis_control_order.aim_mode == BIG_WINDWILL_AIM)
+			{
+				UI_Draw_Arc(&UI_Graph7.Graphic[0], "106", UI_Graph_Change, 2, UI_Color_Cyan, 0, 360, 5, 200, 590, 15, 15);
+			}
+
+			// vision_on
 		}
 
 		UI_Draw_Arc(&UI_Graph7.Graphic[1], "107", UI_Graph_Change, 2, UI_Color_White, 0, 360, 2, 1400, 640, 45, 45); // µ×ÅÌ×ËÌ¬Ô²È¦

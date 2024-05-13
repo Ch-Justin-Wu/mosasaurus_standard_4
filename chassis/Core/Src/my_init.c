@@ -1,5 +1,5 @@
 #include "my_init.h"
-
+#include "supercap.h"
 float Left_current_Pid[6] 			= {1.0f,			0.0f,			0.0f,		29500.0f,			9800.0f,		0.0f};     //速度环
 float Right_current_Pid[6] 			= {1.0f,			0.0f,			0.0f,		29500.0f,			9800.0f,		0.0f};     //速度环
 extern uint8_t sbus_rx_buffer[36];
@@ -7,6 +7,7 @@ extern uint8_t rec_super;
 
 void all_init(void)
 {
+	set_power_mode(&supercap_object, BATTRY);
 	motor_pid_init(&(chassis_center.pid));
 	motor_pid_init(&(chassis_motor1.pid));
 	motor_pid_init(&(chassis_motor2.pid));

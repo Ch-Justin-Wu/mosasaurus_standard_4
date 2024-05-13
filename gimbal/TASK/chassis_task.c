@@ -39,7 +39,7 @@ void remote_chassis(void)
 	{
 
 		canTX_chassis_first(rc_sent.x_speed, rc_sent.y_speed, rc_sent.r_speed, gimbal_y.given_current);
-		if (pack.point_num == 5)
+		if (pack.point_num == 5 && (vision_mode == VISION_ON || vision_mode == ASSIST_VISION_ON))
 		{
 			// 底盘不动
 			canTX_chassis_second(3, vision_mode);
@@ -52,7 +52,7 @@ void remote_chassis(void)
 	if (gimbal_set_mode == GIMBAL_TOP_ANGLE) // 小陀螺
 	{
 		canTX_chassis_first(rc_sent.x_speed, rc_sent.y_speed, rc_sent.r_speed, gimbal_y.given_current);
-		if (pack.point_num == 5)
+		if (pack.point_num == 5&&(vision_mode==VISION_ON||vision_mode==ASSIST_VISION_ON))
 		{
 			// 底盘不动
 			canTX_chassis_second(3, vision_mode);

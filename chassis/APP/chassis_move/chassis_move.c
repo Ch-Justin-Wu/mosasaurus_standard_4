@@ -97,6 +97,15 @@ float power_buffer_scale(uint16_t remaning_buffer, uint8_t total_buffer)
 	return scale;
 }
 
+float power_supercap_scale()
+{
+	float scale;
+	scale = (supercap_object.percent - 0.1f)/0.9f;
+	if (scale < 0)
+		scale = 0.0f;
+	return scale;
+}
+
 void chassis_power_control(void)
 {
 	uint16_t remaning_buffer = 0;
@@ -131,12 +140,23 @@ void chassis_power_control(void)
 	// get_chassis_power_and_buffer_and_max(&chassis_power, &chassis_power_buffer, &max_power_limit);
 	// chassis_buffer_loop(chassis_power_buffer);
 	// input_power = max_power_limit - b_pid.PID_OUT; // Input power floating at maximum power
-	input_power = robot_state.chassis_power_limit;
 	remaning_buffer = power_heat_data_t.chassis_power_buffer;
-	if (input_power < 45)
+	if (supercap_object.power_mode == BATTRY)
 	{
-		input_power = 45;
+		input_power = robot_state.chassis_power_limit;
+		if (input_power < 45)
+		{
+			input_power = 45;
+		}
 	}
+	if (supercap_object.power_mode == SUPER_CAP)
+	{
+		input_power = (supercap_object.voltage - 13.0f) * 10.0f;
+		
+		
+	}
+
+	
 
 #endif
 
@@ -161,10 +181,19 @@ void chassis_power_control(void)
 
 	if (initial_total_power > chassis_max_power) // determine if larger than max power
 	{
-		fp32 power_scale = power_buffer_scale(remaning_buffer, total_buffer);
-		if (input_power < 45)
+		fp32 power_scale = 1.0f;
+		if (supercap_object.power_mode == BATTRY)
 		{
-			power_scale = 1.0f;
+			power_scale = power_buffer_scale(remaning_buffer, total_buffer);
+		
+			if (input_power < 45)
+			{
+				power_scale = 1.0f;
+			}
+		}
+		if (supercap_object.power_mode == SUPER_CAP)
+		{
+			power_scale = power_supercap_scale();
 		}
 		for (uint8_t i = 0; i < 4; i++)
 		{
@@ -239,8 +268,6 @@ void chassis_move(void)
 	chassis_motor2.target_current = motor_pid_out[1];
 	chassis_motor3.target_current = motor_pid_out[2];
 	chassis_motor4.target_current = motor_pid_out[3];
-
-
 
 	// Power_limit(); // 新的功率限制 Rhn
 

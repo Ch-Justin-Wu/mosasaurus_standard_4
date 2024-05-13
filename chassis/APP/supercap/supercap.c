@@ -1,66 +1,6 @@
 #include "supercap.h"
 #include "referee.h"
 #include "usart.h"
-// uint16_t power_limit=0;
-// uint16_t supercap_volt=0;  //超级电容电压
-// uint16_t supercap_per=0;   //超级电容电量百分比
-// uint8_t recvStr[7]={0};
-// uint8_t rec_super=0;
-// uint8_t cnt=0;
-// uint8_t send_data[5]={0};
-// uint8_t chassis_power_flag=1;
-///**
-//  * @breif         超级电容，根据不同的功率上限给电容上单片机发送数据
-//  * @param[in]     none
-//	* @param[out]    代表不同功率的字符
-//  * @retval        none
-//  */
-// void supercap(void)
-//{
-//	get_chassis_power_limit(&power_limit);  //获取裁判系统数据
-//	if(power_limit==0) power_limit=45;  //低功率保护
-//
-//	send_data[0]=((uint8_t)(power_limit/100))%10;  //百位
-//  send_data[1]=((uint8_t)(power_limit/10))%10;   //十位
-//	send_data[2]=((uint8_t)power_limit)%10;        //个位
-//	send_data[3]= chassis_power_flag;              //继电器标志位
-//	send_data[4]='#';                              //结束帧
-//	HAL_UART_Transmit(&huart1, send_data, 5, 100);
-//	//备用
-////  if(__HAL_UART_GET_FLAG(&huart1,UART_FLAG_ORE))  //接收过载
-////	{
-////		__HAL_UART_CLEAR_OREFLAG(&huart1); //清除标志位
-////    MX_USART1_UART_Init();		//重新初始化
-////	}
-//}
-
-// void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-//{
-//	if(huart->Instance==USART1)  //判断为超级电容串口中断
-//	{
-//				/*数据处理*/
-//		if(rec_super!='#')
-//		{
-//			if(cnt<=1)
-//		  {
-//			  recvStr[cnt]=rec_super;  //电压 电量
-//			  cnt++;
-//		  }
-//		}
-//		else
-//		{
-//			get_supercap_data();
-//			cnt=0;
-//		}
-//     HAL_UART_Receive_IT(&huart1,&rec_super,1);   //进入中断后再次手动开启接收中断
-//	}
-// }
-
-// void get_supercap_data(void)  //转换
-//{
-//	supercap_volt=(uint16_t)recvStr[0];
-//	supercap_per=(uint16_t)recvStr[1];
-// }
 
 /***********************************************************
  *@Brief	供外部调用的变量
@@ -177,18 +117,43 @@ void PowerMode_Judgement(void)
 	Last_Power_Mode = Power_Mode;
 }
 
+void set_power_mode(supercap_handle *ptr, enum_power_mode mode)
+{
+	ptr->power_mode = mode;
+	if (mode == SUPER_CAP)
+	{
+		HAL_GPIO_WritePin(Supercap_GPIO_Port, Supercap_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(Battry_GPIO_Port, Battry_Pin, GPIO_PIN_RESET);
+	}
+	if (mode == BATTRY)
+	{
+		HAL_GPIO_WritePin(Supercap_GPIO_Port, Supercap_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(Battry_GPIO_Port, Battry_Pin, GPIO_PIN_SET);
+		ptr->percent = 0.0f;
+		ptr->voltage = 0.0f;
+	}
+}
+
 void supercap_can_tx(void)
 {
 	supercap_object.actual_power = power_heat_data_t.chassis_power;
 	supercap_object.max_power = (float)robot_state.chassis_power_limit;
-	supercap_object.power_buffer = power_heat_data_t.chassis_power_buffer;
 
-	if (supercap_object.max_power == 0)
+	supercap_object.power_buffer = power_heat_data_t.chassis_power_buffer;
+	supercap_object.remain_power_buffer = (float)power_heat_data_t.chassis_power_buffer;
+
+	supercap_object.max_power = supercap_object.max_power + supercap_object.remain_power_buffer-15.0f;
+	if (supercap_object.remain_power_buffer-10.f < 0)
 	{
-		supercap_object.max_power = 45;
+		supercap_object.max_power = (float)robot_state.chassis_power_limit;
 	}
+		if (supercap_object.max_power == 0)
+		{
+			supercap_object.max_power = 45;
+		}
 	memcpy(supercap_object.tx_buff, &supercap_object.max_power, 4);
+
 	memcpy(supercap_object.tx_buff + 4, &supercap_object.actual_power, 4);
 
-	CAN_Send_Data(&hcan1, SUPER_CAP_TX_ID, supercap_object.tx_buff, 8);
+	CAN_Send_Data(&hcan2, SUPER_CAP_TX_ID, supercap_object.tx_buff, 8);
 }

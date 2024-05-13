@@ -14,7 +14,7 @@
 #include "USB_Commucation.h"
 #include "buzzer.h"
 #include "ins_task.h"
-
+#include "can.h"
 
 uint8_t buzzer_flag;
 extern VISION_t vision_mode;
@@ -84,7 +84,7 @@ void TIM3_CNT_TASK()
 					Gimbal_Task();
 					shoot_task();
 				}
-
+				CAN_Send_Data(&hcan2,0x114,can_tx_0x114_data,8);
 				// canTX_UPPER_COMPUTER(); // 向上位机发送数据
 				receive_upper_data();
 				//	 DMA_Send();  旧的上位机通讯

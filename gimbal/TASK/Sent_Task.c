@@ -14,6 +14,7 @@
 3 wl
 */
 uint8_t data_[8] = {0}, state;
+uint8_t can_tx_0x114_data[8] = {0};
 extern uint16_t set_compare;
 
 uint8_t shoot_type = 1;
@@ -23,6 +24,32 @@ extern enum {
 } bullet_state;
 
 extern shoot_status_e shoot_status;
+
+/**
+ * @brief 发送数据帧
+ *
+ * @param hcan CAN编号
+ * @param ID ID
+ * @param Data 被发送的数据指针
+ * @param Length 长度
+ * @return uint8_t 执行状态
+ */
+uint8_t CAN_Send_Data(CAN_HandleTypeDef *hcan, uint16_t ID, uint8_t *Data, uint16_t Length)
+{
+	CAN_TxHeaderTypeDef tx_header;
+	uint32_t used_mailbox;
+
+	// 检测传参是否正确
+	assert_param(hcan != NULL);
+
+	tx_header.StdId = ID;
+	tx_header.ExtId = 0;
+	tx_header.IDE = 0;
+	tx_header.RTR = 0;
+	tx_header.DLC = Length;
+
+	return (HAL_CAN_AddTxMessage(hcan, &tx_header, Data, &used_mailbox));
+}
 
 // 给底盘发送数据(x,v,z速度以及yaw轴电流)
 uint8_t canTX_chassis_first(int16_t x, int16_t y, int16_t z, int16_t current_t)

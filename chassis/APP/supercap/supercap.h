@@ -16,17 +16,23 @@
 #define	Supercap_Connected		1
 #define Supercap_Disconnected	0
 
-
+typedef enum
+{
+    SUPER_CAP,
+    BATTRY,
+}enum_power_mode;
 
 typedef struct
 {
     float max_power;
     float actual_power;
     uint16_t power_buffer;
+    float remain_power_buffer;
 
     float voltage;
     float percent;
-
+    enum_power_mode power_mode;
+    uint8_t change_flag;
     uint8_t rx_buff[8];
     uint8_t tx_buff[8];
 
@@ -46,5 +52,6 @@ extern int Supercap_Connection_Status;
 void supercap(int S_Cnt, int MS_Cnt);
 
 void supercap_can_tx(void);
+void set_power_mode(supercap_handle *ptr, enum_power_mode mode);
 #endif
 
