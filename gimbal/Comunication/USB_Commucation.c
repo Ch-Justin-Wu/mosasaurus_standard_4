@@ -115,6 +115,8 @@ void USB_TX(void)
 {
   pack.hander = 0x5A;
   pack.game_status = game_status;
+  pack.point_num;
+  pack.is_large_buff ;//
   pack.detect_color = 1;
   pack.target_id = 0x01;
   pack.pitch = gimbal_p.IMU_actual_angle;

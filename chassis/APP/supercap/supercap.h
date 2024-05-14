@@ -16,6 +16,10 @@
 #define	Supercap_Connected		1
 #define Supercap_Disconnected	0
 
+//#define Game_On
+#define Game_Off
+
+
 typedef enum
 {
     SUPER_CAP,

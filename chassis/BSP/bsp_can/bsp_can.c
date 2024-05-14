@@ -218,6 +218,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		if (CAN_RxHeaderStruct.StdId ==0x114)
 		{
 			chassis_control_order.aim_mode=rxdata[0];
+			chassis_control_order.key_mode = rxdata[1];
 		}
 			if (CAN_RxHeaderStruct.StdId == GIMBAL_CONTROL_ID_1)
 			{

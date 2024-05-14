@@ -106,6 +106,7 @@ typedef struct
 	uint32_t can2_online_cnt;
 	uint32_t can2_last_online_cnt;
 	uint8_t aim_mode;
+	uint8_t key_mode;
 	offline_check_handle offline_check;
 } CHASSIS_CONTROL_ORDER_t;
 

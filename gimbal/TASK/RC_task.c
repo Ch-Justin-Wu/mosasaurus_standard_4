@@ -10,6 +10,7 @@
 #include "tim.h"
 #include "referee.h"
 
+extern uint8_t can_tx_0x114_data[];
 extern float YawSpeedPid[7];
 extern float YawSpeedPid_2[7];
 extern const uint16_t SERVO_CLOSE;
@@ -73,6 +74,7 @@ void control_mode_judge(void)
 		control_mode = KEY_OFF;
 	if (KEY_board || MOUSE_x || MOUSE_y || MOUSE_z || RFR_KEY_board || RFR_MOUSE_X || RFR_MOUSE_Y || RFR_MOUSE_Z)
 		control_mode = KEY_ON;
+	can_tx_0x114_data[1] = control_mode;
 }
 
 //

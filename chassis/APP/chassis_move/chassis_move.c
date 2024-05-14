@@ -616,11 +616,19 @@ static float chassis_follow(void)
 	chassis_center.pid.position_loop.apid.target_angle = GIMBAL_HEAD_ANGLE;
 	chassis_center.pid.position_loop.apid.actual_angle = chassis_center.actual_angle;
 	follow_pid_realize();
-	// 死区设置
-	if (abs(GIMBAL_HEAD_ANGLE - chassis_center.actual_angle) > 1.0f)
-		return (float)chassis_center.pid.position_loop.apid.PID_OUT;
-	else
-		return (float)chassis_center.pid.position_loop.apid.PID_OUT / 10.0f;
+	if (chassis_center.pid.position_loop.apid.PID_OUT>=5.f)
+	{
+		chassis_center.pid.position_loop.apid.PID_OUT = 5.f;
+	}
+	if (chassis_center.pid.position_loop.apid.PID_OUT<=-5.f)
+	{
+		chassis_center.pid.position_loop.apid.PID_OUT = -5.f;
+	}
+		// 死区设置
+		if (abs(GIMBAL_HEAD_ANGLE - chassis_center.actual_angle) > 1.0f)
+			return (float)chassis_center.pid.position_loop.apid.PID_OUT;
+		else
+			return (float)chassis_center.pid.position_loop.apid.PID_OUT / 10.0f;
 }
 STEPSTAR step_flag;
 float K_VX, K_VY, B_VX, B_VY;			// 分别代表K和B 一次函数

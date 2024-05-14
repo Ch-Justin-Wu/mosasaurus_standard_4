@@ -44,10 +44,9 @@ void CHASSIS_TASK()
 		// 	calibrate_task();
 		// IMU_read();
 	}
-	if(time_count%2==0)
+	if (time_count % 2 == 0)
 	{
 		supercap_can_tx();
-		
 	}
 
 	if (time_count % 7 == 0)
@@ -68,8 +67,14 @@ void CHASSIS_TASK()
 		referee_unpack_fifo_data();
 		// 向云台发送数据
 		send_gimbal_data();
-		//设置
-		set_power_mode(&supercap_object, supercap_object.change_flag);
+		// 设置
+#if defined(Game_On)
+		if (chassis_control_order.control_mode == KEY_ON)
+		{
+			set_power_mode(&supercap_object, supercap_object.change_flag);
+		}
+#endif
+
 	}
 
 	if (time_count >= 1000) // 清除计数标志    1s
@@ -108,11 +113,11 @@ void my_offline_check(void)
 	// 电容离线检测
 	if (offline_check(&supercap_object.offline_check, 200) == OFFLINE)
 	{
-		//set_power_mode(&supercap_object, BATTRY);
+		// set_power_mode(&supercap_object, BATTRY);
 	}
 	else
 	{
-		//set_power_mode(&supercap_object, SUPER_CAP);
+		// set_power_mode(&supercap_object, SUPER_CAP);
 	}
 }
 
