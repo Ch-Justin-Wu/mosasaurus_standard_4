@@ -134,6 +134,88 @@ void set_power_mode(supercap_handle *ptr, enum_power_mode mode)
 	}
 }
 
+void set_battry_mode(supercap_handle *ptr)
+{
+	HAL_GPIO_WritePin(Supercap_GPIO_Port, Supercap_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(Battry_GPIO_Port, Battry_Pin, GPIO_PIN_SET);
+	ptr->percent = 0.0f;
+	ptr->voltage = 0.0f;
+}
+
+void set_cap_mode(supercap_handle *ptr)
+{
+	HAL_GPIO_WritePin(Supercap_GPIO_Port, Supercap_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(Battry_GPIO_Port, Battry_Pin, GPIO_PIN_RESET);
+}
+
+// ÈýÖÖ×´Ì¬ 0 Õý³£ 1 ÒÉËÆ´íÎó 2 ´íÎó 3 ´íÎó´¦Àí
+enum_error_status supercap_error_FSM(Struct_FSM *fsm, supercap_handle *ptr)
+{
+	if (ptr->power_mode == SUPER_CAP)
+	{
+		fsm->Status[fsm->Now_Status_Serial].Time++;
+		switch (Get_Now_Status_Serial(fsm))
+		{
+		// Õý³£×´Ì¬
+		case 0:
+			ptr->error_status = CAP_OK;
+			if (ptr->actual_power <= 2.0f)
+			{
+				// Õý³£×´Ì¬->ÒÉËÆ´íÎó×´Ì¬
+				Set_FSM_Status(fsm, 1);
+			}
+			break;
+		// ÒÉËÆ´íÎó×´Ì¬
+		case 1:
+			if (ptr->actual_power > 10.0f)
+			{
+				// ÒÉËÆ´íÎó×´Ì¬->Õý³£×´Ì¬
+				Set_FSM_Status(fsm, 0);
+			}
+			else if (fsm->Status[fsm->Now_Status_Serial].Time >= 500)
+			{
+				// ÒÉËÆ´íÎó×´Ì¬->´íÎó×´Ì¬
+				Set_FSM_Status(fsm, 2);
+			}
+			break;
+		// ´íÎó×´Ì¬
+		case 2:
+			ptr->error_status = CAP_ERROR;
+			if (ptr->actual_power > 10.0f)
+			{
+				// ´íÎó×´Ì¬->Õý³£×´Ì¬
+				Set_FSM_Status(fsm, 0);
+			}
+			else
+			{
+				// ´íÎó×´Ì¬->´íÎó´¦Àí×´Ì¬
+				Set_FSM_Status(fsm, 3);
+			}
+			break;
+			// ´íÎó´¦Àí
+		case 3:
+
+			ptr->error_status = CAP_ERROR_HANDLE;
+			if (fsm->Status[fsm->Now_Status_Serial].Time < 1000)
+			{
+				set_battry_mode(ptr);
+			}
+			else
+			{
+				set_cap_mode(ptr);
+			}
+			if (ptr->actual_power > 10.0f)
+			{
+				// ´íÎó´¦Àí×´Ì¬->Õý³£×´Ì¬
+				Set_FSM_Status(fsm, 0);
+			}
+
+			break;
+		}
+		return ptr->error_status;
+	}
+}
+
 void supercap_can_tx(void)
 {
 	supercap_object.actual_power = power_heat_data_t.chassis_power;
@@ -142,15 +224,15 @@ void supercap_can_tx(void)
 	supercap_object.power_buffer = power_heat_data_t.chassis_power_buffer;
 	supercap_object.remain_power_buffer = (float)power_heat_data_t.chassis_power_buffer;
 
-	supercap_object.max_power = supercap_object.max_power + supercap_object.remain_power_buffer-15.0f;
-	if (supercap_object.remain_power_buffer-10.f < 0)
+	supercap_object.max_power = supercap_object.max_power + supercap_object.remain_power_buffer - 15.0f;
+	if (supercap_object.remain_power_buffer - 10.f < 0)
 	{
 		supercap_object.max_power = (float)robot_state.chassis_power_limit;
 	}
-		if (supercap_object.max_power == 0)
-		{
-			supercap_object.max_power = 45;
-		}
+	if (supercap_object.max_power == 0)
+	{
+		supercap_object.max_power = 45;
+	}
 	memcpy(supercap_object.tx_buff, &supercap_object.max_power, 4);
 
 	memcpy(supercap_object.tx_buff + 4, &supercap_object.actual_power, 4);

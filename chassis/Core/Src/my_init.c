@@ -9,6 +9,7 @@ void all_init(void)
 {
 #if defined(Game_On)
 	set_power_mode(&supercap_object, SUPER_CAP);
+	FSM_Init(&supercap_object.error_fsm, 3, 0);
 #endif
 #if defined(Game_Off)
 	set_power_mode(&supercap_object, BATTRY);

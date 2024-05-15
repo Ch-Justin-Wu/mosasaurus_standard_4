@@ -26,17 +26,18 @@ void CHASSIS_TASK()
 
 	time_count++;
 
-	if (time_count % 500 == 0) // 0.5s
-	{
-		send_game_time();
-	}
 	// if(time_count%2==0)
 	// {
 	// 	buzzer_taskScheduler(&buzzer);
 	// }
 	// INS_task();
+	supercap_error_FSM(&supercap_object.error_fsm, &supercap_object);
 	my_offline_check();
 	Time_Service_Task();
+	if (time_count % 500 == 0) // 0.5s
+	{
+		send_game_time();
+	}
 	if (time_count % 13 == 0 && start_flag == 1)
 	{
 		// 校准imu
@@ -44,7 +45,7 @@ void CHASSIS_TASK()
 		// 	calibrate_task();
 		// IMU_read();
 	}
-	if (time_count % 2 == 0)
+	if (time_count % 5 == 0)
 	{
 		supercap_can_tx();
 	}
@@ -68,15 +69,19 @@ void CHASSIS_TASK()
 		// 向云台发送数据
 		send_gimbal_data();
 		// 设置
+	}
+	if (time_count % 100 == 0)
+	{
 #if defined(Game_On)
-		if (chassis_control_order.control_mode == KEY_ON)
+
 		{
-			set_power_mode(&supercap_object, supercap_object.change_flag);
+			if (supercap_object.error_status != CAP_ERROR_HANDLE)
+			{
+				set_power_mode(&supercap_object, supercap_object.change_flag);
+			}
 		}
 #endif
-
 	}
-
 	if (time_count >= 1000) // 清除计数标志    1s
 	{
 		time_count = 1;
