@@ -554,6 +554,7 @@ void judge_f(void)
 		{
 			if (time_count_f >= KEY_COUNT)
 			{
+				vision_sent.amor_press_flag = 1;
 				if (vision_mode == VISION_OFF)
 				{
 					// HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET);  //开自瞄关闭激光

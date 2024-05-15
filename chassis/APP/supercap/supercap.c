@@ -151,6 +151,7 @@ void set_cap_mode(supercap_handle *ptr)
 // ÈýÖÖ×´Ì¬ 0 Õý³£ 1 ÒÉËÆ´íÎó 2 ´íÎó 3 ´íÎó´¦Àí
 enum_error_status supercap_error_FSM(Struct_FSM *fsm, supercap_handle *ptr)
 {
+	const float power_threshold = 2.0f;
 	if (ptr->power_mode == SUPER_CAP)
 	{
 		fsm->Status[fsm->Now_Status_Serial].Time++;
@@ -159,7 +160,7 @@ enum_error_status supercap_error_FSM(Struct_FSM *fsm, supercap_handle *ptr)
 		// Õý³£×´Ì¬
 		case 0:
 			ptr->error_status = CAP_OK;
-			if (ptr->actual_power <= 2.0f)
+			if (ptr->actual_power <= power_threshold && ptr->actual_power >= 0.8f)
 			{
 				// Õý³£×´Ì¬->ÒÉËÆ´íÎó×´Ì¬
 				Set_FSM_Status(fsm, 1);
@@ -167,12 +168,12 @@ enum_error_status supercap_error_FSM(Struct_FSM *fsm, supercap_handle *ptr)
 			break;
 		// ÒÉËÆ´íÎó×´Ì¬
 		case 1:
-			if (ptr->actual_power > 10.0f)
+			if (ptr->actual_power > power_threshold)
 			{
 				// ÒÉËÆ´íÎó×´Ì¬->Õý³£×´Ì¬
 				Set_FSM_Status(fsm, 0);
 			}
-			else if (fsm->Status[fsm->Now_Status_Serial].Time >= 500)
+			else if (fsm->Status[fsm->Now_Status_Serial].Time >= 1000)
 			{
 				// ÒÉËÆ´íÎó×´Ì¬->´íÎó×´Ì¬
 				Set_FSM_Status(fsm, 2);
@@ -181,7 +182,7 @@ enum_error_status supercap_error_FSM(Struct_FSM *fsm, supercap_handle *ptr)
 		// ´íÎó×´Ì¬
 		case 2:
 			ptr->error_status = CAP_ERROR;
-			if (ptr->actual_power > 10.0f)
+			if (ptr->actual_power > power_threshold)
 			{
 				// ´íÎó×´Ì¬->Õý³£×´Ì¬
 				Set_FSM_Status(fsm, 0);
@@ -204,7 +205,7 @@ enum_error_status supercap_error_FSM(Struct_FSM *fsm, supercap_handle *ptr)
 			{
 				set_cap_mode(ptr);
 			}
-			if (ptr->actual_power > 10.0f)
+			if (ptr->actual_power > power_threshold)
 			{
 				// ´íÎó´¦Àí×´Ì¬->Õý³£×´Ì¬
 				Set_FSM_Status(fsm, 0);
